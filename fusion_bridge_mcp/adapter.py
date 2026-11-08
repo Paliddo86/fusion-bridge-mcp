@@ -863,9 +863,11 @@ _TOOLS = [
                    "fusion-part-sourcing skill for the standard THT pads (LED 5mm, axial "
                    "resistor, 2.54 header).",
         "params": [
-            ("library_path", "libraryPath", "str", True, "The .lbr (created if missing)."),
             ("name", "name", "str", True, "Footprint (package) name, e.g. 'LED-5MM-THT'."),
             ("pads", "pads", "str", True, "Pad list: 'num,x,y,w,h,rect|round,hole;...' in mil."),
+            ("library_path", "libraryPath", "str", False,
+             "The .lbr to write (created if missing). OMIT IT to let the server ask the user "
+             "which folder to use - it never picks a location on its own."),
             ("description", "description", "str", False, "Human description shown in the library."),
             ("dry_run", "dryRun", "bool", False, "Validate and report without writing."),
         ],
@@ -879,9 +881,11 @@ _TOOLS = [
                    "footprint's pad numbers or the part places but never routes. Pair it with "
                    "fusion_create_footprint to make a missing part placeable.",
         "params": [
-            ("library_path", "libraryPath", "str", True, "The .lbr (created if missing)."),
             ("name", "name", "str", True, "Deviceset name, e.g. 'LED-5MM'."),
             ("pins", "pins", "str", True, "'num,name,side,offset_mil;...' - number must match a pad."),
+            ("library_path", "libraryPath", "str", False,
+             "The .lbr to write (created if missing). OMIT IT to let the server ask the user "
+             "which folder to use."),
             ("designator", "designator", "str", False, "Reference prefix, e.g. 'D' or 'R'."),
             ("body_width_mil", "bodyWidthMil", "int", False, "Body rectangle width (default 800)."),
             ("body_height_mil", "bodyHeightMil", "int", False, "Body rectangle height (default 600)."),
@@ -918,6 +922,11 @@ _TOOLS = [
 ]
 
 
+# Verbe che SCRIVONO un file di libreria sul disco dell'utente. Per questi il path non si
+# indovina mai: se manca, il server chiede dove metterlo.
+_CREATING_VERBS = {"fusion_create_footprint", "fusion_create_symbol", "fusion_create_library"}
+
+
 def _tool_function(entry, field):
     """Build one tool callable whose MCP schema comes from the table entry."""
     verb = entry["verb"]
@@ -931,6 +940,23 @@ def _tool_function(entry, field):
             if value is None:
                 continue
             args[wire_names[python_name]] = value
+        # A create verb writes a file to disk. `libraryPath` is required by the bridge
+        # because it must never guess where a user's library lands, so a missing path is
+        # turned into an explicit question here rather than a `bad_args` failure.
+        if verb in _CREATING_VERBS:
+            question = _library_question(args.get("libraryPath"), entry["title"].lower(), verb)
+            if question:
+                return _as_text({
+                    "success": False,
+                    "errorCode": "library_path_required",
+                    "error": question,
+                    "options": [
+                        "Give me a folder or a .lbr path and I create it there.",
+                        "Or give the path of an EXISTING .lbr to add the part to it.",
+                    ],
+                    "_hint": "Nothing was written. Ask the user where the library should "
+                             "live, then call this tool again with library_path set.",
+                })
         if trims_describe:
             # The bridge's describe has no namesOnly flag: trim its reply here so the
             # default call does not push ~1.2 MB of schemas into the client's context.
@@ -1120,13 +1146,38 @@ def source_part(field):
 
 
 def _ask_options(query: str, purpose: Optional[str]) -> list[str]:
-    """The two exits offered whenever a part cannot be found."""
+    """The exits offered whenever a part cannot be found.
+
+    Both are QUESTIONS for a human. The second one deliberately asks for TWO things
+    (permission + a folder): creating a part writes a file onto their disk, and a
+    bridge that picks the location itself leaves a library the user cannot find
+    later. Nothing here is created until an answer comes back.
+    """
     what = ("%s (%s)" % (query, purpose)) if purpose else query
     return [
         "Give me the path of a .lbr that has %s - I will use it directly." % what,
-        "Or let me create it: I write the footprint and the symbol into a library you name "
-        "(fusion_create_footprint + fusion_create_symbol, both work offline), then place it.",
+        "Or let me create it: tell me WHICH FOLDER to write the library into (e.g. "
+        "~/Documents/Fusion/libraries) and I will build the footprint and the symbol "
+        "there. Both create verbs work offline, so this needs no free Fusion.",
     ]
+
+
+def _library_question(library_path: Optional[str], what: str, verb: str = "") -> Optional[str]:
+    """Return the question to ask when a write needs a library path nobody supplied.
+
+    Called before any create_* verb. `library_path` is required by the bridge on
+    purpose (it never guesses where to put a file), so the adapter turns the missing
+    argument into an explicit ask instead of letting the call fail on `bad_args`.
+    """
+    if library_path and library_path.strip():
+        return None
+    content = "il footprint" if verb == "fusion_create_footprint" else "il simbolo"
+    return (
+        "Dove salvo la libreria con %s? Dammi una CARTELLA (o un path .lbr) e lo creo li' - "
+        "per esempio ~/Documents/Fusion/libraries/adom-tht.lbr. "
+        "Non scrivo nulla finche' non rispondi: il bridge non sceglie mai da solo dove "
+        "mettere un file che finisce sul tuo disco." % content
+    )
 
 
 # --------------------------------------------------------------------------------------

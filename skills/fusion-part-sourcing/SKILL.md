@@ -63,6 +63,24 @@ done deal.
 `fusion_create_footprint` and `fusion_create_symbol` write the `.lbr` without opening Fusion, so this
 works even while Fusion is busy.
 
+### ⛔ ASK FOR THE FOLDER FIRST
+
+Both verbs take `library_path`. **If the user has not given one, ask for a FOLDER before creating
+anything.** The bridge deliberately refuses to pick a location: a library written somewhere the user
+did not choose is a file they cannot find next week, and it is their disk.
+
+> Dove salvo la libreria con i footprint che creo? Dammi una cartella (o un path `.lbr`), per
+esempio `~/Documents/Fusion/libraries/adom-tht.lbr`. Non scrivo nulla finché non me lo dici.
+
+If `library_path` is omitted the server answers `errorCode: library_path_required` with the same
+question - pass that to the user verbatim rather than inventing a directory.
+
+Preferred shapes, once they answer:
+- they gave a **folder** → append a sensible filename: `<folder>/adom-tht.lbr`
+- they gave an **existing `.lbr`** → add to it (check with `fusion_list_library` first, so a part is
+  not overwritten)
+- they named a **new `.lbr` path** → use it exactly
+
 ### Standard through-hole pads (measurements in mil; 1 mm = 39.37 mil)
 
 | Part | Pad | Pitch | Hole | Notes |
@@ -141,5 +159,6 @@ mechanical enclosure built from the board.
 
 - Never invent a `symbol` name and retry when `place_part` says it is missing — search first.
 - Never silently swap a THT part for an SMD one.
-- Never write into a library the user did not name without asking: a `.lbr` is theirs.
+- **Never choose the library folder yourself.** Ask, every time, unless the user already named one
+  in this conversation. A `.lbr` is a file on their disk.
 - Never claim a part exists because a similar name exists (`LED-0603` is not `LED 5mm`).

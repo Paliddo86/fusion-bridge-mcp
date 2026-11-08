@@ -37,7 +37,8 @@ adom-lbr-generated `.lbr` parses fine.
 The pipeline runs in the cloud container; Fusion runs on Windows; there is NO container->Windows push
 verb. Serve the files (`python3 -m http.server 8931`) and pull them with `shell_execute` +
 `Invoke-WebRequest -OutFile C:\Users\<user>\adom-lib\...`. Build the shell JSON with `json.dumps`
-(Windows paths need `\\`).
+(Windows paths need `\\`). On macOS the same step is `curl -L -o ~/adom-lib/NAME.lbr <url>` — no
+PowerShell involved, and `~` plays the part of `C:\Users\<user>` (JSON needs no `\\` escaping).
 
 ## 4. Opening the footprint in the 3D viewer (Package3DEnvironment)
 

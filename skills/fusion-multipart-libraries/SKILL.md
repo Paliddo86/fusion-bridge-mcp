@@ -44,6 +44,9 @@ fusion_build_library_3d {
 }
 ```
 
+Every path here is **host-local**, never a container path: `C:/Users/<user>/...` on Windows is
+`~/...` on macOS (`~/lib/Combined.lbr`, `~/lib/Combined_bound.lbr`).
+
 - Each part's `lbrPath` is its OWN per-part `.lbr` (whose FIRST package is that footprint - what
   Create3DPackage loads); `modelPath` is its STEP. `package` is the package name in BOTH the per-part
   and the combined `.lbr` (they match - that's how the binding lands).
@@ -51,7 +54,7 @@ fusion_build_library_3d {
   not have to `fusion_aps_browse` for them.
 - Returns `{partsBound, partsTotal, parts:[{package,success,wip_urn,dims_mm,error}], screenshots:
   [{package,stage,path}], boundLbr, opened}`. The before/after PNGs land on the box
-  (`%TEMP%/adom-fusion-shots`); since 1.10.38 ab pulls them into your container automatically (`localFullPath` in each `screenshots[]` entry) - use those for a demo video.
+  (`%TEMP%/adom-fusion-shots` on Windows, `$TMPDIR/adom-fusion-shots` on macOS); since 1.10.38 ab pulls them into your container automatically (`localFullPath` in each `screenshots[]` entry) - use those for a demo video.
 - **Each part is independent.** If Fusion resets mid-run, the parts already done kept their f3d
   uploads; just re-run the whole `parts[]` (re-making a few f3ds is cheap) - the injection rewrites
   all bindings in one pass, so a single final call always yields a complete library.
@@ -93,7 +96,7 @@ still running server-side and finishes fine.** Do NOT treat that as failure. Ins
 
 1. Wait, then **verify by the artifacts, not the response**: read the `boundLbr` and count
    `<package3d name=` (should equal your part count), and list the before/after PNGs in
-   `%TEMP%/adom-fusion-shots` (pulled to you as `localFullPath`).
+   `%TEMP%/adom-fusion-shots` (`$TMPDIR/adom-fusion-shots` on macOS) - pulled to you as `localFullPath`.
 2. If a part is missing (the FIRST part of a run is the usual casualty, as Fusion settles from a prior
    view), **just re-run `fusion_build_library_3d` for the missing parts with `outLbrPath` pointing at
    the SAME file.** The binding injection is **merge-aware + idempotent** (v1.6.1+): it reads the

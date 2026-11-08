@@ -25,10 +25,10 @@ adom-wiki library export lib_xxxxxxxx --format fusion -o parts.zip
 ```
 
 ```jsonc
-// 4. Stage onto the Windows box (Docker -> desktop). NOTE the arg names.
+// 4. Stage onto the Fusion host (Docker -> desktop). NOTE the arg names.
 send_files {"filePaths":["/abs/container/parts.zip"], "reason":"..."}   // lands in Downloads
 // 5. One verb does pairing + bind + prove
-fusion_install_library_bundle {"zipPath":"C:/Users/<user>/Downloads/parts.zip"}
+fusion_install_library_bundle {"zipPath":"C:/Users/<user>/Downloads/parts.zip"}   // macOS: "~/Downloads/parts.zip"
 // -> {runId, stage:"bind", parts:[{deviceset, package, modelPath}], unbound:[]}
 // 6. Poll to a verdict (minutes, not seconds)
 fusion_prove_result {"runId":"<runId>"}
@@ -131,7 +131,8 @@ re-install. Re-prove part by part with `fusion_prove_library {libraryPath, name}
 deviceset, ~2 minutes each, and read the result from `fusion_prove_result {}` after each (the
 relay times out at 60s while the prove keeps running; never fire the next part until the
 previous one's 4 frames landed, or the runs race each other on one Fusion). The bound library
-for a bundle install lives at `C:/Users/<user>/Documents/AdomLibraries/<bundle>/<Library>.lbr`.
+for a bundle install lives at `C:/Users/<user>/Documents/AdomLibraries/<bundle>/<Library>.lbr`
+(`~/Documents/AdomLibraries/<bundle>/<Library>.lbr` on macOS).
 
 ## Clean up after yourself
 

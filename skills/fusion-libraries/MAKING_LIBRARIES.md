@@ -48,10 +48,14 @@ push verb**, so stage the file first, then open the Windows path.
 cd <dir-with-lbr> && python3 -m http.server 8931
 # download onto Windows (build the JSON in Python; Windows paths need \\ )
 adom-bridge shell_execute '{"command":"powershell -NoProfile -Command \"Invoke-WebRequest -Uri https://<workspace>.adom.cloud/proxy/8931/NAME.lbr -OutFile C:\\Users\\<user>\\adom-lib\\NAME.lbr\""}'
+# macOS: no PowerShell - mkdir -p ~/adom-lib && curl -L -o ~/adom-lib/NAME.lbr https://<workspace>.adom.cloud/proxy/8931/NAME.lbr
 # open it
 adom-bridge fusion_open_lbr '{"filePath":"C:/Users/<user>/adom-lib/NAME.lbr","verify":true}'
+# macOS: adom-bridge fusion_open_lbr '{"filePath":"~/adom-lib/NAME.lbr","verify":true}'
 adom-bridge fusion_get_app_state '{}'   # expect activeWorkspace "Electronics Library", isElectronics true
 ```
+
+Everywhere below, `C:/Users/<user>/adom-lib/` is the Windows staging dir; on macOS it is `~/adom-lib/`.
 
 The library loads with symbol + footprint + deviceset. The 3D package is a **placeholder** (the Content
 Manager 3D tab is empty). This is correct, and is the gap the rest of this guide closes.
@@ -158,7 +162,7 @@ directly given the model's versioned file URN. Full detail: [LIBRARY_FINDINGS.md
 | Verb | What it did here |
 |---|---|
 | `adom-lbr generate` / `validate` | build + validate `NAME.lbr` |
-| `shell_execute` (PowerShell `Invoke-WebRequest`) | stage `.lbr` / `.step` onto Windows |
+| `shell_execute` (PowerShell `Invoke-WebRequest`; macOS: `curl -L -o`) | stage `.lbr` / `.step` onto the Fusion host |
 | `fusion_open_lbr` | open the library in the Electronics Library editor |
 | `fusion_get_app_state` | confirm active doc / workspace / isElectronics |
 | `desktop_find_window` + `desktop_screenshot_window` | capture the Fusion window |

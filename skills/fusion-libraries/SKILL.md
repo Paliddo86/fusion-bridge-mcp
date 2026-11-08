@@ -55,6 +55,7 @@ See **[LIBRARY_FINDINGS.md](LIBRARY_FINDINGS.md)** for the full live findings lo
 ## 2. Opening a .lbr in Fusion (verified working)
 
 `fusion_open_lbr {"filePath": "C:/Users/<user>/.../NAME.lbr", "verify": true}`
+(`filePath` is host-local: `~/.../NAME.lbr` on macOS.)
 
 - Under the hood it runs `Document.newDesignFromLocal <path>`, which opens the library and switches to the **Electronics Library** workspace.
 - `verify:true` re-exports the loaded library to an EAGLE script and returns a preview - proof Fusion actually parsed the deviceset (layers/symbol/package), not just that a window opened.
@@ -69,6 +70,7 @@ Stage the file onto Windows first. Proven method (same proxy that serves shotlog
 1. Serve it from the container: `cd <dir> && python3 -m http.server 8931` (any proxied port).
 2. Download on Windows via `shell_execute`:
    `powershell -NoProfile -Command "New-Item -ItemType Directory -Force -Path C:\Users\<user>\adom-lib | Out-Null; Invoke-WebRequest -Uri 'https://<workspace>.adom.cloud/proxy/8931/NAME.lbr' -OutFile 'C:\Users\<user>\adom-lib\NAME.lbr'"`
+   (macOS: no PowerShell - `mkdir -p ~/adom-lib && curl -L -o ~/adom-lib/NAME.lbr 'https://<workspace>.adom.cloud/proxy/8931/NAME.lbr'`)
 3. Open the Windows path with `fusion_open_lbr`.
 
 Confirm the byte count matches after download. Build the `shell_execute` JSON in Python (`json.dumps`), not by hand - nested cmd/PowerShell quoting mangles easily, and Windows paths need `\\` in JSON.

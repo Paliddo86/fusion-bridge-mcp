@@ -49,6 +49,8 @@ opening path you add MUST follow it:
   family (`_FUSION_FAMILY_IMAGES` = Fusion360 / FusionLauncher / AdskIdentityManager / …, matched by
   process image via `_fusion_family_pids()`). It acts ONLY on focus-theft, so it never fights a user
   who deliberately foregrounds Fusion. Any window-family you add MUST be in that set.
+  (macOS: no `STARTUPINFO`, no Win32 handles, no `.exe` names — Fusion is `/Applications/Autodesk
+  Fusion.app` and its helpers all report as `Autodesk Fusion`; the guard matches that one image.)
 - **⚠️ ctypes HANDLE TRUNCATION — the silent killer (this bit us 2026-07-06).** Any Win32 call that
   RETURNS or ACCEPTS a handle (`HWND`, `HANDLE`) MUST have its `restype`/`argtypes` set, or ctypes
   defaults to `c_int` (32-bit) and **TRUNCATES the handle on 64-bit Windows**. `GetForegroundWindow()`
@@ -165,7 +167,9 @@ sweep is ongoing.)
 Fusion loads the add-in from a per-user dir Autodesk has MOVED across versions: **2025+ Fusion
 scans `%APPDATA%\Roaming\Autodesk\FusionAddins\AdomBridge\`** and SILENTLY ignores the legacy
 `%APPDATA%\Roaming\Autodesk\Autodesk Fusion[ 360]\API\AddIns\AdomBridge\` dirs (issue #63,
-root-caused live: an add-in only in the legacy dir never loads). `install_addin.py` installs to ALL
+root-caused live: an add-in only in the legacy dir never loads). On macOS the same two dirs are
+`~/Library/Application Support/Autodesk/FusionAddins/AdomBridge/` and
+`~/Library/Application Support/Autodesk/Autodesk Fusion 360/API/AddIns/AdomBridge/`. `install_addin.py` installs to ALL
 locations (TARGET_CANDIDATES); if a future Fusion stops loading it, FIRST suspect the dir moved
 again. ⛔ NEVER ask the user to restart Fusion / enable the add-in - YOU restart
 (`fusion_stop`+`fusion_start`; `runOnStartup` does the rest). Legacy note (superseded):
@@ -221,7 +225,8 @@ keep them in lockstep.
 5. **ANON-VERIFY**: re-download the zip + sha256-match, fetch the manifest, confirm version.
 6. Install on a Fusion box: `adom-desktop --target <laptop> bridge_install
    '{"manifestUrl":".../adom-bridge-fusion-manifest.json"}'`, then reap the old instance
-   (`bridge_kill` on AD ≥1.8.187, else taskkill the PID on its runtimePort) so the new code
+   (`bridge_kill` on AD ≥1.8.187, else taskkill the PID on its runtimePort; macOS: `kill <pid>`, or
+   `osascript -e 'quit app "Autodesk Fusion"'` for a graceful quit) so the new code
    loads, and verify via `bridge_log_read` / a `fusion_*` verb.
 
 ## The stale seed — do NOT publish from it
@@ -301,7 +306,8 @@ installed skill carries the full content locally + always-current.
 
 Root-caused live on a fresh Hyper-V VM (John, 2026-07-14). The webdeploy layout is NOT obvious:
 
-- `%LOCALAPPDATA%\Autodesk\webdeploy\production\<hash>\` — a COMPLETE install is ~615 files
+- `%LOCALAPPDATA%\Autodesk\webdeploy\production\<hash>\` (Windows; macOS has no webdeploy dir — the
+  app IS `/Applications/Autodesk Fusion.app`, so completeness = the app bundle exists) — a COMPLETE install is ~615 files
   (**`Fusion360.exe`** ~880 KB + hundreds of DLLs + Qt/ Python/). Autodesk ALSO drops a tiny **8-file
   launcher STUB** dir next to it (icons + `FusionLauncher.exe` + a ~412-byte `FusionLauncher.exe.ini`).
   So a healthy install shows **two** hash dirs.
@@ -314,7 +320,8 @@ Root-caused live on a fresh Hyper-V VM (John, 2026-07-14). The webdeploy layout 
 - Helpers: `_app_dir_complete()` (Fusion360.exe ≥ 200 KB), `_any_app_complete()`, `_find_fusion_launcher()`
   (returns a launcher only when a complete app exists), `_incomplete_webdeploy_present()` (fresh-install
   "installing" signal = a launcher present but NO complete app anywhere; disk-state, because the
-  streamer's tasklist presence is racy — flickered true only 3/25 polls during a real stream).
+  streamer's tasklist presence is racy — flickered true only 3/25 polls during a real stream; on macOS
+  that same signal is `pgrep -f "Autodesk Fusion"`).
 - `readiness`: gate `installed` on the app binary; `installing = _installer_running() OR
   _incomplete_webdeploy_present()`. **Poll to `installed:true`, not to `installing:false`** (the latter
   is racy). `_clean_incomplete_webdeploy()` no-ops when a complete app exists (never nuke the legit stub).

@@ -22,7 +22,8 @@ Call **`fusion_readiness`** (or ab's **`bridge_readiness`**) FIRST - it reports 
 - `ready:true` → drive Fusion directly.
 
 NOTE (ab >=1.9.63): ab **DETECTS** the Fusion host app (via the bridge.json `detect` block - the
-`%LOCALAPPDATA%\Autodesk\webdeploy\production\*\FusionLauncher.exe` path) but **NEVER installs it** -
+`%LOCALAPPDATA%\Autodesk\webdeploy\production\*\FusionLauncher.exe` path on Windows, or
+`/Applications/Autodesk Fusion.app` on macOS) but **NEVER installs it** -
 Fusion is the user's host app. ab also **provisions Python itself** - a system install if one is on
 PATH, else a portable, no-UAC python-build-standalone copy (pinned 3.12.13) under
 `~/.adom/adom-runtimes/` - and spawns the bridge from it by absolute path. So **never** download or
@@ -31,22 +32,29 @@ verb). Onboarding is only about Fusion itself + the Autodesk login + deploying t
 
 ## Step 1 — Download the Fusion installer
 The installer is the small "Fusion Client Downloader" (it streams the full app during install).
+The Windows `.exe` URL below is the Windows flow; on macOS fetch the macOS installer (`.dmg`) from
+Autodesk's Fusion download page and mount it.
 ```
 URL: https://dl.appstreaming.autodesk.com/production/installers/Fusion Client Downloader.exe
 ```
-Download it to a no-space path on the laptop (e.g. %TEMP%\):
+Download it to a no-space path on the laptop (e.g. %TEMP%\ on Windows, `$TMPDIR` on macOS):
 ```
 shell_execute {"command":"curl -L -o C:\\tmp\\FusionDL.exe \"https://dl.appstreaming.autodesk.com/production/installers/Fusion%20Client%20Downloader.exe\""}
+# macOS equivalent: curl -L -o "$TMPDIR/Fusion.dmg" <dmg-url>
 ```
-(PowerShell `Invoke-WebRequest` works too; curl ships on modern Windows.)
+(PowerShell `Invoke-WebRequest` works too; curl ships on modern Windows. macOS has no PowerShell
+requirement - `curl` is native.)
 
 ## Step 2 — Silent install (elevated)
 ```
 "%TEMP%\FusionDL.exe" --globalinstall --quiet      # system-wide, no UI
+# macOS: no --globalinstall flag - open the .dmg, drag Fusion to /Applications (or use the
+# installer's own UI); `sudo` is needed only if installing for all users.
 ```
 - Needs **admin/elevation** — run it so it elevates (UAC). On the user's own box this is one
   consent. It then **streams ~several GB**, so it can take 10-30 min — **monitor, don't block**
-  (poll for the FusionLauncher under `%LOCALAPPDATA%\Autodesk\webdeploy\production\<hash>\`).
+  (poll for the FusionLauncher under `%LOCALAPPDATA%\Autodesk\webdeploy\production\<hash>\` on Windows;
+  on macOS poll for `/Applications/Autodesk Fusion.app`).
 - Uninstall (if ever needed): `--globalinstall --process uninstall --quiet`.
 - When done, `fusion_readiness` flips to `installed:true` (the bridge finds the newest webdeploy
   launcher by mtime).
@@ -111,7 +119,9 @@ path above.
 This is what lets the bridge inject commands into Fusion after launch.
 - **The bridge does this for you:** on start, `server.py` auto-runs `install_addin`, which lands the
   add-in in **EVERY known Fusion add-in dir** — `%APPDATA%\Autodesk\FusionAddins\` (what 2025+
-  Fusion actually scans) AND the legacy `Autodesk Fusion[ 360]\API\AddIns\` dirs. ⚠ Fusion MOVED
+  Fusion actually scans) AND the legacy `Autodesk Fusion[ 360]\API\AddIns\` dirs. On macOS the same
+  dirs are `~/Library/Application Support/Autodesk/FusionAddins/` and
+  `~/Library/Application Support/Autodesk/Autodesk Fusion 360/API/AddIns/`. ⚠ Fusion MOVED
   this directory across versions and silently ignores the others (an add-in only in the legacy dir
   never loads on current Fusion — issue #63, proven live on a fresh install). Never assume one path.
 - **⛔ NEVER make the user restart Fusion or enable the add-in BY HAND.** After installing, YOU do

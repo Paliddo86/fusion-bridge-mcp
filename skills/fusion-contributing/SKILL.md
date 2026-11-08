@@ -39,7 +39,7 @@ Where things live:
 
 | Path | What it is |
 |---|---|
-| `rust/bridge/src/` | the exe ab spawns (`adom-fusion-bridge.exe`): verb dispatch in `main.rs`, the pass-through envelope in `addin.rs`, dialogs and restarts in `lifecycle.rs`, chains in `chains.rs`, APS search in `main.rs`, staging in `fusionpath.rs` |
+| `rust/bridge/src/` | the exe ab spawns (`adom-fusion-bridge.exe` on Windows, `adom-fusion-bridge` on macOS/Linux): verb dispatch in `main.rs`, the pass-through envelope in `addin.rs`, dialogs and restarts in `lifecycle.rs`, chains in `chains.rs`, APS search in `main.rs`, staging in `fusionpath.rs` |
 | `rust/core/src/` | shared logic: `dialog_rules.json` (dialog text to category and resolution), readiness, window facts, APS |
 | `addin/AdomBridge/` | the Python add-in that runs inside Fusion: one handler per verb under `commands/`, registered in `commands/__init__.py` |
 | `describe.py` and `contracts/describe.json` | the verb contract `fusion_describe` serves; `tools/freeze-contract.py` regenerates the JSON |
@@ -68,7 +68,7 @@ Prerequisites once: Rust stable, the cross target and MinGW for the Windows exe.
 
 ```bash
 rustup target add x86_64-pc-windows-gnu
-sudo apt-get install -y mingw-w64            # Linux or WSL; on Windows build natively
+sudo apt-get install -y mingw-w64            # Linux or WSL; on Windows build natively; macOS: build natively (no mingw)
 cd rust && cargo test -p adom-fusion-bridge  # unit tests, including the dialog rules
 cargo build --release --target x86_64-pc-windows-gnu -p adom-fusion-bridge
 ```
@@ -79,6 +79,8 @@ updating it, copy your build in, let ab respawn it, and unpin when you are done.
 ```bash
 adom-bridge --target <box> --ai-thread <you> bridge_dev_mode '{"name":"fusion360","on":true}'
 adom-bridge --target <box> --ai-thread <you> send_files '{"filePaths":["rust/target/x86_64-pc-windows-gnu/release/adom-fusion-bridge.exe"],"dest":"C:/Users/<user>/AppData/Local/Adom Bridge/bridges-cache/fusion360"}'
+# macOS target: build with the host triple (no x86_64-pc-windows-gnu), and dest is
+# "~/Library/Application Support/Adom Bridge/bridges-cache/fusion360"
 adom-bridge --target <box> --ai-thread <you> fusion_readiness '{}'      # bridgeVersion is your build
 adom-bridge --target <box> --ai-thread <you> bridge_dev_mode '{"name":"fusion360","on":false}'   # when done
 ```

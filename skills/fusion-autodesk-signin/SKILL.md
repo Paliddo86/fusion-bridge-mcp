@@ -49,7 +49,9 @@ will take you to your web browser to sign in" and opens the **default browser** 
 ## Step 3 — Find the Edge OAuth window (it IS there)
 The Edge window can look invisible: `Get-Process msedge` shows background procs and your window
 enumeration may print nothing. That "nothing" is almost always **PowerShell CLIXML progress noise
-eating your output**, NOT a missing window. Fixes:
+eating your output**, NOT a missing window. `[Windows only]` — macOS shells emit no CLIXML stream, so
+on a Mac an empty enumeration IS a real empty one, and `pgrep -f "Microsoft Edge"` is the
+`Get-Process msedge` equivalent. Fixes:
 - Put `$ProgressPreference='SilentlyContinue'` at the TOP of the PS script.
 - Enumerate `Chrome_WidgetWin` class windows (the OAuth tab is titled "Sign in - Autodesk"); a 2-tab
   window reads as "... and 1 more page".
@@ -86,7 +88,8 @@ across the tabs, it dies and you loop forever. Mitigations:
   "Sign In" click completes almost instantly — so if a code expires, just click Fusion "Sign In"
   AGAIN for a fresh code; you don't redo the whole login.
 - If Edge tabs get stuck on a stale expired-callback URL, clear them (`taskkill /F /IM msedge.exe` —
-  browser-specific and safe; Autodesk cookies persist so it stays warm) and re-click Fusion "Sign In".
+  browser-specific and safe; macOS: `pkill -f "Microsoft Edge"`, or `osascript -e 'quit app "Microsoft Edge"'`
+  for a graceful quit — Autodesk cookies persist so it stays warm) and re-click Fusion "Sign In".
 
 ## Step 8 — Confirm
 Poll `fusion_readiness` until `ready:true` (needsSignin clears, the add-in responds). Now Fusion is
@@ -100,7 +103,8 @@ drivable: `fusion_open_lbr`, `fusion_build_library_3d`, exports, GPU/graphics ch
 
 ## Related
 - `fusion-onboarding` — the install that precedes this (streams Fusion, then hands off here).
-- `fusion-bridge-dev` — how the bridge detects installed/installing/ready (Fusion360.exe completeness).
+- `fusion-bridge-dev` — how the bridge detects installed/installing/ready (Fusion360.exe completeness;
+  macOS: `/Applications/Autodesk Fusion.app`).
 
 ## ⭐ FIRST RULE FOR ANY BROWSER AUTOMATION: install + use ABE (nbrowser), don't coordinate-click (John, emphatic 2026-07-14)
 

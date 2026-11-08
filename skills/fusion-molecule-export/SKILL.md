@@ -108,6 +108,8 @@ fusion_fetch_optimized_glb {"jobId":"...", "outputPath":"%TEMP%/board.glb", "wai
 #    -> { status:"complete", glbPath, sizeBytes, footprintPath, symbolPath, gates }   then pull_file them.
 ```
 
+`outputPath` is expanded on the Fusion host: `%TEMP%/board.glb` on Windows, `$TMPDIR/board.glb` on macOS.
+
 **Gate before publishing.** `gates` carries the molecule-publish stop signs from the service:
 `pinSize` + `pinSizeSource` (expect `markers`), `footprintApplied` (expect true) +
 `footprintPins` (expect 4), `footprintRebase` (absent or small), `contactZ`, and `warnings`

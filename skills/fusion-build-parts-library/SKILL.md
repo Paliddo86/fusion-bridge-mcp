@@ -92,6 +92,7 @@ markings are separate `Marking` bodies (white in Fusion and in the colored STEP)
 
 ```bash
 adom-bridge fusion_generate_package '{"type":"soic","params":{"DPins":8,"D":4.9,"E":6.0,"E1":3.9,"e":1.27,"A":1.6,"A1":0.1,"b":0.41,"L":0.84},"etch":"LM358","outputStep":"%TEMP%/ADOM-LM358-SOIC8.step"}'
+# macOS: swap `%TEMP%` for `$TMPDIR` in `outputStep` (it is expanded on the Fusion host)
 ```
 
 Read the verb's `_hint` on every call - it carries the band/margin/contrast rules and the per-family

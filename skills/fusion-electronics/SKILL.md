@@ -106,6 +106,9 @@ C:/Users/drew/Downloads/e2e-pmcoil/PM COIL Molecule.brd
                                    ^ Fusion only ever saw ".../PM"
 ```
 
+(A Windows example - the same split happens on macOS with `/Users/<user>/Downloads/PM COIL Molecule.brd`;
+`_open_local_document()` handles both the same way.)
+
 The open then **silently no-op'd** - no dialog, no document, just the generic "Fusion 360 may not
 support this file" hint - which sent the reporting agent hunting for a file-format problem when it
 was pure path handling. (Caught by Drew's agent: the identical file opened instantly once copied to
@@ -128,14 +131,15 @@ Downloads and OneDrive folders routinely do.
 
 The rule packs live on the wiki page **adom/pcb-design-rules** (13 vendors, one `.edru` per
 vendor/process/layer count, every number citing the vendor's own capabilities page and the
-date it was read). The bridge fetches the pack, stages it under `%TEMP%\adom-fusion\design-rules`,
+date it was read). The bridge fetches the pack, stages it under `%TEMP%\adom-fusion\design-rules`
+(`$TMPDIR/adom-fusion/design-rules` on macOS),
 and the add-in runs `drc load <path>`; a rule change is a wiki publish, never a bridge release.
 
 ```jsonc
 fusion_set_design_rules {"action": "list"}                       // every (fab, process, layers) row
 fusion_set_design_rules {"fab": "jlcpcb", "layers": "2"}         // standard tier; layers auto-detects when omitted
 fusion_set_design_rules {"fab": "pcbway", "process": "advanced", "layers": "4"}
-fusion_set_design_rules {"druPath": "C:/Users/me/my-fab.edru"}   // a local file, as-is
+fusion_set_design_rules {"druPath": "C:/Users/me/my-fab.edru"}   // a local file, as-is; macOS: "/Users/<user>/my-fab.edru"
 fusion_set_design_rules {}                                       // the bundled 3rd party fab rules (unchanged)
 ```
 

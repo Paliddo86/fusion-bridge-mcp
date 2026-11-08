@@ -40,6 +40,10 @@ Windows paths bridge in as `/mnt/c/...`, so stage sources under `C:\tmp\partaudi
 from the container without copying. `adom-lbr` lives at `/home/adom/.local/bin/adom-lbr` (2.7.1
 at time of writing). See the `adom-binaries-run-in-wsl` skill.
 
+`[Windows only]` - there is no WSL on macOS. On a Mac run `adom-lbr` natively (it is a host binary,
+`~/.local/bin/adom-lbr`), stage sources under `$TMPDIR/partaudit` instead of `C:\tmp\partaudit` /
+`/c/tmp/partaudit`, and skip the `wsl_exec` wrapper entirely.
+
 ## Step 1 - pull the component page's KiCad sources
 
 ```bash

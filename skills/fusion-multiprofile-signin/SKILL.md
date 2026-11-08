@@ -130,6 +130,7 @@ STOP. Do not try to automate the browser-side auth or the protocol handoff.** Th
    looks stuck.
 6. **Detect completion via DISK** (the add-in is blocked by the modal so `fusion_*` verbs time out):
    a per-user folder appears/updates at `%LOCALAPPDATA%\Autodesk\Autodesk Fusion 360\<AUTODESK_USER_ID>\`
+   (Windows) / `~/Library/Application Support/Autodesk/Autodesk Fusion 360/<AUTODESK_USER_ID>/` (macOS)
    (john=`X3G293QFLPJERKGZ`), and the window title flips off "Signing in - Autodesk Fusion".
 7. **After the handoff, Fusion may show a NEW account/hub-selection screen** (seen first time on a
    personal Google-federated account, 2026-08-22) - this is where the user can pick which **hub** (e.g.
@@ -174,6 +175,7 @@ the protocol auto-launches with NO dialog, for every profile and every future us
 #   value "1" = {"protocol":"adskidmgr","allowed_origins":["*"]}
 #   value "2" = {"protocol":"autodesk","allowed_origins":["*"]}
 # then: taskkill chrome (NOT Chrome-for-Testing), relaunch with --restore-last-session
+# macOS: pkill -f "Google Chrome" (or osascript -e 'quit app "Google Chrome"'), relaunch the same way
 ```
 
 Chrome only reads this policy at startup, so a running Chrome must be restarted (tabs restore). This is
@@ -191,12 +193,15 @@ for the browser, that modal blocks EVERY visual-automation technique:
   PrintWindow all fail on Fusion's hardware-accelerated overlay). So screenshot-then-click-by-coord is
   IMPOSSIBLE on this modal - do not burn time trying to capture it.
 - **`desktop_list_windows` returns 0 windows** while this modal is up (enumeration wedges). Get the
-  Fusion hwnd via PowerShell `Get-Process Fusion360 | MainWindowHandle` instead.
+  Fusion hwnd via PowerShell `Get-Process Fusion360 | MainWindowHandle` instead (macOS: no direct
+  equivalent - there is no `MainWindowHandle`; Fusion reports as `Autodesk Fusion`, so AppleScript/
+  `osascript` window queries are the nearest thing).
 - **The modal blocks Fusion's ADD-IN** (main-thread), so `fusion_readiness`/`fusion_signin` and all
   `fusion_*` verbs TIME OUT. The bridge CORE verbs (`run_script`, `desktop_*`, `nbrowser_*`) still work.
   Check sign-in progress via DISK instead: a per-user folder appears at
-  `%LOCALAPPDATA%\Autodesk\Autodesk Fusion 360\<AUTODESK_USER_ID>\` (e.g. jlauer12 = `LMFMLDP33E65`,
-  john = `X3G293QFLPJERKGZ`).
+  `%LOCALAPPDATA%\Autodesk\Autodesk Fusion 360\<AUTODESK_USER_ID>\` (Windows) /
+  `~/Library/Application Support/Autodesk/Autodesk Fusion 360/<AUTODESK_USER_ID>/` (macOS)
+  (e.g. jlauer12 = `LMFMLDP33E65`, john = `X3G293QFLPJERKGZ`).
 - **Fusion launches foreground-LOCKED**, so a bare `SetForegroundWindow` is ignored and your SendInput
   clicks land nowhere. Defeat it with the ALT-key + AttachThreadInput trick (press ALT, attach to the
   current foreground thread, then SetForegroundWindow) - verified to make `GetForegroundWindow()==hwnd`.
@@ -215,8 +220,9 @@ not flail.** To un-break a machine left signed-out, restore the backed-up
 
 ## Signing OUT to switch accounts (no fusion_signout verb exists)
 
-Fusion caches the login in the SHARED `%LOCALAPPDATA%\Autodesk\Identity Services\idservices.db` (used by
-ALL Autodesk desktop apps). To force a clean signed-out state: BACK IT UP first, then `fusion_stop`,
+Fusion caches the login in the SHARED `%LOCALAPPDATA%\Autodesk\Identity Services\idservices.db` (Windows) /
+`~/Library/Application Support/Autodesk/Identity Services/idservices.db` (macOS), used by ALL Autodesk
+desktop apps. To force a clean signed-out state: BACK IT UP first, then `fusion_stop`,
 stop `IdentityService`/`IdentityUpdateService`, move `idservices.db` aside, `fusion_start` -> Fusion
 comes up `needsSignin:true`. Restore = reverse it. `fusion_signin` takes a **`profile`** param
 (`chrome:<email>`) to open the OAuth in a specific profile.

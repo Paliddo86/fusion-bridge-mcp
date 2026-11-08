@@ -106,7 +106,8 @@ ways to get the array, in order of preference:
 - ab core `desktop_screenshot_window {hwnd}` saves the PNG **into your container** (e.g.
   `/tmp/adom-desktop-screenshots/`) - Read it directly.
 - The bridge's own captures (the auto `dialogArray[].screenshot` paths and `fusion_screenshot_fusion`)
-  are saved on the **Windows box** (`%TEMP%/adom-fusion-shots/`) and, since 1.10.38, pulled to YOU automatically: read `localFullPath` / `localSafePath` in the reply. On older bridges, re-capture that
+  are saved on the **Fusion host box** (`%TEMP%/adom-fusion-shots/` on Windows, `$TMPDIR/adom-fusion-shots/`
+  on macOS) and, since 1.10.38, pulled to YOU automatically: read `localFullPath` / `localSafePath` in the reply. On older bridges, re-capture that
   hwnd with `desktop_screenshot_window {hwnd}` (lands in your container) or `desktop_pull_file` it over.
 
 Either way, LOOK - do not describe it from memory.

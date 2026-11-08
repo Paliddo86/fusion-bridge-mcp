@@ -177,8 +177,8 @@ refusal that names the cause.
 ## 5. Arguments are forgiving; paths are Windows-local
 
 `fusion_open_lbr` accepts `filePath`, `lbrPath`, `libraryPath` or `path` — you should never
-have to guess our spelling. Paths must be **Windows-local** (`C:/...`): the bridge runs on
-the user's machine, and a container path means nothing to it.
+have to guess our spelling. Paths must be **host-local** — `C:/...` on Windows, `/Users/<user>/...` on
+macOS: the bridge runs on the user's machine, and a container path means nothing to it.
 
 **Paths with spaces (fixed 1.9.247).** Fusion's `executeTextCommand` is space-delimited. The
 bridge used to build `Document.newDesignFromLocal C:/Users/john/Documents/Adom Libraries/...`
@@ -188,6 +188,9 @@ Python: the quoted form ALSO fails with error 3. (History: until 1.10.10 the bri
 slashes (`C:/Users/john/DOCUME~1/ADOMLI~1/RAY-DA~1/part.lbr`) opens first try. Every
 bridge-side text command that embeds a path now goes through `_fusion_text_path()`. A user
 whose profile folder has a space (`C:/Users/John Doe`) hits this on every import otherwise.
+
+`[Windows only]` the 8.3 aliasing half of that history has no macOS equivalent — HFS+/APFS have no
+short names, so on a Mac a space in a path is fixed only by the STAGING step (1.10.11+).
 
 ## 6. Never let Fusion draw a dialog
 

@@ -28,7 +28,8 @@ bridge. Speed is the whole point; APS is how we get it.
 ## Why the bridge runs its OWN OAuth (can't piggyback Fusion's login)
 We WANTED to reuse Fusion's existing in-session token (no setup, no second login). It's
 **blocked**: Autodesk DPAPI-encrypts Fusion's on-disk token store
-(`%LOCALAPPDATA%\Autodesk\Identity Services\idservices.db`, `products`/`mcptokens` tables)
+(`%LOCALAPPDATA%\Autodesk\Identity Services\idservices.db`, `products`/`mcptokens` tables;
+Windows — on macOS the same store is `~/Library/Application Support/Autodesk/Identity Services/idservices.db`)
 **with app-specific entropy** → `CryptUnprotectData` fails `gle=13` (ERROR_INVALID_DATA). You
 cannot extract/reuse Fusion's token without reverse-engineering Autodesk's entropy (fragile,
 ToS-violating, and credential-extraction tooling we will not build). So the bridge runs its

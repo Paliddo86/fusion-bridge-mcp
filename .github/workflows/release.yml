@@ -64,34 +64,11 @@ jobs:
             TAG="${GITHUB_REF_NAME}"
           fi
 
-          case "$TAG" in
-            v*) ;;
-            *) echo "::error::tag '$TAG' must start with 'v' (e.g. v1.0.0)"; exit 1 ;;
-          esac
-
-          TAG_VER="${TAG#v}"
-          ADAPTER_VER=$(python3 -c "import re,pathlib; print(re.search(r'__version__\s*=\s*[\"'\'']([^\"'\'']+)', pathlib.Path('fusion_bridge_mcp/__init__.py').read_text()).group(1))")
-          RUNTIME_VER=$(tr -d '[:space:]' < BRIDGE_VERSION)
-          JSON_VER=$(python3 -c "import json; print(json.load(open('bridge.json'))['version'])")
-
-          echo "tag=$TAG"                    >> "$GITHUB_OUTPUT"
-          echo "tag_ver=$TAG_VER"            >> "$GITHUB_OUTPUT"
-          echo "adapter_ver=$ADAPTER_VER"    >> "$GITHUB_OUTPUT"
-          echo "runtime_ver=$RUNTIME_VER"    >> "$GITHUB_OUTPUT"
-
-          echo "tag            : $TAG"
-          echo "adapter version: $ADAPTER_VER"
-          echo "runtime version: $RUNTIME_VER"
-          echo "bridge.json    : $JSON_VER"
-
-          if [ "$TAG_VER" != "$ADAPTER_VER" ]; then
-            echo "::error::tag ($TAG_VER) must equal the adapter __version__ ($ADAPTER_VER) in fusion_bridge_mcp/__init__.py — bump it before tagging"
-            exit 1
-          fi
-          if [ "$RUNTIME_VER" != "$JSON_VER" ]; then
-            echo "::error::BRIDGE_VERSION ($RUNTIME_VER) != bridge.json version ($JSON_VER) — bump them together"
-            exit 1
-          fi
+          # Versions are checked by a real script, not an inline `python -c`. The
+          # first attempt used a one-liner whose regex contained quote characters;
+          # bash mangled it into "unexpected character after line continuation
+          # character". Shell quoting around Python regexes is a trap.
+          python3 tools/check_release_versions.py --tag "$TAG" --github-output >> "$GITHUB_OUTPUT"
 
       # ------------------------------------------------------------------- build
       - name: Build the runtime bundle
@@ -205,40 +182,15 @@ jobs:
           AD="${{ steps.ver.outputs.adapter_ver }}"
           RT="${{ steps.ver.outputs.runtime_ver }}"
 
-          cat > release-notes.md <<EOF
-          MCP server for Autodesk Fusion 360 — custom macOS fork of the Adom Bridge Fusion 360 bridge.
-
-          **Adapter** \`$AD\` · **bridge runtime** \`$RT\` (upstream version this fork carries)
-
-          ## Install
-
-          \`\`\`bash
-          pip install https://github.com/${{ github.repository }}/releases/download/$TAG/fusion_bridge_mcp-$AD-py3-none-any.whl
-          fusion-bridge-mcp install
-          fusion-bridge-mcp status
-          \`\`\`
-
-          Or without a wheel:
-
-          \`\`\`bash
-          uvx --from git+https://github.com/${{ github.repository }} fusion-bridge-mcp install
-          \`\`\`
-
-          ## What is in this release
-
-          | asset | purpose |
-          |---|---|
-          | \`fusion_bridge_mcp-$AD-py3-none-any.whl\` | the MCP adapter + CLI (44 tools, 42 resources, 36 prompts) |
-          | \`fusion-bridge-runtime-$RT.tar.gz\` | the bridge runtime: server.py, the AdomBridge add-in, the 36 skills |
-          | \`*.sha256\` / \`CHECKSUMS.md\` | integrity |
-
-          The runtime is a separate asset on purpose: Fusion loads the add-in from a directory it
-          scans on disk, so it must be **deployed**, not imported from \`site-packages\`.
-          \`fusion-bridge-mcp install\` downloads this bundle and deploys the add-in.
-
-          See [NOTICE.md](https://github.com/${{ github.repository }}/blob/main/NOTICE.md) for attribution:
-          this is a derivative of the Adom project, not the original.
-          EOF
+          # Release notes are written by a script, NOT a `cat <<EOF` heredoc: an
+          # unquoted heredoc expands backticks and $ inside the body, which mangled
+          # every markdown code fence and every $AD reference in the notes.
+          python3 tools/release_notes.py \
+            --tag "$TAG" \
+            --adapter "$AD" \
+            --runtime "$RT" \
+            --repo "${{ github.repository }}" \
+            --out release-notes.md
 
           WHEEL="${{ steps.art.outputs.wheel }}"
           TARBALL="${{ steps.art.outputs.tarball }}"

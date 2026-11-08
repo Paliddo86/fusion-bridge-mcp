@@ -11,20 +11,44 @@ guess costs a failed call and a confused user. Resolve the part first, in this o
 ## Step 1 - search what is already reachable (offline, no Fusion needed)
 
 ```
-fusion_find_symbol {query: "LED", folder: "<repo or library folder>"}
-fusion_find_symbol {query: "5mm", kind: "footprint", libraries: ["<a.lbr>", "<b.lbr>"]}
-fusion_list_library {libraryPath: "<a.lbr>"}          # every deviceset in one library
+fusion_find_symbol {query: "LED_RADIAL"}                    # no path needed: reads Fusion's catalogue
+fusion_find_symbol {query: "RESAD", kind: "footprint"}     # PCB packages instead of devicesets
+fusion_list_library {libraryPath: "<a.lbr>"}                # every deviceset in one library
 fusion_list_library {libraryPath: "<a.lbr>", kind: "pcb"}   # every footprint in one library
 ```
 
-`find_symbol` returns `matches` (with the `library` path for each) and `best` (exact match first,
-else the shortest containing name). **Always search before asking anybody anything.**
+`find_symbol` returns `matches` (each with its `library` path), `best` (exact first, else the
+shortest containing name), plus `via` (`catalogue`, `folder`, `catalogue-all`) and `searched` (how
+many libraries it looked in). **Always search before asking anybody anything.**
 
-Search these roots, in order:
-1. the `.lbr` the user named, if any
-2. the runtime's bundled libraries — `AdomBasicParts_full.lbr` (R/C/L/ferrite/LED in 0402, 0603, 0805,
-   1200 and LED-2020) and `resources/samples/`
-3. any folder the user points at
+### Where it looks, in order
+
+| # | Source | How |
+|---|---|---|
+| 1 | the `.lbr` **you** named | `libraries: ["<path>"]` |
+| 2 | **`~/Documents/Fusion 360/libraries/`** | `folder: "~/Documents/Fusion 360/libraries"` - the user's own libraries, e.g. the JLCPCB GPLIB set |
+| 3 | **Fusion's own installed libraries** | nothing to pass: `find_symbol` reads `…/Electron/<USER_ID>/lbr/libraries.db`, the same index Library Manager shows (934 libraries on a real box) |
+| 4 | nothing found | **ASK THE USER** (Step 3) |
+
+A bare `fusion_find_symbol {query: "…"}` with no path already covers 3 and 4, so prefer it.
+
+### The names are FAMILY-based - do not invent them
+
+Search by family prefix, not by a description of the part. Measured on a real machine:
+
+| You want | Search | Real name found | Where |
+|---|---|---|---|
+| 5 mm through-hole LED | `LED_RADIAL` | `LED_RADIAL`, `LEDRD254W60D565H860B_G` | `Opto-Electronic.lbr`, `Tinkercad.lbr` |
+| axial through-hole resistor | `RESAD` (kind=`footprint`) | `RESAD1176W63L850D250B` | `Resistor.lbr` |
+| resistor, schematic side | `RESISTOR` | `RESISTOR` | `Tinkercad.lbr` |
+| 2-pin header | `1X02` | `PINHD-1X02`, `1X02`, `1X02_LONGPADS` | `Tinkercad.lbr`, `Connector.lbr` |
+| SMD LED | `LED_0603` | `LED_0603`, `LED_0402` | `GPLIB_ACTIVE.lbr` |
+| SMD resistor | `RES_0805` | `RES_0805` (523 JLCPCB variants) | `GPLIB_PASSIVE.lbr` |
+
+`LED-5MM`, `LED-5MM-THT`, `R-AXIAL-0207`, `5MM_THT` **do not exist** anywhere. Searching them
+returns nothing and looks like a missing part when it is a missing *name*. Note the SMD/THT split:
+a through-hole part lives in `Opto-Electronic`/`Resistor`/`Tinkercad`, its SMD twin in the GPLIB
+libraries.
 
 ## Step 2 - if you found it, place it
 

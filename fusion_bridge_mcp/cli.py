@@ -486,11 +486,18 @@ def _info(message):
 def _load_adapter():
     """Import the MCP adapter, which carries the bridge transport and build_server().
 
-    Lazy, because only `serve` and `status` need it, and because in a source checkout the
-    adapter sits beside the package instead of inside it.
+    Lazy, because only `serve` and `status` need it. The adapter lives INSIDE this
+    package (`fusion_bridge_mcp/adapter.py`) so an installed wheel is
+    self-sufficient; the legacy top-level `mcp_server` module is still accepted for
+    a source checkout that predates the move.
     """
     try:
-        import mcp_server
+        from . import adapter
+        return adapter
+    except ImportError:
+        pass
+    try:
+        import mcp_server  # legacy source-checkout layout
         return mcp_server
     except ImportError:
         pass
@@ -501,9 +508,7 @@ def _load_adapter():
         import mcp_server
     except ImportError as exc:
         raise InstallError(
-            "The MCP adapter (mcp_server.py) could not be imported (%s). It ships beside the "
-            "fusion_bridge_mcp package, not inside it: run this command from a fusion-bridge "
-            "checkout, or reinstall fusion-bridge-mcp." % exc)
+            "The MCP adapter could not be imported (%s). Reinstall fusion-bridge-mcp." % exc)
     return mcp_server
 
 

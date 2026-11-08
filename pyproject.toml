@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "MCP server for Autodesk Fusion 360 — macOS fork of the Adom Bridge Fusion 360 bridge"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
     { name = "Paliddo86" },
 ]
@@ -17,7 +17,6 @@ keywords = ["fusion360", "autodesk", "mcp", "cad", "macos"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: MacOS",
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python :: 3",
@@ -43,6 +42,8 @@ Upstream = "https://wiki.adom.inc/adom/fusion-bridge"
 
 [project.scripts]
 fusion-bridge-mcp = "fusion_bridge_mcp.cli:main"
+# Direct invocation of the MCP server, for clients that prefer an explicit module.
+fusion-bridge-mcp-server = "fusion_bridge_mcp.adapter:main"
 
 # The MCP adapter is the wheel. The bridge RUNTIME (server.py, the add-in, the
 # skills) is NOT packaged here — it ships as a versioned bundle on the GitHub

@@ -58,7 +58,44 @@ from pathlib import Path
 from typing import Annotated, Optional
 
 REPO_ROOT = Path(__file__).resolve().parent
-SKILLS_DIR = REPO_ROOT / "skills"
+
+
+def _candidate_skill_dirs():
+    """Every place `skills/` can live, most specific first.
+
+    The adapter runs from three different layouts and must find the skills in all
+    of them:
+
+      1. a source checkout            -> <repo>/skills
+      2. a CLI-installed runtime      -> ~/Library/Application Support/fusion-bridge-mcp/runtime/skills
+      3. the wheel alone (no runtime) -> nothing, and build_server() then exposes
+         no resources; `install` is what puts the skills on disk.
+    """
+    here = Path(__file__).resolve()
+    out = []
+    # 1. source checkout: this file is <repo>/fusion_bridge_mcp/adapter.py
+    out.append(here.parent.parent / "skills")
+    # 2. managed runtime dir (same per-platform roots the CLI uses)
+    import os as _os
+    import sys as _sys
+    if _sys.platform == "darwin":
+        base = Path.home() / "Library" / "Application Support" / "fusion-bridge-mcp"
+    elif _os.name == "nt":
+        base = Path(_os.environ.get("LOCALAPPDATA") or Path.home()) / "fusion-bridge-mcp"
+    else:
+        base = Path.home() / ".local" / "share" / "fusion-bridge-mcp"
+    out.append(base / "runtime" / "skills")
+    return out
+
+
+def _find_skills_dir():
+    for cand in _candidate_skill_dirs():
+        if cand.is_dir():
+            return cand
+    return _candidate_skill_dirs()[0]
+
+
+SKILLS_DIR = _find_skills_dir()
 
 BRIDGE_HOST = "127.0.0.1"
 DEFAULT_BRIDGE_PORT = 8773

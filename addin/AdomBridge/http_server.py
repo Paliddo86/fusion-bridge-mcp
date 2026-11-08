@@ -107,13 +107,31 @@ def _get_busy() -> dict | None:
 #
 # Defense: a daemon thread checks _busy_state every 5s. If a busy state
 # has been active longer than the per-command timeout + WATCHDOG_GRACE,
-# we forcibly release _main_thread_lock so new requests can proceed.
-# We can't unwedge the previously-stuck command (it's blocked in C++),
-# but at least subsequent calls work without restarting Fusion.
+# it raises _poisoned_until_idle so new POSTs are refused immediately with
+# "addin_recovering" instead of piling up on the lock. The flag drops as soon
+# as set_result() sees the in-flight handler return.
+# It does NOT release _main_thread_lock any more: a release from a thread that
+# does not own the lock let the next command be delivered NESTED inside the
+# wedged handler's adsk.doEvents() (see _dispatch_guard in AdomBridge.py).
 
-WATCHDOG_GRACE = 30  # seconds beyond per-command timeout before force-release
+WATCHDOG_GRACE = 30  # seconds beyond per-command timeout before the recovery flag goes up
 _watchdog_stop = threading.Event()
 _watchdog_thread = None
+
+# ── Recovery flag (replaces the cross-thread force-release) ───────────
+#
+# The watchdog used to call _main_thread_lock.release() from ITS OWN thread, and
+# threading.Lock does not track an owner. That was the third leg of the nested-dispatch bug
+# (see AdomBridge.py's _dispatch_guard for the native stack): a new POST acquired a lock the
+# wedged handler still held, fired its event, and the wedged handler's adsk.doEvents() then
+# delivered that command NESTED inside itself.
+#
+# Now the watchdog only raises a flag. While it is up, do_POST refuses new commands with
+# errorCode "addin_recovering" (fast, honest answer instead of a 300 s hang) and the lock is
+# left to the handler that owns it. The flag is cleared in set_result(), i.e. the moment the
+# command that was in flight actually returns.
+_poison_lock = threading.Lock()
+_poisoned_until_idle = False
 
 
 def _watchdog_note(text):
@@ -128,8 +146,25 @@ def _watchdog_note(text):
         pass
 
 
+def _is_poisoned() -> bool:
+    with _poison_lock:
+        return _poisoned_until_idle
+
+
+def _set_poisoned():
+    global _poisoned_until_idle
+    with _poison_lock:
+        _poisoned_until_idle = True
+
+
+def _clear_poisoned():
+    global _poisoned_until_idle
+    with _poison_lock:
+        _poisoned_until_idle = False
+
+
 def _watchdog_loop():
-    """Force-release _main_thread_lock if a command has been busy too long."""
+    """Raise the recovery flag if a command has been busy far past its own timeout."""
     while not _watchdog_stop.is_set():
         try:
             busy = _get_busy()
@@ -144,33 +179,23 @@ def _watchdog_loop():
                         # Not a Fusion API call: this runs on the watchdog thread, and the add-in
                         # keeps every API call on the main thread (issue #76 audit, 2026-09-06).
                         _watchdog_note(
-                            f"AdomBridge: WATCHDOG force-releasing _main_thread_lock — "
+                            f"AdomBridge: WATCHDOG marked the add-in recovering — "
                             f"'{cmd}' held for {elapsed:.1f}s "
                             f"(> {cmd_timeout}+{WATCHDOG_GRACE}s grace). "
                             f"Fusion main thread likely wedged on native cloud call. "
-                            f"Subsequent requests can now proceed; the wedged "
-                            f"command will still leak its C++/Python state until "
-                            f"Fusion restarts."
+                            f"New commands are refused with addin_recovering until this "
+                            f"one returns; the lock is NOT force-released, because a "
+                            f"cross-thread release let the next command be delivered "
+                            f"NESTED inside this one (see _dispatch_guard in AdomBridge.py)."
                         )
                     except Exception:
                         pass
-                    # Clear the busy marker FIRST so /status no longer
-                    # reports the stale command.
-                    _clear_busy()
-                    # Force-release. If the lock owner thread eventually
-                    # unwedges and tries to release(), it'll get a
-                    # RuntimeError which we accept as the cost of keeping
-                    # subsequent requests flowing.
-                    try:
-                        _main_thread_lock.release()
-                    except RuntimeError:
-                        # Already released (race with the owner thread
-                        # somehow making progress). Fine.
-                        pass
-                    # Also drop any pending request_ids so set_result()
-                    # from a late-arriving wedged command can't leak.
-                    with _lock:
-                        _pending_request_ids.clear()
+                    # Raise the flag ONLY (2026-09): no _main_thread_lock.release() from a
+                    # thread that does not own it, no _clear_busy(), no dropping of
+                    # _pending_request_ids. Those three told the rest of the server "the main
+                    # thread is free" while it was not - and set_result() is now the signal
+                    # that ends the recovery window.
+                    _set_poisoned()
         except Exception:
             pass  # watchdog must never die
         _watchdog_stop.wait(5)  # check every 5s
@@ -210,6 +235,17 @@ PER_COMMAND_TIMEOUT = {
     # Cloud tree walking / search — BFS over hundreds of folders
     "walk_cloud_tree": 600,
     "search_cloud_files": 180,
+    # Electronics view switches and EAGLE/EDA orchestrations that used to fall through to the
+    # 300 s default, so a hung one kept /health reporting "blocked" for five minutes.
+    "board_stackup": 90,
+    "show_2d_board": 120,
+    "run_modeling_script": 180,
+    "netlist": 150,
+    "run_drc": 180,
+    "routing_state": 120,
+    "build_board": 180,
+    "export_eagle_source": 150,
+    "list_cloud_projects": 200,
 }
 
 
@@ -225,6 +261,11 @@ def is_request_alive(request_id: str) -> bool:
 
 def set_result(request_id: str, result: dict):
     """Called from the main thread (CustomEventHandler) to deliver a result."""
+    # A handler returned, so the in-flight command is finally over: end the recovery window
+    # the watchdog opened in _watchdog_loop. This is the ONLY place the flag drops, which is
+    # what makes "refuse new commands" bound to "the old handler is really done" instead of
+    # to a timer.
+    _clear_poisoned()
     with _lock:
         _last_main_thread_ts_local = time.time()
         # Update module-level timestamp
@@ -284,11 +325,17 @@ class AdomBridgeHandler(BaseHTTPRequestHandler):
                 last_ts = _last_main_thread_ts
             main_lock_held = _main_thread_lock.locked()
 
+            # The threshold is the timeout that applied to the command ACTUALLY holding the
+            # lock, not the 300 s default: a get_app_state that ran 12 s is already past its
+            # 10 s timeout, so reporting "blocked" for the next five minutes lied.
+            busy = _get_busy()
+            busy_timeout = PER_COMMAND_TIMEOUT.get(busy["command"], COMMAND_TIMEOUT) if busy else COMMAND_TIMEOUT
+
             # Determine main thread status
             now = time.time()
             if last_ts == 0.0 and pending == 0:
                 main_status = "idle"  # No commands processed yet, none pending
-            elif main_lock_held and pending > 0 and (last_ts == 0.0 or (now - last_ts) > COMMAND_TIMEOUT):
+            elif main_lock_held and pending > 0 and (last_ts == 0.0 or (now - last_ts) > busy_timeout):
                 main_status = "blocked"  # Commands pending but main thread not responding
             elif main_lock_held:
                 main_status = "busy"  # A command is running on main thread
@@ -375,6 +422,37 @@ class AdomBridgeHandler(BaseHTTPRequestHandler):
         if isinstance(caller_timeout, (int, float)) and caller_timeout > 0:
             timeout = float(caller_timeout)
 
+        # Recovery window: the watchdog saw a command overrun its own timeout + grace, so the
+        # main thread is still inside that handler (Fusion's native layer wedges the session
+        # and the handler cannot unwind). Refuse fast and honestly instead of firing an event
+        # that would sit behind the wedged command and then be delivered NESTED inside it by
+        # the wedged handler's adsk.doEvents(). The window closes on its own in set_result(),
+        # when that handler returns.
+        if _is_poisoned():
+            busy = _get_busy()
+            elapsed = round(time.time() - busy["started_at"], 1) if busy else None
+            self._respond(200, {
+                "success": False,
+                "error": (
+                    f"Add-in recovering — {busy['command']} overran its timeout and has not returned "
+                    f"({elapsed}s)."
+                    if busy else
+                    "Add-in recovering — previous command overran its timeout and has not returned."
+                ),
+                "errorCode": "addin_recovering",
+                "busyCommand": busy["command"] if busy else None,
+                "elapsedSeconds": elapsed,
+                "_hint": (
+                    "The add-in is refusing new add-in commands until the one in flight returns, "
+                    "so it cannot hand a command to Fusion while its main thread is still busy. "
+                    "Do NOT retry in a loop; retry once after a few seconds, and if it is still "
+                    "recovering, restart the add-in (fusion_restart_for_addin {save:true}) — that "
+                    "is the only thing that clears a native wedge. Commands that still work: "
+                    "fusion_state, fusion_screenshot_fusion, fusion_close_window."
+                ),
+            })
+            return
+
         # Serialize CustomEvent fires through the main-thread lock so
         # requests don't stack. If another request is already in flight
         # to the main thread, we block here. We bound the wait so a
@@ -432,11 +510,10 @@ class AdomBridgeHandler(BaseHTTPRequestHandler):
             self._respond(200, result)
         finally:
             _clear_busy()
-            # The WATCHDOG force-releases this lock when a command wedges past its timeout,
-            # and threading.Lock has no owner: by the time the wedged owner unwinds here,
-            # the lock may already be free (or held by the NEXT request). An unguarded
-            # release() then raised RuntimeError OUT of do_POST, so the client got no
-            # response at all - a silent hang instead of an answer.
+            # Kept defensive: the lock has no owner, so a release() can still race with the next
+            # request and raise RuntimeError. That used to come from the watchdog force-release
+            # (gone - see _watchdog_loop), and an unguarded release() escaping do_POST left the
+            # client with no response at all: a silent hang instead of an answer.
             try:
                 _main_thread_lock.release()
             except RuntimeError:

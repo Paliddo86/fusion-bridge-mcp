@@ -8,6 +8,7 @@ so all Fusion API calls execute safely on the main thread.
 import adsk.core
 import adsk.fusion
 import traceback
+import threading
 import time
 import json
 import os
@@ -25,6 +26,30 @@ _standing_down = False   # True in an idle sibling copy (issue #124)
 
 CUSTOM_EVENT_ID = "AdomBridgeCommandEvent"
 
+# ── Re-entrancy guard for command delivery (native stack, 2026-09) ────
+#
+# Proven failure (macOS sample of Fusion, 1644/1644 samples parked on this path):
+#
+#   HTTP thread     http_server.py  _app.fireCustomEvent(...)
+#   main thread     XLayer10        FireCustomEventTask::onExecute
+#   main thread     AdomBridge.py   CommandEventHandler.notify
+#   main thread     AdomBridge.py   dispatch_command(...)
+#                   <handler>       time.sleep -> nanosleep   <- handler blocks the main thread
+#
+# notify() used to call dispatch_command directly, with no queue. Handlers pump Fusion's
+# event queue with adsk.doEvents() (30 call sites; cloud_documents.py alone has 16) - and
+# that queue can still hold the FireCustomEventTask of the NEXT request, which the HTTP
+# thread fired while this handler was running. doEvents() therefore DELIVERED a second
+# command INSIDE the first handler: nested dispatch, on the main thread, with no way out.
+#
+# The guard makes notify() refuse the nested delivery. Fusion's task still runs (and
+# returns) - it just does no work - so the queue drains and the outer handler survives.
+# _main_thread_lock cannot do this job: the HTTP thread holds it, and it cannot order
+# execution on the main thread.
+_dispatch_guard = threading.Lock()
+_in_dispatch = False     # True while a command is running inside notify()
+_outer_command = ""      # that command's name, for the "suppressed nested delivery" line
+
 
 class CommandEventHandler(adsk.core.CustomEventHandler):
     """Handles custom events fired from the HTTP background thread.
@@ -38,6 +63,7 @@ class CommandEventHandler(adsk.core.CustomEventHandler):
         super().__init__()
 
     def notify(self, args: adsk.core.CustomEventArgs):
+        global _in_dispatch, _outer_command
         try:
             import json
             from . import http_server
@@ -48,21 +74,52 @@ class CommandEventHandler(adsk.core.CustomEventHandler):
             command = info["command"]
             cmd_args = info.get("args", {})
 
-            # Staleness check: if the HTTP waiter already timed out and
-            # bailed, skip the work entirely. Saves main-thread time on
-            # heavy exports whose caller already gave up.
-            if not http_server.is_request_alive(request_id):
-                adsk.core.Application.log(
-                    f"AdomBridge: skipping stale request {request_id[:8]} ({command}) — HTTP waiter gone"
-                )
+            # Re-entrancy guard: we are already inside dispatch_command (the outer
+            # handler called adsk.doEvents(), which handed us this event). Refuse the
+            # nested delivery - dispatching here would run a second command on top of
+            # the first one's half-finished state on the main thread. See the module
+            # comment above _dispatch_guard for the native stack this comes from.
+            with _dispatch_guard:
+                already_dispatching = _in_dispatch
+                outer = _outer_command
+                if not already_dispatching:
+                    _in_dispatch = True
+                    _outer_command = command
+            if already_dispatching:
+                # No set_result: the suppressed request's HTTP waiter times out on its
+                # own ("Command timed out after Ns"), which is the honest answer - the
+                # command never ran. Log one line so a nested delivery is never silent.
+                try:
+                    adsk.core.Application.log(
+                        f"AdomBridge: suppressed nested delivery {command} while {outer} runs"
+                    )
+                except Exception:
+                    pass
                 return
 
             try:
-                result = dispatch_command(_app, command, cmd_args)
-            except Exception as e:
-                result = {"success": False, "error": f"Command error: {e}\n{traceback.format_exc()}"}
+                # Staleness check: if the HTTP waiter already timed out and
+                # bailed, skip the work entirely. Saves main-thread time on
+                # heavy exports whose caller already gave up.
+                if not http_server.is_request_alive(request_id):
+                    adsk.core.Application.log(
+                        f"AdomBridge: skipping stale request {request_id[:8]} ({command}) — HTTP waiter gone"
+                    )
+                    return
 
-            http_server.set_result(request_id, result)
+                try:
+                    result = dispatch_command(_app, command, cmd_args)
+                except Exception as e:
+                    result = {"success": False, "error": f"Command error: {e}\n{traceback.format_exc()}"}
+
+                http_server.set_result(request_id, result)
+            finally:
+                # Always release the guard, even when a handler raised: a flag left set
+                # by one bad command would suppress EVERY later delivery for the rest of
+                # the Fusion session.
+                with _dispatch_guard:
+                    _in_dispatch = False
+                    _outer_command = ""
 
         except Exception:
             traceback.print_exc()

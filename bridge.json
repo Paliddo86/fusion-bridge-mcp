@@ -625,5 +625,8 @@
     ]
   },
   "uninstall": "fusion_uninstall",
-  "insidersManifestUrl": "https://wiki.adom.inc/api/v1/pages/insiders/files/fusion-bridge/version.json"
+  "insidersManifestUrl": "https://wiki.adom.inc/api/v1/pages/insiders/files/fusion-bridge/version.json",
+  "forkOf": "https://github.com/adom/adom-bridge (Adom Bridge core); upstream bridge: https://wiki.adom.inc/adom/fusion-bridge",
+  "forkNote": "Custom macOS fork with an MCP entry point (mcp_server.py). Not the original project - see NOTICE.md.",
+  "mcpEntrypoint": "mcp_server.py"
 }

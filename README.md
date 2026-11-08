@@ -1,3 +1,245 @@
+# fusion-bridge-mcp
+
+> **MCP server for Autodesk Fusion 360 — a custom macOS fork of the Adom Bridge Fusion 360 bridge.**
+> This is **not** the original project. Original work © 2026 Adom Industries, Inc. and contributors
+> (MIT). See [NOTICE.md](NOTICE.md) for full attribution, and the upstream bridge at
+> [wiki.adom.inc/adom/fusion-bridge](https://wiki.adom.inc/adom/fusion-bridge).
+
+Drive **Autodesk Fusion 360** from any MCP client — pi, Claude Desktop, Cursor, Cline — in plain
+language: open and export designs, drive parametric modeling, lay out PCBs, generate Gerbers and
+BOMs, search Autodesk cloud files.
+
+```
+"Metti un SOIC-8 con LM358 sopra e esporta lo STEP"      → just ask
+```
+
+---
+
+## What this fork adds
+
+The upstream bridge is a Windows-first HTTP server that runs *under* Adom Bridge (`ab`). It has
+**no MCP entry point**: an MCP client cannot talk to it directly. This fork closes that gap and
+makes it work on macOS.
+
+| | Upstream | This fork |
+|---|---|---|
+| **MCP entry point** | none (HTTP only, needs `ab`) | **`mcp_server.py`** — 44 tools, 42 resources, 36 prompts |
+| **Skills reach the AI** | installed into a container | **shipped over MCP** — every client sees them |
+| **Runs on macOS** | detection/deploy/launch are Windows-only | **detection, add-in deploy, start/stop, logs fixed** |
+| **Distribution** | zip streamed by `ab` | **wheel + runtime bundle on GitHub Release** |
+| **Needs `ab`** | yes | **no** (for the core Fusion verbs) |
+
+### Architecture
+
+```
+MCP client ──stdio──► mcp_server.py ──HTTP 127.0.0.1:8773──► server.py ──HTTP 127.0.0.1:8774──► AdomBridge add-in ──► Fusion 360
+                          │
+                          ├── 44 tools      (43 curated + typed, fusion_call reaches every verb)
+                          ├── 42 resources  (skill://index + 36 skills + 5 extras)
+                          └── 36 prompts    (each skill invocable as /fusion-routing)
+```
+
+The bridge runtime (`server.py`, the add-in, the skills) is **not** part of the wheel. Fusion loads
+the add-in from a directory it scans on disk, so the add-in must be **deployed**, not imported from
+`site-packages`. The wheel is the adapter; the runtime ships as a versioned bundle.
+
+---
+
+## Install
+
+**Requires:** Python ≥ 3.10, Fusion 360 installed, and the bridge runtime deployed.
+
+### Option A — wheel (no source checkout)
+
+```bash
+pip install https://github.com/Paliddo86/fusion-bridge-mcp/releases/download/v1.0.0/fusion_bridge_mcp-1.0.0-py3-none-any.whl
+
+fusion-bridge-mcp install     # downloads the runtime, deploys the add-in, prints your client config
+fusion-bridge-mcp status      # verify everything
+```
+
+### Option B — `uvx` from git
+
+```bash
+uvx --from git+https://github.com/Paliddo86/fusion-bridge-mcp fusion-bridge-mcp install
+```
+
+### Option C — from a source checkout
+
+```bash
+git clone https://github.com/Paliddo86/fusion-bridge-mcp
+cd fusion-bridge-mcp
+python3 tools/build_runtime_bundle.py          # builds dist/fusion-bridge-runtime-1.13.84.tar.gz
+python3 -m fusion_bridge_mcp.cli install --offline dist/fusion-bridge-runtime-1.13.84.tar.gz
+```
+
+### What `install` does
+
+1. Resolves the runtime dir — macOS `~/Library/Application Support/fusion-bridge-mcp/`,
+   Windows `%LOCALAPPDATA%/fusion-bridge-mcp/`, Linux `~/.local/share/fusion-bridge-mcp/`
+2. Downloads `fusion-bridge-runtime-<version>.tar.gz` from the GitHub Release (progress on screen;
+   a 404 explains where to look)
+3. Extracts atomically, **refusing path traversal, absolute paths, symlinks and special files**
+4. Deploys `AdomBridge` into every Fusion add-in directory convention
+5. Prints the `mcpServers` block, detecting pi / Claude Desktop / Cursor
+6. Verifies Fusion installed + add-in deployed + add-in answering
+
+Useful flags: `--force` (re-download), `--runtime-version X`, `--offline <tarball>`,
+`--write-config <pi|claude|cursor>` (merges into the existing JSON, preserving other servers —
+without it, nothing is written).
+
+---
+
+## Configure your MCP client
+
+`fusion-bridge-mcp install` prints this block. Paste it into your client config.
+
+```json
+{
+  "mcpServers": {
+    "fusion-bridge": {
+      "command": "fusion-bridge-mcp",
+      "args": ["serve"]
+    }
+  }
+}
+```
+
+| Client | Config file |
+|---|---|
+| **pi** | `~/.pi/agent/mcp.json` |
+| **Claude Desktop** | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| **Cursor** | `~/.cursor/mcp.json` |
+
+### Start the bridge
+
+The MCP server proxies to the bridge HTTP server, which must be running:
+
+```bash
+python3 "$HOME/Library/Application Support/fusion-bridge-mcp/runtime/server.py" --port 8773
+```
+
+and **Fusion 360 must be open** with the AdomBridge add-in loaded (`runOnStartup: true` handles it —
+Fusion loads add-ins only at launch, so if you just deployed, restart Fusion once).
+
+---
+
+## The 36 skills travel with the MCP
+
+This is the point of doing skills over MCP rather than per-agent: **any MCP client gets them, with
+no reinstall.** Point a new client at the server and it can read all 36 skills.
+
+```
+skill://index                          → every skill with its description
+skill://fusion-routing                 → route and review PCB copper
+skill://fusion-no-modal-dialogs        → never let Fusion raise a modal from automation
+skill://fusion-electronics             → schematic → 2D board → 3D board
+skill://fusion-aps-search              → server-indexed cloud search
+skill://fusion-routing/references/...  → extra reference docs
+```
+
+Clients that support MCP **prompts** can invoke each skill directly as `/fusion-routing`,
+`/fusion-electronics`, and so on.
+
+Skills are discovered dynamically from `skills/*/SKILL.md`, so adding one to the repo exposes it
+everywhere on the next start.
+
+### The tools
+
+43 curated tools with **typed parameters** (not an `args` blob), so the model gets real JSON Schema:
+
+`fusion_get_app_state` · `fusion_get_design_info` · `fusion_document_info` · `fusion_get_parameters` ·
+`fusion_set_parameter` · `fusion_open_cloud_file` · `fusion_open_design` · `fusion_save_document` ·
+`fusion_close_document` · `fusion_list_cloud_projects` · `fusion_list_cloud_files` ·
+`fusion_export_step` · `fusion_export_stl` · `fusion_export_3mf` · `fusion_export_iges` ·
+`fusion_export_dxf` · `fusion_export_pdf` · `fusion_export_bom` · `fusion_run_modeling_script` ·
+`fusion_inspect_bodies` · `fusion_bodies` · `fusion_physical_properties` · `fusion_take_screenshot` ·
+`fusion_view` · `fusion_aps_status` · `fusion_aps_search` · `fusion_aps_recent` · `fusion_aps_browse` ·
+`fusion_show_schematic` · `fusion_show_2d_board` · `fusion_show_3d_board` · `fusion_read_schematic` ·
+`fusion_schematic_data` · `fusion_board_info` · `fusion_netlist` · `fusion_list_nets` ·
+`fusion_routing_state` · `fusion_run_drc` · `fusion_electron_run` · `fusion_export_gerbers` ·
+`fusion_restart_for_addin` · `fusion_describe`
+
+Plus the escape hatch — every verb the bridge exposes is reachable through it:
+
+```python
+fusion_call("fusion_plan_route", {"expectDocument": "my-board", "net": "SDA", "from": "U1.12", "to": "J3.4"})
+```
+
+Get the full catalog with `fusion_describe`, or `python3 mcp_server.py list-verbs`. The count is the
+bridge's own (~375) and can differ by a few between the manifest and `describe`; `describe` is the
+source of truth.
+
+---
+
+## What works on macOS, and what does not
+
+Verified on a real Mac (macOS, Python 3.15, Fusion 360 in `~/Applications`):
+
+| Capability | macOS | Notes |
+|---|---|---|
+| Bridge boot, `/status`, `/health`, `/command` | ✅ | port 8773 |
+| Add-in deploy + load in Fusion | ✅ | `supportedOS: windows,macos`; port 8774 |
+| Fusion detection (exe, add-in dir, log path) | ✅ | `~/Applications` and `/Applications` |
+| Read verbs (state, design info, parameters, bodies) | ✅ | |
+| Write verbs (modeling scripts, geometry) | ✅ | `fusion_run_modeling_script` verified — a cylinder was created and read back |
+| Exports (STEP/STL/DXF/PDF/BOM) | ✅ | via the add-in |
+| APS — OAuth, cloud search, browse | ✅ | token store `~/.adom/fusion-aps`, callback ports 8917/8918/8920 |
+| PCBs, routing, DRC, Gerbers | ✅ | pure add-in code, `adsk.*` is cross-platform |
+| `fusion_start` / `fusion_stop` | ✅ | `open -a` / `osascript` quit |
+| **`fusion_take_screenshot` and window verbs** | ❌ | upstream is Win32 (`BitBlt`, `SendInput`, `EnumWindows`); not ported. These return an honest error |
+| **Dialog dismissal / recovery** | ❌ | Win32 dialog classification. Prevention (the `fusion-no-modal-dialogs` skill) still applies |
+| **`fusion_set_preference` / `fusion_mcp_enable`** | ❌ | drives Fusion's Preferences UI through Win32 — not available on macOS |
+| Verb that need `ab` (notifications, taskbar badge, seat) | ❌ | no-op without Adom Bridge core |
+
+Linux: not supported by Autodesk, so there is no host app for the add-in.
+
+---
+
+## Troubleshooting
+
+**`addin_restart_required`** — the add-in is deployed but Fusion started before the deploy. Fusion
+loads add-ins only at launch. Restart Fusion, or call `fusion_restart_for_addin` (it saves open
+documents first and refuses rather than discarding an unsaved one). The MCP server reports this as a
+known refusal, not a crash.
+
+**`bridge_unreachable`** — the bridge HTTP server is not on 8773. Start it:
+```bash
+python3 "$HOME/Library/Application Support/fusion-bridge-mcp/runtime/server.py" --port 8773
+```
+
+**ImportError: `eval_type_backport`** — you are on `mcp==1.10.0` with `pydantic<2.11`, a combination
+that no longer resolves. This project needs **`mcp>=2`** (FastMCP was renamed `MCPServer`). Remove
+any `mcp==1.10.0` / `pydantic<2.11` pins from your client config.
+
+**Add-in never comes up on 8774** — Fusion scans a per-user add-in dir that has moved across
+versions. `fusion-bridge-mcp install` deploys into all known conventions. Check
+`fusion-bridge-mcp status`; if it says deployed but 8774 is silent, Fusion was already running.
+
+**Fusion says "offline for more than 2 weeks"** — Autodesk licensing, unrelated to this bridge.
+Complete the sign-in when Fusion asks.
+
+---
+
+## Attribution and license
+
+MIT — see [LICENSE](LICENSE), unchanged from upstream.
+
+This repository is a **clone / derivative** of `fusion-bridge` by Adom Industries, Inc. The original
+copyright notice is retained and must be kept in redistributions. See [NOTICE.md](NOTICE.md).
+
+Unofficial. Not affiliated with, sponsored by, or endorsed by Adom Industries, Inc. or Autodesk.
+"Fusion 360" and "Autodesk Fusion" are trademarks of Autodesk, Inc. Report bugs in this fork here,
+not upstream.
+
+The rest of this README documents the **upstream bridge** — its verb catalog, the electronics
+workflows, APS, the architecture. It is inherited verbatim below and remains accurate except where
+the table above says this fork differs.
+
+---
+
+# Upstream documentation — Adom Bridge · Fusion 360 Bridge
+
 # Adom Bridge - Fusion 360 Bridge
 
 > **This package installs the bridge's SKILLS into your container so your AI knows how to drive it; Adom Bridge loads the bridge runtime itself from the release zip.**

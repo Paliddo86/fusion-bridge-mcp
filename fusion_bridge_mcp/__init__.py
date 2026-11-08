@@ -13,7 +13,7 @@ importable from site-packages: Fusion loads the add-in from a directory it scans
 on disk. `fusion-bridge-mcp install` fetches the runtime bundle and deploys it.
 """
 
-__version__ = "1.0.2"
+__version__ = "1.1.0"
 
 #: Upstream bridge version this fork is based on.
 UPSTREAM_VERSION = "1.13.84"

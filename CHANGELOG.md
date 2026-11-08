@@ -3,6 +3,74 @@
 All notable changes to the Adom Bridge Fusion 360 bridge, newest first.
 Canonical: https://wiki.adom.inc/adom/fusion-bridge · GitHub backup: `adom-inc/fusion-bridge`
 
+## Fork 1.1.0 (2026-11-08)
+
+Prima release con il **port Rust su macOS** funzionante e il **part sourcing**.
+Le sezioni sotto (1.13.x) sono la storia upstream del bridge.
+
+### Rust gira su macOS (prima era Windows-only)
+
+`rust/os-mac` era uno scheletro di 43 righe con 8 `todo!()`: il binario compilava e
+panicava al primo poll. Ora e' una traduzione di `os-win`, ogni funzione verificata su
+una macchina vera:
+
+- `fusion_processes` — `pgrep -x` sul NOME dell'eseguibile + conferma con `ps -ww`.
+  Due trappole costate tempo in Python: gli helper orfani del bundle (`cer_service`,
+  `cer_dialog`, `node`) portano `.../Autodesk Fusion.app/...` nell'argv, e un match per
+  sottostringa li scambiava per Fusion; e `ps` tronca a 100 caratteri rompendosi sullo
+  spazio di "Application Support".
+- `launch_fusion` (`open -a`), `is_elevated` (`geteuid`), `fusion_executable`
+  (`~/Applications` PRIMA di `/Applications`), `addin_dirs`, `fusion_log_dir`,
+  `bridge_state_dir`, `scratch_dir`.
+- `main.rs`: `/status` dichiarava **"Unsupported OS"** per ogni host non-Windows, macOS
+  compreso, con Fusion installato e l'add-in che rispondeva.
+- `aps_signin.rs`: usava **`xdg-open`**, che non esiste su macOS — la sign-in APS falliva
+  in silenzio e cadeva su un fallback costruito interamente su `ab`, assente qui.
+- `lifecycle.rs`: il force-kill era solo `#[cfg(windows)]`; su macOS non esisteva alcuna
+  escalation, quindi un Fusion bloccato sopravviveva. Ora quit -> SIGTERM -> SIGKILL,
+  con `SIGKILL` solo su `force:true`.
+- `mech_store.rs`: la guardia anti-traversal rifiutava OGNI path su macOS, perche' `/var`,
+  `/tmp` e `/etc` sono symlink di sistema. Esenti i tre nomi, solo alla radice, solo se
+  risolvono dentro `/private`.
+
+### Il wedge dell'add-in ha una causa, e non era quella sospettata
+
+Lo stack nativo ha nominato il colpevole:
+
+    FireCustomEventTask::onExecute -> fireCustomEvent -> notify()
+      -> dispatch_command -> handler -> time_sleep -> nanosleep
+
+`notify()` chiamava `dispatch_command` DIRETTAMENTE, e 30 `adsk.doEvents()` negli handler
+pompano la coda di Fusion, che consegna un secondo comando dentro `notify()`: annidato,
+senza guardia. Ora c'e' `_dispatch_guard`: una consegna annidata viene soppressa e
+loggata, non eseguita. Il watchdog non fa piu' `release()` di un lock che non possiede
+(era la terza gamba del bug) e `/health` confronta col timeout per-comando, non con i
+300 s di default che facevano sembrare "blocked" anche un comando da 10 s.
+
+### Part sourcing: cerca, oppure CHIEDE
+
+6 tool nuovi (`fusion_source_part`, `fusion_find_symbol`, `fusion_list_library`,
+`fusion_create_footprint`, `fusion_create_symbol`, `fusion_lint_library`) e la skill
+`fusion-part-sourcing`. Se un componente non esiste, il server **non inventa un nome e
+non sostituisce un THT con un SMD**: risponde `part_not_found` con due opzioni per
+l'utente — dammi il path di una libreria, oppure creiamolo. Le due `create_*` scrivono
+l'`.lbr` **offline**, senza Fusion.
+
+`find_symbol` legge il **catalogo di Fusion** (`Electron/<USER_ID>/lbr/libraries.db`):
+934 librerie, 1284 deviceset, risposta in microsecondi, **senza che nessuno passi un
+path**. E' lo stesso indice che Library Manager mostra. `folder` e' ora ricorsivo: le
+built-in stanno in `adsk.eagle_library_*/`, e una scansione a un livello non trovava
+nulla pur avendo 54 librerie li'.
+
+Nomi verificati sul campo: i LED 5 mm THT sono `LED_RADIAL` / `LEDRD254*`, i resistori
+assiali `RESAD*`, gli header `1X02` / `PINHD-1X02`. `LED-5MM`, `LED-5MM-THT` e
+`R-AXIAL-0207` **non esistono**: cercarli sembra un pezzo mancante ed e' un nome sbagliato.
+
+### Aggiunto
+
+- packaging: `pyproject.toml`, `tools/build_runtime_bundle.py`, workflow di release su tag.
+- `fusion-bridge-mcp` CLI: `install`, `serve`, `status`, `update`, `uninstall`.
+
 ## 1.13.84 (2026-11-06)
 
 `render_board_3d` with `quality:"high"` really stops a render that runs past `renderSeconds` (found by Drew Owens on PR #40). It called `RenderFuture.cancel()`, which does not exist; the error was swallowed and the reply said "it was cancelled" while the render kept going and could write `outputPath` later. Now it ends that render's own RenderProcess.exe through the same `render_process.cancel` as `render_image` (embedded in the electronics script), renders into a staging folder and moves the image to `outputPath` only on success, so an existing image is no longer deleted first and a late image can never land there. The reply carries `cancel: {cancelled, renderState, reason}` and says plainly when a render could not be stopped. Exe only: no Fusion restart.

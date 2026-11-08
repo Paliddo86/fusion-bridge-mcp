@@ -29,6 +29,7 @@ dependencies = [
  "fusion-os-mac",
  "fusion-os-win",
  "getrandom",
+ "libc",
  "png",
  "regex",
  "roxmltree",
@@ -325,6 +326,7 @@ name = "fusion-os-mac"
 version = "1.13.84"
 dependencies = [
  "fusion-core",
+ "libc",
 ]
 
 [[package]]

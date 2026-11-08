@@ -432,7 +432,15 @@ class AdomBridgeHandler(BaseHTTPRequestHandler):
             self._respond(200, result)
         finally:
             _clear_busy()
-            _main_thread_lock.release()
+            # The WATCHDOG force-releases this lock when a command wedges past its timeout,
+            # and threading.Lock has no owner: by the time the wedged owner unwinds here,
+            # the lock may already be free (or held by the NEXT request). An unguarded
+            # release() then raised RuntimeError OUT of do_POST, so the client got no
+            # response at all - a silent hang instead of an answer.
+            try:
+                _main_thread_lock.release()
+            except RuntimeError:
+                pass
 
     def _respond(self, status: int, data: dict):
         self.send_response(status)

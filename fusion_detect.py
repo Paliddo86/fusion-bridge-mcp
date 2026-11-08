@@ -468,11 +468,18 @@ def _has_fusion_process_pgrep() -> bool:
     "Autodesk Fusion" (not Fusion360) and Fusion may be running either binary.
     A missing/nonzero pgrep is a real 'no match' (exit 1) or an error -> raises so the
     caller answers with the last known state."""
-    for argv in (["pgrep", "-x", "Fusion360"], ["pgrep", "-f", _MAC_APP_NAME]):
+    for argv in (["pgrep", "-x", "Fusion360"], ["pgrep", "-x", _MAC_APP_NAME]):
         r = subprocess.run(argv, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
                            stderr=subprocess.DEVNULL, text=True, timeout=5)
         if r.returncode == 0:
             return True
+    # NO `pgrep -f "Autodesk Fusion"` here. Measured on a real box after Fusion was
+    # killed: the bundle leaves ORPHANED helpers behind (cer_service, cer_dialog,
+    # ADPClientService, node) that still carry ".../Autodesk Fusion.app/..." in
+    # their argv, so -f matched 5 of them and this function answered True with no
+    # Fusion running. The bridge then refused to launch ("Fusion is already
+    # running") and the add-in's port stayed down. `-x` matches the executable NAME
+    # exactly, which the orphans do not share ("cer_service", "node", ...).
     return False
 
 

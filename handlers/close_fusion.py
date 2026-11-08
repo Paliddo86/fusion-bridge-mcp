@@ -12,7 +12,10 @@ blocking modal dialog that prevents automation.
 import ctypes
 import ctypes.wintypes
 import json
+import os
+import signal
 import subprocess
+import sys
 import time
 import urllib.request
 import urllib.error
@@ -34,6 +37,14 @@ FUSION_PROCESS_NAMES = [
 
 def _find_windows_by_title(substring: str) -> list:
     """Find all visible windows whose title contains the given substring."""
+    if sys.platform == "darwin":
+        # macOS has no Win32 window enumeration, and the bridge takes no pyobjc/Quartz
+        # dependency just to list windows. Answering [] is the CONTRACT the darwin stop
+        # path needs (it drives the app through AppleEvents/SIGTERM, never through
+        # windows). Without this branch the function died on the next line with
+        # "AttributeError: module 'ctypes' has no attribute 'WINFUNCTYPE'", which is why
+        # fusion_stop and fusion_kill could not close Fusion on macOS at all.
+        return []
     results = []
     WNDENUMPROC = ctypes.WINFUNCTYPE(
         ctypes.c_bool, ctypes.wintypes.HWND, ctypes.wintypes.LPARAM
@@ -291,6 +302,302 @@ def _close_all_documents_via_addin() -> dict:
     return result
 
 
+# ---------------------------------------------------------------------------
+# macOS (darwin): no Win32, so stop/kill drive the app itself.
+#
+# These branches exist for one scenario: the ADD-IN WEDGE. Fusion's main thread is
+# parked inside a native call (a cloud fetch that never returns), so the add-in's HTTP
+# server still answers /health but can never run another command. The pre-macOS-branch
+# code made that unsurvivable: fusion_stop first knocked on the add-in through the
+# retry ladder in _close_all_documents_via_addin (~44-94 s) and then crashed in
+# _find_windows_by_title, so neither verb could close Fusion and the user had to run
+# `kill -9` by hand.
+# ---------------------------------------------------------------------------
+
+MAC_APP_NAME = "Autodesk Fusion"
+_MAC_BUNDLE_MARK = "/Autodesk Fusion.app/"
+# The main executable inside the bundle. `ps` shows it as
+# <bundle>/Contents/MacOS/Autodesk Fusion; every helper has a DIFFERENT basename
+# (QtWebEngineProcess, cer_dialog, ADPClientService, "Autodesk Identity Manager"),
+# so matching on the basename is what separates the app from its children.
+_MAC_APP_BINARY = "Autodesk Fusion"
+_HEALTH_UNSET = object()
+
+
+def _addin_health(timeout: float = 2.0):
+    """GET the add-in's /health with a SHORT timeout. Returns the parsed dict, or None
+    when nothing answers (Fusion closed, add-in not loaded, port taken)."""
+    try:
+        with urllib.request.urlopen(f"http://127.0.0.1:{ADDIN_PORT}/health",
+                                    timeout=timeout) as resp:
+            doc = json.loads(resp.read())
+        return doc if isinstance(doc, dict) else None
+    except Exception:
+        return None
+
+
+def _addin_wedged(health=_HEALTH_UNSET) -> bool:
+    """True when the add-in answers /health but cannot serve another command.
+
+    "blocked"/"busy" means Fusion's main thread is inside something (the classic
+    wedge), and pending_commands > 0 means a command is still queued for it. Either
+    way the clean document close would only spend its whole retry ladder knocking on a
+    main thread that cannot answer - so skip it and go straight to quitting.
+    """
+    h = _addin_health() if health is _HEALTH_UNSET else health
+    if not isinstance(h, dict):
+        return False
+    if str(h.get("main_thread") or "") in ("blocked", "busy"):
+        return True
+    try:
+        return int(h.get("pending_commands") or 0) > 0
+    except (TypeError, ValueError):
+        return False
+
+
+def _darwin_fusion_pids() -> list:
+    """PIDs of the Autodesk Fusion app process itself (macOS).
+
+    Four traps, all measured on a real box:
+
+    1. A shell wrapper whose argv contains "Autodesk Fusion" must never be hit -
+       that includes this bridge's own caller. So discovery uses `pgrep -x`, which
+       matches the executable NAME exactly, and every candidate is confirmed.
+    2. `ps` truncates the command column (100 chars by default); a webdeploy path
+       is longer, so matching failed silently. `ps -ww` lifts the limit.
+    3. "Application Support" contains a space, so splitting the command on
+       whitespace yields "/Users/paliddo/Library/Application". Never split it.
+    4. The bundle runs 13 processes (QtWebEngineProcess, cer_dialog,
+       ADPClientService, "Autodesk Identity Manager", node helpers) and exactly 1
+       is Fusion. Signalling all of them orphans the helpers and makes the
+       "is it gone?" poll never succeed.
+
+    The identity test is therefore: the executable (argv[0], recovered without
+    splitting) is a path ending in "/Contents/MacOS/Autodesk Fusion" that sits
+    inside a Fusion app bundle.
+    """
+    suffix = "/Contents/MacOS/" + _MAC_APP_BINARY
+
+    def _cmd_for(pid: int) -> str:
+        try:
+            return subprocess.run(["ps", "-ww", "-p", str(pid), "-o", "command="],
+                                  stdin=subprocess.DEVNULL, capture_output=True,
+                                  text=True, timeout=10).stdout.strip()
+        except Exception:
+            return ""
+
+    def _is_fusion(pid: int) -> bool:
+        cmd = _cmd_for(pid)
+        if not cmd or _MAC_BUNDLE_MARK not in cmd:
+            return False
+        # argv[0] runs from the start of cmd to the end of the bundle suffix. No
+        # whitespace splitting: the path legitimately contains spaces.
+        end = cmd.find(suffix)
+        if end < 0:
+            return False
+        argv0 = cmd[: end + len(suffix)]
+        # A trailing character means argv[0] was only a PREFIX of this binary
+        # (e.g. ".../Autodesk Fusion Service Utility"): reject only if the next
+        # char continues the name rather than starting a new argv entry.
+        tail = cmd[end + len(suffix):]
+        if tail and not tail.startswith(" "):
+            return False
+        return argv0.endswith(suffix) and _MAC_BUNDLE_MARK in argv0
+
+    try:
+        out = subprocess.run(["pgrep", "-x", _MAC_APP_BINARY],
+                             stdin=subprocess.DEVNULL, capture_output=True,
+                             text=True, timeout=10).stdout
+    except Exception:
+        out = ""
+
+    pids = []
+    for token in (out or "").split():
+        try:
+            pid = int(token)
+        except ValueError:
+            continue
+        if pid == os.getpid() or pid in pids:
+            continue
+        if _is_fusion(pid):
+            pids.append(pid)
+    return pids
+
+
+def _darwin_has_fusion() -> bool:
+    """Is Fusion still running? fusion_detect's pgrep-backed check is the single source
+    of truth (it also handles the bundle's real executable name); the bundle scan is
+    only the fallback when that import fails."""
+    try:
+        from fusion_detect import _has_fusion_process as _detect_has_fusion
+    except Exception:
+        return bool(_darwin_fusion_pids())
+    return bool(_detect_has_fusion())
+
+
+def _darwin_wait_gone(timeout: float = 10.0) -> bool:
+    """Poll until Fusion is gone (bounded): after each quit step we need a CONFIRMED
+    exit, not a hopeful sleep, before deciding whether to escalate."""
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if not _darwin_has_fusion():
+            return True
+        time.sleep(0.3)
+    return not _darwin_has_fusion()
+
+
+def _darwin_signal_fusion(sig: int) -> int:
+    """Send `sig` to every Fusion process. Returns how many were signalled."""
+    sent = 0
+    for pid in _darwin_fusion_pids():
+        try:
+            os.kill(pid, sig)
+            sent += 1
+        except Exception:
+            continue
+    return sent
+
+
+def _darwin_osascript_quit(timeout: float = 15.0) -> str:
+    """Ask Fusion to quit through its AppleEvent handler. Returns a human detail string
+    and never raises. A wedged main thread answers no AppleEvent, so osascript fails
+    with -1712 (AppleEvent timed out) at the timeout ceiling - the caller then falls
+    through to signals instead of treating that as the end of the stop."""
+    try:
+        r = subprocess.run(["osascript", "-e", f'tell application "{MAC_APP_NAME}" to quit'],
+                           stdin=subprocess.DEVNULL, capture_output=True, text=True,
+                           timeout=timeout)
+        if r.returncode == 0:
+            return "AppleEvent accepted"
+        return f"osascript exit {r.returncode}: {(r.stderr or r.stdout or '').strip()[:200]}"
+    except subprocess.TimeoutExpired:
+        return f"osascript timed out after {timeout:.0f}s (-1712: main thread not answering)"
+    except Exception as e:
+        return f"osascript failed: {e}"
+
+
+def _stop_fusion_darwin(args: dict) -> dict:
+    """Graceful STOP on macOS: AppleEvent quit, then SIGTERM, then SIGKILL only when the
+    caller passed force=true. Every step is bounded and a failure falls through to the
+    next one - a wedged Fusion answers nothing, so aborting on the first timeout would
+    leave the wedge exactly where it was."""
+    force = bool(args.get("force", False))
+    skip_clean = bool(args.get("skipCleanClose", False))
+
+    health = _addin_health()
+    wedged = _addin_wedged(health)
+    close_report = {"closed": [], "errors": [], "count": 0}
+    if not skip_clean and not wedged:
+        close_report = _close_all_documents_via_addin()
+        if close_report["closed"]:
+            time.sleep(0.5)
+
+    def _ok(step: str, note: str = "") -> dict:
+        parts = [f"Fusion 360 stopped via {step}"]
+        if note:
+            parts.append(note)
+        if close_report["closed"]:
+            parts.append(f"{len(close_report['closed'])} document(s) closed cleanly first")
+        return {
+            "success": True,
+            "output": "; ".join(parts) + ".",
+            "data": {"step": step, "documentsClosed": close_report["closed"],
+                     "addinWedged": wedged},
+        }
+
+    if not _darwin_has_fusion():
+        return {"success": True, "output": "Fusion 360 is not running."}
+
+    steps = []
+
+    # (a) AppleEvent quit - the document-aware path: Fusion closes/saves its own state.
+    note = _darwin_osascript_quit()
+    steps.append({"step": "osascript quit", "detail": note})
+    if _darwin_wait_gone(10.0):
+        return _ok("osascript quit", note)
+
+    # (b) SIGTERM - polite to the whole app bundle; Fusion still gets to run its exit
+    #     handlers, which is what keeps the 'Recovered Documents' dialog away.
+    signalled = _darwin_signal_fusion(signal.SIGTERM)
+    steps.append({"step": "SIGTERM", "signalled": signalled})
+    if _darwin_wait_gone(10.0):
+        return _ok("SIGTERM")
+
+    # (c) SIGKILL - ONLY on an explicit force=true. Graceful stop never destroys unsaved
+    #     work on its own authority; the caller decides that.
+    if force:
+        signalled = _darwin_signal_fusion(signal.SIGKILL)
+        steps.append({"step": "SIGKILL", "signalled": signalled})
+        if _darwin_wait_gone(10.0):
+            return _ok("SIGKILL (force=true)")
+
+    return {
+        "success": False,
+        "error": ("Fusion did not exit after osascript quit and SIGTERM." if not force else
+                  "Fusion did not exit after osascript quit, SIGTERM and SIGKILL."),
+        "output": f"Steps tried: {steps}",
+        "data": {"steps": steps, "addinWedged": wedged,
+                 "survivingPids": _darwin_fusion_pids()},
+        "_hint": ("A modal dialog or a wedged main thread is holding it. Re-call fusion_kill "
+                  "with {\"force\": true} (SIGTERM then SIGKILL) - do not hand the user a "
+                  "manual kill." if not force else
+                  "All three steps ran and something still holds: check fusion_readiness for "
+                  "fusionCrashed (a crash-report host can survive) and re-call after clearing it."),
+    }
+
+
+def _kill_fusion_darwin(args: dict) -> dict:
+    """Force-KILL on macOS: SIGTERM every Fusion process, wait, then SIGKILL the
+    survivors. Documents are still closed cleanly first when the add-in is healthy -
+    killing dirty ones is exactly what produces the 'Recovered Documents' dialog."""
+    skip_clean = bool(args.get("skipCleanClose", False))
+
+    health = _addin_health()
+    wedged = _addin_wedged(health)
+    close_report = {"closed": [], "errors": [], "count": 0}
+    if not skip_clean and not wedged:
+        close_report = _close_all_documents_via_addin()
+        if close_report["closed"]:
+            time.sleep(0.5)
+
+    if not _darwin_has_fusion():
+        return {"success": True, "output": "Fusion 360 is not running."}
+
+    steps = []
+    step_used = None
+    killed = _darwin_signal_fusion(signal.SIGTERM)
+    steps.append({"step": "SIGTERM", "signalled": killed})
+    if _darwin_wait_gone(10.0):
+        step_used = "SIGTERM"
+    else:
+        killed = _darwin_signal_fusion(signal.SIGKILL)
+        steps.append({"step": "SIGKILL", "signalled": killed})
+        if _darwin_wait_gone(10.0):
+            step_used = "SIGKILL"
+
+    if step_used is None:
+        return {
+            "success": False,
+            "error": "Some Fusion processes survived SIGTERM and SIGKILL.",
+            "output": f"Steps tried: {steps}",
+            "data": {"steps": steps, "addinWedged": wedged,
+                     "survivingPids": _darwin_fusion_pids()},
+            "_hint": ("Do NOT hand this to the user as a Terminal chore: check whether the "
+                      "survivor is a crash-report host (fusion_readiness reports fusionCrashed) "
+                      "or is pinned by a modal, then re-call fusion_kill."),
+        }
+
+    parts = [f"Fusion 360 force-killed on macOS via {step_used}"]
+    if close_report["closed"]:
+        parts.append(f"{len(close_report['closed'])} document(s) closed cleanly first")
+    return {
+        "success": True,
+        "output": "; ".join(parts) + ".",
+        "data": {"step": step_used, "documentsClosed": close_report["closed"],
+                 "addinWedged": wedged, "steps": steps},
+    }
+
+
 def handle_close_fusion(fusion_info: dict, args: dict) -> dict:
     """Close all Fusion 360 windows, with optional force-kill.
 
@@ -392,7 +699,11 @@ def handle_fusion_stop(fusion_info: dict, args: dict) -> dict:
     you to use fusion_kill. No surprise escalation - that's the whole point.
 
     Args: skipCleanClose (bool, default false) - skip the add-in document close.
+          force (bool, default false) - macOS only: permits SIGKILL as the last step.
     """
+    if sys.platform == "darwin":
+        return _stop_fusion_darwin(args)
+
     skip_clean = args.get("skipCleanClose", False)
     close_report = {"closed": [], "errors": [], "count": 0}
     if not skip_clean:
@@ -452,7 +763,11 @@ def handle_fusion_kill(fusion_info: dict, args: dict) -> dict:
     'Recovered Documents' dialog on next launch.
 
     Args: skipCleanClose (bool, default false) - skip the add-in document close.
+    macOS: SIGTERM, then SIGKILL for survivors (_kill_fusion_darwin).
     """
+    if sys.platform == "darwin":
+        return _kill_fusion_darwin(args)
+
     skip_clean = args.get("skipCleanClose", False)
     close_report = {"closed": [], "errors": [], "count": 0}
     if not skip_clean:

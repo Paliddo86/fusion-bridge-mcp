@@ -84,3 +84,15 @@ docs/**/*.jpeg
 .DS_Store
 *.log
 
+
+# ---------------------------------------------------------------------------
+# Build artifacts (fusion-bridge-mcp packaging)
+# ---------------------------------------------------------------------------
+# The runtime bundle is a RELEASE asset, not source: it is built by
+# tools/build_runtime_bundle.py and attached to a GitHub Release. The wheel is
+# built by `python -m build` and published the same way.
+dist/
+build/
+*.tar.gz
+*.whl
+*.egg-info/

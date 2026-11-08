@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fusion-bridge-mcp"
+version = "1.0.0"
+description = "MCP server for Autodesk Fusion 360 — macOS fork of the Adom Bridge Fusion 360 bridge"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Paliddo86" },
+]
+keywords = ["fusion360", "autodesk", "mcp", "cad", "macos"]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+
+dependencies = [
+    "mcp>=2",
+]
+
+[project.optional-dependencies]
+# Pillow is only used for screenshot post-processing inside the bridge, and the
+# bridge already wraps those imports in try/except. Listed for completeness.
+imaging = ["Pillow"]
+
+[project.urls]
+Homepage = "https://github.com/Paliddo86/fusion-bridge-mcp"
+Repository = "https://github.com/Paliddo86/fusion-bridge-mcp"
+Upstream = "https://wiki.adom.inc/adom/fusion-bridge"
+
+[project.scripts]
+fusion-bridge-mcp = "fusion_bridge_mcp.cli:main"
+
+# The MCP adapter is the wheel. The bridge RUNTIME (server.py, the add-in, the
+# skills) is NOT packaged here — it ships as a versioned bundle on the GitHub
+# Release and is fetched by `fusion-bridge-mcp install`. That split is
+# deliberate: Fusion loads the add-in from a directory it scans on disk, so the
+# add-in must be deployed, not imported from site-packages.
+[tool.setuptools]
+packages = ["fusion_bridge_mcp"]
+
+[tool.setuptools.package-data]
+fusion_bridge_mcp = ["py.typed"]

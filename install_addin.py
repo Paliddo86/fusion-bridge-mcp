@@ -10,6 +10,10 @@ port 8774 stays down - issue #63, root-caused live on a fresh 2026 install):
   legacy:       %APPDATA%/Autodesk/Autodesk Fusion/API/AddIns/       <- older builds
   legacy:       %APPDATA%/Autodesk/Autodesk Fusion 360/API/AddIns/   <- oldest naming
 
+macOS has no %APPDATA%: the same three conventions live under
+  ~/Library/Application Support/Autodesk/  (FusionAddins, "Autodesk Fusion"/API/AddIns,
+  "Autodesk Fusion 360"/API/AddIns) - see TARGET_CANDIDATES.
+
 Verified live (ADOMBASELINE, Fusion 2026.x): the add-in sat in the legacy
 API/AddIns dir through a full launch and NEVER loaded; moved to FusionAddins it
 came up in 20s with zero manual enabling (runOnStartup honored). So we install
@@ -32,11 +36,20 @@ SOURCE_DIR = Path(__file__).resolve().parent / "addin" / "AdomBridge"
 # EVERY known Fusion add-in directory convention, newest first. Keep this list
 # complete - see the module docstring for why (a single-path assumption caused
 # the #63 silent-failure). FusionAddins is created even on a fresh profile.
-TARGET_CANDIDATES = [
-    Path.home() / "AppData" / "Roaming" / "Autodesk" / "FusionAddins",
-    Path.home() / "AppData" / "Roaming" / "Autodesk" / "Autodesk Fusion" / "API" / "AddIns",
-    Path.home() / "AppData" / "Roaming" / "Autodesk" / "Autodesk Fusion 360" / "API" / "AddIns",
-]
+if sys.platform == "darwin":
+    # macOS: no %APPDATA%; the per-user root is ~/Library/Application Support/Autodesk.
+    _mac_autodesk = Path.home() / "Library" / "Application Support" / "Autodesk"
+    TARGET_CANDIDATES = [
+        _mac_autodesk / "FusionAddins",
+        _mac_autodesk / "Autodesk Fusion" / "API" / "AddIns",
+        _mac_autodesk / "Autodesk Fusion 360" / "API" / "AddIns",
+    ]
+else:
+    TARGET_CANDIDATES = [
+        Path.home() / "AppData" / "Roaming" / "Autodesk" / "FusionAddins",
+        Path.home() / "AppData" / "Roaming" / "Autodesk" / "Autodesk Fusion" / "API" / "AddIns",
+        Path.home() / "AppData" / "Roaming" / "Autodesk" / "Autodesk Fusion 360" / "API" / "AddIns",
+    ]
 
 
 def _sync_directory(source: Path, target: Path):

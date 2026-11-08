@@ -1,4 +1,4 @@
-"""Auto-detect Fusion 360 installation on Windows."""
+"""Auto-detect Fusion 360 installation on Windows and macOS."""
 
 import ctypes
 import ctypes.wintypes
@@ -6,6 +6,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 import threading
 import time
 import urllib.error
@@ -27,8 +28,16 @@ def _scan_all_user_webdeploy() -> list:
     Fusion may be installed under a different Windows user profile than the
     current process. Instead of just checking %LOCALAPPDATA%, enumerate all
     user directories under C:\Users and check each one's AppData\Local\Autodesk\webdeploy.
+
+    macOS: the webdeploy root is per-account under ~/Library/Application Support,
+    and holds <hash>/Autodesk Fusion.app bundle dirs (no FusionLauncher.exe).
     """
     bases = []
+    if sys.platform == "darwin":
+        mac_base = Path.home() / "Library" / "Application Support" / "Autodesk" / "webdeploy" / "production"
+        if mac_base.is_dir():
+            bases.append(mac_base)
+        return bases
     try:
         users_dir = Path("C:\\Users")
         if users_dir.exists():
@@ -52,19 +61,46 @@ for _var in ("LOCALAPPDATA", "ProgramFiles", "ProgramFiles(x86)", "ProgramW6432"
         if _base not in _WEBDEPLOY_BASES:
             _WEBDEPLOY_BASES.append(_base)
 # Back-compat alias (some callers import WEBDEPLOY_BASE directly).
-WEBDEPLOY_BASE = _WEBDEPLOY_BASES[0] if _WEBDEPLOY_BASES else (
-    Path(os.environ.get("LOCALAPPDATA", "")) / "Autodesk" / "webdeploy" / "production"
-)
+if sys.platform == "darwin":
+    WEBDEPLOY_BASE = _WEBDEPLOY_BASES[0] if _WEBDEPLOY_BASES else (
+        Path.home() / "Library" / "Application Support" / "Autodesk" / "webdeploy" / "production"
+    )
+else:
+    WEBDEPLOY_BASE = _WEBDEPLOY_BASES[0] if _WEBDEPLOY_BASES else (
+        Path(os.environ.get("LOCALAPPDATA", "")) / "Autodesk" / "webdeploy" / "production"
+    )
+
+# macOS: the app bundle we launch, in the order we look for it. ~/Applications is
+# where the Fusion installer puts a per-user install; /Applications is the
+# all-users one.
+_MAC_APP_BUNDLE = "Autodesk Fusion.app"
+_MAC_APP_NAME = "Autodesk Fusion"
+_MAC_APP_BUNDLES = [
+    Path.home() / "Applications" / "Autodesk Fusion.app",
+    Path("/Applications/Autodesk Fusion.app"),
+    Path.home() / "Applications" / "Autodesk Fusion 360.app",
+    Path("/Applications/Autodesk Fusion 360.app"),
+]
 
 # EVERY known per-user add-in dir, newest convention first. Fusion MOVED this
 # across versions and silently ignores the others (issue #63: an add-in in the
 # legacy API\AddIns dir never loads on 2025+ Fusion, which scans FusionAddins -
 # proven live on a fresh install). Track ALL of them; never assume one path.
-ADDINS_DIR_CANDIDATES = [
-    Path(os.environ.get("APPDATA", "")) / "Autodesk" / "FusionAddins",
-    Path(os.environ.get("APPDATA", "")) / "Autodesk" / "Autodesk Fusion" / "API" / "AddIns",
-    Path(os.environ.get("APPDATA", "")) / "Autodesk" / "Autodesk Fusion 360" / "API" / "AddIns",
-]
+if sys.platform == "darwin":
+    # ~/Library/Application Support/Autodesk (macOS has no %APPDATA%): reading an unset
+    # Windows env var yields Path("") == Path("."), i.e. a path RELATIVE to the CWD.
+    _mac_autodesk = Path.home() / "Library" / "Application Support" / "Autodesk"
+    ADDINS_DIR_CANDIDATES = [
+        _mac_autodesk / "FusionAddins",
+        _mac_autodesk / "Autodesk Fusion" / "API" / "AddIns",
+        _mac_autodesk / "Autodesk Fusion 360" / "API" / "AddIns",
+    ]
+else:
+    ADDINS_DIR_CANDIDATES = [
+        Path(os.environ.get("APPDATA", "")) / "Autodesk" / "FusionAddins",
+        Path(os.environ.get("APPDATA", "")) / "Autodesk" / "Autodesk Fusion" / "API" / "AddIns",
+        Path(os.environ.get("APPDATA", "")) / "Autodesk" / "Autodesk Fusion 360" / "API" / "AddIns",
+    ]
 
 # Keep callback references alive to prevent GC
 _callbacks = []
@@ -151,6 +187,38 @@ def _any_app_complete() -> bool:
     return False
 
 
+def _find_mac_fusion_app() -> Path | None:
+    """The Fusion app bundle to launch on macOS, or None when Fusion is not installed.
+
+    Same two questions as the launcher scan below, different shape: macOS ships an
+    `Autodesk Fusion.app` BUNDLE (no Fusion360.exe, no FusionLauncher.exe.ini), so
+    'complete install' is the bundle existing - its Contents/MacOS binary is what runs.
+    Order: the installed bundle first (_MAC_APP_BUNDLES), then the webdeploy builds
+    (<base>/<hash>/Autodesk Fusion.app, newest build first)."""
+    for app in _MAC_APP_BUNDLES:
+        if app.is_dir():
+            return app
+    builds = []
+    for base in _WEBDEPLOY_BASES:
+        try:
+            if not base.is_dir():
+                continue
+            candidates = [base / _MAC_APP_BUNDLE]
+            candidates.extend(d / _MAC_APP_BUNDLE for d in base.iterdir() if d.is_dir())
+        except OSError:
+            continue
+        for app in candidates:
+            try:
+                if app.is_dir():
+                    builds.append((app.stat().st_mtime, app))
+            except OSError:
+                continue
+    if builds:
+        builds.sort(key=lambda c: c[0], reverse=True)
+        return builds[0][1]
+    return None
+
+
 def _find_fusion_launcher() -> Path | None:
     """Return the FusionLauncher.exe to RUN, but only when Fusion is actually INSTALLED.
 
@@ -165,6 +233,8 @@ def _find_fusion_launcher() -> Path | None:
 
     Because we gate on Fusion360.exe first, the stub's .ini is guaranteed complete by then (mid-stream
     there is no Fusion360.exe, so we return None and nothing launches into a half-written install)."""
+    if sys.platform == "darwin":
+        return _find_mac_fusion_app()
     if not _any_app_complete():
         return None                                   # not installed (or still streaming) -> None
 
@@ -368,6 +438,14 @@ def _has_fusion_process() -> bool:
     probe that cannot stall comes first, tasklist is the confirmation, and a probe that
     FAILS answers with the last known state, never False.
     """
+    if sys.platform == "darwin":
+        try:
+            r = _has_fusion_process_pgrep()
+            _FUSION_RUNNING_MEMO.update(value=r, at=time.time())
+            return r
+        except Exception:
+            last = _FUSION_RUNNING_MEMO.get("value")
+            return bool(last) if last is not None else False
     try:
         _pids = _fusion_pids_toolhelp()
         if _pids and any(_pid_alive(p) for p in _pids):
@@ -382,6 +460,20 @@ def _has_fusion_process() -> bool:
     except Exception:
         last = _FUSION_RUNNING_MEMO.get("value")
         return bool(last) if last is not None else False
+
+
+def _has_fusion_process_pgrep() -> bool:
+    """pgrep-based check (macOS). -x matches the exact process name; the -f fallback
+    matches a full command line, because the bundle's CFBundleExecutable is
+    "Autodesk Fusion" (not Fusion360) and Fusion may be running either binary.
+    A missing/nonzero pgrep is a real 'no match' (exit 1) or an error -> raises so the
+    caller answers with the last known state."""
+    for argv in (["pgrep", "-x", "Fusion360"], ["pgrep", "-f", _MAC_APP_NAME]):
+        r = subprocess.run(argv, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL, text=True, timeout=5)
+        if r.returncode == 0:
+            return True
+    return False
 
 
 def _has_fusion_process_tasklist() -> bool:
@@ -896,7 +988,18 @@ def _popen_fusion_background(exe_path: str):
          immediately, so the launcher's parent is gone and no tree walk from the bridge
          can reach Fusion.
     DETACHED_PROCESS + CREATE_NEW_PROCESS_GROUP also shield it from console/ctrl events.
-    `start /min` keeps the launcher minimized-not-activated, like STARTUPINFO did."""
+    `start /min` keeps the launcher minimized-not-activated, like STARTUPINFO did.
+
+    macOS: `open -a` hands the bundle to launchd, so Fusion is not in our process tree at
+    all from the first instant - the same defeat of parent-pid tree walks that `cmd /c start`
+    buys on Windows. start_new_session=True detaches it from our session/terminal too."""
+    if sys.platform == "darwin":
+        app = exe_path if exe_path and Path(exe_path).exists() else _MAC_APP_NAME
+        return subprocess.Popen(
+            ["open", "-a", str(app)],
+            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
     cnw = subprocess.CREATE_NO_WINDOW if hasattr(subprocess, "CREATE_NO_WINDOW") else 0
     DETACHED_PROCESS = 0x00000008
     CREATE_NEW_PROCESS_GROUP = 0x00000200

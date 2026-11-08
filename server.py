@@ -1429,6 +1429,23 @@ def _fusion_log_path(diag: dict = None):
     d_ = diag if diag is not None else {}
     bases = []
     try:
+        if sys.platform == "darwin":
+            # macOS: the same tree under ~/Library/Application Support, but the per-user folder is
+            # an install id we cannot guess - discover it instead. It is hex on some builds and a
+            # 12-char alnum id (URQPRNR2EGYK) on others, so match alnum-with-a-digit: that keeps
+            # real subdirs (CrashRecovery, Electron, Materials, ...) out of the candidate list.
+            mac_root = os.path.join(os.path.expanduser("~"), "Library", "Application Support",
+                                    "Autodesk", "Autodesk Fusion 360")
+            bases.append(mac_root)
+            try:
+                for uid in sorted(os.listdir(mac_root)):
+                    uid_dir = os.path.join(mac_root, uid)
+                    if re.fullmatch(r"[0-9A-Za-z]{8,}", uid) and any(c.isdigit() for c in uid) \
+                            and os.path.isdir(uid_dir):
+                        bases.append(os.path.join(uid_dir, "logs"))
+                        bases.append(uid_dir)
+            except Exception:
+                pass
         lad = os.environ.get("LOCALAPPDATA") or os.path.join(
             os.path.expanduser("~"), "AppData", "Local")
         for nm in ("Autodesk Fusion 360", "Autodesk Fusion"):
@@ -15912,10 +15929,10 @@ def _build_status() -> dict:
     running, addin = _status_probe_cached(installed)
     addin_ok = bool(addin)
 
-    if platform.system() != "Windows":
+    if platform.system() not in ("Windows", "Darwin"):
         led, summary = "yellow", "Unsupported OS"
-        tooltip = ("Bridge running, but this host is not Windows. Fusion 360 verbs "
-                   "need a Windows host with Fusion 360 installed.")
+        tooltip = ("Bridge running, but this host is neither Windows nor macOS. Fusion 360 verbs "
+                   "need a Windows or macOS host with Fusion 360 installed.")
     elif not installed:
         led, summary = "yellow", "Fusion not installed"
         tooltip = ("Bridge running, but Fusion 360 is not installed. The AI can install it "

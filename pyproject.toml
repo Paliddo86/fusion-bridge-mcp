@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fusion-bridge-mcp"
-version = "1.0.0"
+dynamic = ["version"]
 description = "MCP server for Autodesk Fusion 360 — macOS fork of the Adom Bridge Fusion 360 bridge"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -50,6 +50,12 @@ fusion-bridge-mcp-server = "fusion_bridge_mcp.adapter:main"
 # Release and is fetched by `fusion-bridge-mcp install`. That split is
 # deliberate: Fusion loads the add-in from a directory it scans on disk, so the
 # add-in must be deployed, not imported from site-packages.
+[tool.setuptools.dynamic]
+# Single source of truth: fusion_bridge_mcp/__init__.py __version__.
+# Two hardcoded versions drifted once already (pyproject said 1.0.0 while the
+# package said 1.0.1 and the wheel came out with the wrong name).
+version = { attr = "fusion_bridge_mcp.__version__" }
+
 [tool.setuptools]
 packages = ["fusion_bridge_mcp"]
 

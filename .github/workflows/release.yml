@@ -84,6 +84,14 @@ jobs:
           python3 -m build --wheel --outdir dist/
           ls -l dist/
 
+      - name: Verify the wheel version matches the package version
+        run: |
+          set -euo pipefail
+          AD="${{ steps.ver.outputs.adapter_ver }}"
+          ls dist/ | grep -q "fusion_bridge_mcp-${AD}-" \
+            || { echo "::error::no wheel named fusion_bridge_mcp-${AD}-* in dist/ — the version in pyproject and __init__.py drifted"; ls -l dist/; exit 1; }
+          echo "OK: wheel is fusion_bridge_mcp-${AD}"
+
       # ------------------------------------------------------------- smoke tests
       # A release that cannot install is worse than no release: prove the wheel
       # imports and registers its entry points before anything is published.

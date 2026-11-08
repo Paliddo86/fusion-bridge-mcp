@@ -46,7 +46,27 @@ from pathlib import Path
 from . import UPSTREAM_VERSION, __version__
 
 RELEASE_BASE = "https://github.com/Paliddo86/fusion-bridge-mcp/releases"
-BUNDLE_URL = RELEASE_BASE + "/download/v{version}/fusion-bridge-runtime-{version}.tar.gz"
+
+# Two different versions appear in a bundle URL and they are NOT interchangeable:
+#
+#   * the TAG is the ADAPTER version  (v1.0.0)  -- fusion_bridge_mcp/__init__.py
+#   * the ASSET NAME carries the RUNTIME version (1.13.84) -- BRIDGE_VERSION,
+#     the upstream bridge version this fork carries
+#
+# The first release shipped tag v1.0.0 with asset
+# fusion-bridge-runtime-1.13.84.tar.gz, and a URL built from one value 404'd.
+BUNDLE_URL = RELEASE_BASE + "/download/v{tag_version}/fusion-bridge-runtime-{version}.tar.gz"
+
+
+def _bundle_url(version: str) -> str:
+    """URL for a runtime bundle.
+
+    `version` is the RUNTIME version. The release tag is the ADAPTER version, so a
+    bundle for a runtime that does not match this adapter's release tag is looked up
+    under the adapter's own tag (the normal case: one release ships one runtime).
+    """
+    tag_version = __version__
+    return BUNDLE_URL.format(tag_version=tag_version, version=version)
 
 DEFAULT_BRIDGE_PORT = 8773
 ADDIN_PORT = 8774
@@ -170,7 +190,7 @@ def _source_checkout():
 
 def _download_bundle(version, dest: Path) -> Path:
     """Fetch the runtime tarball for `version` from the GitHub Release, reporting progress."""
-    url = BUNDLE_URL.format(version=version)
+    url = _bundle_url(version)
     dest.parent.mkdir(parents=True, exist_ok=True)
     print("  downloading  %s" % url, flush=True)
     request = urllib.request.Request(

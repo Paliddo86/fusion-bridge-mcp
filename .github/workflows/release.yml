@@ -1,0 +1,279 @@
+name: Release
+
+# Build the distributed artifacts and attach them to a GitHub Release.
+#
+# Trigger: pushing a version tag. That is the whole ritual:
+#
+#     git tag v1.0.0
+#     git push origin v1.0.0
+#
+# What gets attached (names are contractual — fusion_bridge_mcp/cli.py builds
+# its download URLs from them):
+#
+#     fusion_bridge_mcp-<adapterVersion>-py3-none-any.whl
+#     fusion-bridge-runtime-<runtimeVersion>.tar.gz
+#     fusion-bridge-runtime-<runtimeVersion>.tar.gz.sha256
+#
+# Adapter version comes from fusion_bridge_mcp/__init__.py `__version__`, which
+# must equal the tag without its leading `v`. Runtime version comes from
+# BRIDGE_VERSION (the upstream bridge version this fork carries); the tag's major
+# .minor must satisfy the adapter version, not the runtime one.
+#
+# `workflow_dispatch` is included so a release can be re-cut from the Actions tab
+# (useful when the first run fails on a packaging problem).
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (must already exist, e.g. v1.0.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # ------------------------------------------------------------------ setup
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve and validate versions
+        id: ver
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+          fi
+
+          case "$TAG" in
+            v*) ;;
+            *) echo "::error::tag '$TAG' must start with 'v' (e.g. v1.0.0)"; exit 1 ;;
+          esac
+
+          TAG_VER="${TAG#v}"
+          ADAPTER_VER=$(python3 -c "import re,pathlib; print(re.search(r'__version__\s*=\s*[\"'\'']([^\"'\'']+)', pathlib.Path('fusion_bridge_mcp/__init__.py').read_text()).group(1))")
+          RUNTIME_VER=$(tr -d '[:space:]' < BRIDGE_VERSION)
+          JSON_VER=$(python3 -c "import json; print(json.load(open('bridge.json'))['version'])")
+
+          echo "tag=$TAG"                    >> "$GITHUB_OUTPUT"
+          echo "tag_ver=$TAG_VER"            >> "$GITHUB_OUTPUT"
+          echo "adapter_ver=$ADAPTER_VER"    >> "$GITHUB_OUTPUT"
+          echo "runtime_ver=$RUNTIME_VER"    >> "$GITHUB_OUTPUT"
+
+          echo "tag            : $TAG"
+          echo "adapter version: $ADAPTER_VER"
+          echo "runtime version: $RUNTIME_VER"
+          echo "bridge.json    : $JSON_VER"
+
+          if [ "$TAG_VER" != "$ADAPTER_VER" ]; then
+            echo "::error::tag ($TAG_VER) must equal the adapter __version__ ($ADAPTER_VER) in fusion_bridge_mcp/__init__.py — bump it before tagging"
+            exit 1
+          fi
+          if [ "$RUNTIME_VER" != "$JSON_VER" ]; then
+            echo "::error::BRIDGE_VERSION ($RUNTIME_VER) != bridge.json version ($JSON_VER) — bump them together"
+            exit 1
+          fi
+
+      # ------------------------------------------------------------------- build
+      - name: Build the runtime bundle
+        run: |
+          set -euo pipefail
+          python3 tools/build_runtime_bundle.py --out dist/
+          ls -l dist/
+
+      - name: Build the wheel
+        run: |
+          set -euo pipefail
+          python3 -m pip install --upgrade build
+          python3 -m build --wheel --outdir dist/
+          ls -l dist/
+
+      # ------------------------------------------------------------- smoke tests
+      # A release that cannot install is worse than no release: prove the wheel
+      # imports and registers its entry points before anything is published.
+      - name: Smoke-test the wheel in a clean venv
+        run: |
+          set -euo pipefail
+          python3 -m venv /tmp/relenv
+          /tmp/relenv/bin/pip install --quiet --upgrade pip
+          /tmp/relenv/bin/pip install --quiet dist/*.whl
+          /tmp/relenv/bin/pip install --quiet 'mcp>=2'
+
+          echo "--- entry points ---"
+          /tmp/relenv/bin/fusion-bridge-mcp --help >/dev/null
+          /tmp/relenv/bin/fusion-bridge-mcp install --help >/dev/null
+          echo "OK: CLI responds"
+
+          echo "--- adapter imports from the installed wheel ---"
+          /tmp/relenv/bin/python - <<'PY'
+          import asyncio
+          from fusion_bridge_mcp import adapter
+          srv = adapter.build_server()
+          async def count():
+              return (len(await srv.list_tools()),
+                      len(await srv.list_resources()),
+                      len(await srv.list_prompts()))
+          tools, resources, prompts = asyncio.run(count())
+          print(f"tools={tools} resources={resources} prompts={prompts}")
+          # 43 curated + fusion_call; the skills ship with the runtime, so a bare
+          # wheel legitimately has no skill resources.
+          assert tools >= 40, f"expected >=40 tools, got {tools}"
+          assert prompts >= 30, f"expected >=30 prompts, got {prompts}"
+          print("OK: adapter builds")
+          PY
+
+      - name: Verify the runtime bundle extracts and carries its critical files
+        run: |
+          set -euo pipefail
+          RT="${{ steps.ver.outputs.runtime_ver }}"
+          TARBALL="dist/fusion-bridge-runtime-${RT}.tar.gz"
+          test -f "$TARBALL" || { echo "::error::missing $TARBALL"; exit 1; }
+          mkdir -p /tmp/rtcheck && tar xzf "$TARBALL" -C /tmp/rtcheck
+          for f in server.py addin/AdomBridge/AdomBridge.py addin/AdomBridge/AdomBridge.manifest \
+                   addin/AdomBridge/http_server.py describe.py skills RUNTIME_MANIFEST.json; do
+            test -e "/tmp/rtcheck/$f" || { echo "::error::runtime bundle is missing $f"; exit 1; }
+          done
+          python3 - <<'PY'
+          import json
+          m = json.load(open('/tmp/rtcheck/RUNTIME_MANIFEST.json'))
+          print("runtime manifest:", m["runtimeVersion"], m["fileCount"], "files")
+          assert m["runtimeVersion"], "manifest has no runtimeVersion"
+          PY
+          echo "OK: runtime bundle complete"
+
+      # ------------------------------------------------------- collect artifacts
+      - name: Collect and verify checksums
+        id: art
+        run: |
+          set -euo pipefail
+          RT="${{ steps.ver.outputs.runtime_ver }}"
+          AD="${{ steps.ver.outputs.adapter_ver }}"
+          WHEEL="dist/fusion_bridge_mcp-${AD}-py3-none-any.whl"
+          TARBALL="dist/fusion-bridge-runtime-${RT}.tar.gz"
+          test -f "$WHEEL"   || { echo "::error::missing $WHEEL";   exit 1; }
+          test -f "$TARBALL" || { echo "::error::missing $TARBALL"; exit 1; }
+
+          # Regenerate the sha256 next to each artifact so the published checksum
+          # always matches the file actually being uploaded.
+          if command -v sha256sum >/dev/null 2>&1; then
+            SUM="sha256sum"
+          else
+            SUM="shasum -a 256"
+          fi
+          ( cd dist && $SUM "$(basename "$TARBALL")" > "$(basename "$TARBALL").sha256" )
+          ( cd dist && $SUM "$(basename "$WHEEL")"   > "$(basename "$WHEEL").sha256" )
+
+          {
+            echo "## Checksums"
+            echo ""
+            echo '```'
+            cat "dist/$(basename "$TARBALL").sha256"
+            cat "dist/$(basename "$WHEEL").sha256"
+            echo '```'
+          } > dist/CHECKSUMS.md
+
+          echo "wheel=$WHEEL"     >> "$GITHUB_OUTPUT"
+          echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"
+          cat dist/CHECKSUMS.md
+
+      # ----------------------------------------------------------------- publish
+      - name: Publish the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.ver.outputs.tag }}"
+          AD="${{ steps.ver.outputs.adapter_ver }}"
+          RT="${{ steps.ver.outputs.runtime_ver }}"
+
+          cat > release-notes.md <<EOF
+          MCP server for Autodesk Fusion 360 — custom macOS fork of the Adom Bridge Fusion 360 bridge.
+
+          **Adapter** \`$AD\` · **bridge runtime** \`$RT\` (upstream version this fork carries)
+
+          ## Install
+
+          \`\`\`bash
+          pip install https://github.com/${{ github.repository }}/releases/download/$TAG/fusion_bridge_mcp-$AD-py3-none-any.whl
+          fusion-bridge-mcp install
+          fusion-bridge-mcp status
+          \`\`\`
+
+          Or without a wheel:
+
+          \`\`\`bash
+          uvx --from git+https://github.com/${{ github.repository }} fusion-bridge-mcp install
+          \`\`\`
+
+          ## What is in this release
+
+          | asset | purpose |
+          |---|---|
+          | \`fusion_bridge_mcp-$AD-py3-none-any.whl\` | the MCP adapter + CLI (44 tools, 42 resources, 36 prompts) |
+          | \`fusion-bridge-runtime-$RT.tar.gz\` | the bridge runtime: server.py, the AdomBridge add-in, the 36 skills |
+          | \`*.sha256\` / \`CHECKSUMS.md\` | integrity |
+
+          The runtime is a separate asset on purpose: Fusion loads the add-in from a directory it
+          scans on disk, so it must be **deployed**, not imported from \`site-packages\`.
+          \`fusion-bridge-mcp install\` downloads this bundle and deploys the add-in.
+
+          See [NOTICE.md](https://github.com/${{ github.repository }}/blob/main/NOTICE.md) for attribution:
+          this is a derivative of the Adom project, not the original.
+          EOF
+
+          WHEEL="${{ steps.art.outputs.wheel }}"
+          TARBALL="${{ steps.art.outputs.tarball }}"
+          TARBALL_SUM="${TARBALL}.sha256"
+          WHEEL_SUM="${WHEEL}.sha256"
+
+          for f in "$WHEEL" "$TARBALL" "$TARBALL_SUM" "$WHEEL_SUM" dist/CHECKSUMS.md; do
+            test -f "$f" || { echo "::error::release asset missing: $f"; exit 1; }
+          done
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "release $TAG exists — uploading/refreshing assets"
+            gh release upload "$TAG" \
+              "$WHEEL" "$TARBALL" "$TARBALL_SUM" "$WHEEL_SUM" dist/CHECKSUMS.md \
+              --clobber
+          else
+            gh release create "$TAG" \
+              --title "v$AD (runtime $RT)" \
+              --notes-file release-notes.md \
+              --target "${{ github.sha }}" \
+              "$WHEEL" "$TARBALL" "$TARBALL_SUM" "$WHEEL_SUM" dist/CHECKSUMS.md
+          fi
+
+      - name: Summarise
+        run: |
+          {
+            echo "### Released ${{ steps.ver.outputs.tag }}"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| adapter | \`${{ steps.ver.outputs.adapter_ver }}\` |"
+            echo "| runtime | \`${{ steps.ver.outputs.runtime_ver }}\` |"
+            echo "| wheel | \`$(basename "${{ steps.art.outputs.wheel }}")\` |"
+            echo "| bundle | \`$(basename "${{ steps.art.outputs.tarball }}")\` |"
+            echo ""
+            echo "\`fusion-bridge-mcp install\` now resolves:"
+            echo "\`https://github.com/${{ github.repository }}/releases/download/${{ steps.ver.outputs.tag }}/$(basename "${{ steps.art.outputs.tarball }}")\`"
+          } >> "$GITHUB_STEP_SUMMARY"

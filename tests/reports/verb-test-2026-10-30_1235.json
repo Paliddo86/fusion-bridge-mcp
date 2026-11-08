@@ -1,0 +1,91 @@
+{
+ "date": "2026-10-30_1235",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 8,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 5,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 6.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_list_installed_libraries",
+   "status": "PASS",
+   "why": "",
+   "sec": 23.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_add_symbol_art",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_lint_library",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_update_footprints_from_library",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_edit_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 32.0
+}

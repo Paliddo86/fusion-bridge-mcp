@@ -1,0 +1,99 @@
+{
+ "date": "2026-09-20_2104",
+ "target": "arav-rog",
+ "tier": "daily",
+ "pass": 10,
+ "fail": 0,
+ "sections": {
+  "aps": {
+   "PASS": 7,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "auth-tokens": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_get_browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "PASS",
+   "why": "",
+   "sec": 49.8,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_recent",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.7,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_browse",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_file_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 28.9,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_get",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.1,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 95.9
+}

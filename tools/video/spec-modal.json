@@ -1,0 +1,49 @@
+{
+ "fusion": "uf/desktop-m0-20261004-212039.mp4",
+ "hydrogen": "uf/desktop-m0-20261004-212039.mp4",
+ "sections": [
+  {
+   "a": 2,
+   "b": 11,
+   "mode": "full",
+   "label": "The prompt, typed into Codex in Hydrogen",
+   "text": "This prompt asks Codex to recreate Aske's point two: run the ADD command from a script, so Fusion's library picker blocks it."
+  },
+  {
+   "a": 11,
+   "b": 98,
+   "mode": "full",
+   "label": "Codex opens the board and runs ADD from a script",
+   "text": "Codex opens the board in Fusion, then runs ADD from a script."
+  },
+  {
+   "a": 98,
+   "b": 150,
+   "mode": "full",
+   "label": "Fusion's modal picker pops up, and the script is blocked",
+   "text": "And there it is: Fusion's modal library picker pops up over your work, and the script is stuck until someone closes it."
+  },
+  {
+   "a": 150,
+   "b": 203,
+   "mode": "full",
+   "label": "The bridge reads the dialog through UI Automation",
+   "text": "The bridge reads the dialog through Windows UI Automation: its title, its text, and all four buttons."
+  },
+  {
+   "a": 203,
+   "b": 216,
+   "mode": "full",
+   "label": "Cancelled in the background, no focus stolen",
+   "text": "Then it presses Cancel in the background, with no mouse and no focus change, and the script carries on."
+  },
+  {
+   "a": 230,
+   "b": 250,
+   "mode": "full",
+   "label": "Codex reports back",
+   "text": "Codex reports back: the script resumed, and Fusion is responsive again, with no blocking dialogs."
+  }
+ ],
+ "fullCrop": "1720:1530:0:0"
+}

@@ -1,0 +1,119 @@
+{
+ "date": "2026-10-29_1421",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 12,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 9,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_length_tune",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_copper_balance",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_silk_designators",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_assembly_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 7.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_report",
+   "status": "PASS",
+   "why": "",
+   "sec": 29.2,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_find_space",
+   "status": "PASS",
+   "why": "",
+   "sec": 17.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plan_fanout",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic_review",
+   "status": "PASS",
+   "why": "",
+   "sec": 9.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_pin_pad_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 8.3,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 88.0
+}

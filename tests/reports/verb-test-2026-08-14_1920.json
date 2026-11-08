@@ -1,0 +1,37 @@
+{
+ "date": "2026-08-14_1920",
+ "target": "AdomLapper",
+ "tier": "daily",
+ "pass": 2,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_demo_progress#unknown",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 0.5
+}

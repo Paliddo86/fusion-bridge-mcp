@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20mm" height="10mm" viewBox="0 0 200 100">
+  <g transform="translate(10,10)">
+    <path d="M0 0 H80 V80 H0 Z M20 20 V60 H60 V20 Z" fill="black"/>
+    <circle cx="140" cy="40" r="30" fill="#000"/>
+    <path d="M110 70 a30 30 0 0 1 60 0 q -30 20 -60 0z" style="fill:black"/>
+  </g>
+  <path d="M0 95 L200 95" stroke="black" fill="none"/>
+  <text x="10" y="90">Hi</text>
+</svg>

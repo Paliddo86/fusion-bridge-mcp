@@ -1,0 +1,26 @@
+{
+ "first": [
+  {
+   "package": "QFN-48_7x7mm",
+   "wip_urn": "urn:adsk.wipprod:fs.file:vf.GOLD0?version=1"
+  },
+  {
+   "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+   "wip_urn": "urn:adsk.wipprod:fs.file:vf.GOLD1?version=1"
+  },
+  {
+   "package": "LQFP-64_10x10mm_P0.5mm",
+   "wip_urn": "urn:adsk.wipprod:fs.file:vf.GOLD2?version=1"
+  }
+ ],
+ "second": [
+  {
+   "package": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "wip_urn": "urn:adsk.wipprod:fs.file:vf.GOLD3?version=1"
+  },
+  {
+   "package": "IN-S63BTG",
+   "wip_urn": "urn:adsk.wipprod:fs.file:vf.GOLD4?version=1"
+  }
+ ]
+}

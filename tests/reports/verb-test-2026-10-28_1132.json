@@ -1,0 +1,57 @@
+{
+ "date": "2026-10-28_1132",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 4,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_create_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_create_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 0.3
+}

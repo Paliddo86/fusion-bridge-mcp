@@ -1,0 +1,102 @@
+{
+ "ABM8-16.000MHZ-B2-T": {
+  "file": "ABM8-16.000MHZ-B2-T.lbrx",
+  "package": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+  "packages": [
+   "Crystal_SMD_3225-4Pin_3.2x2.5mm"
+  ],
+  "symbols": [
+   "ABM8-16.000MHZ-B2-T"
+  ]
+ },
+ "ABM8-16.000MHZ-B2-T::Crystal_SMD_3225-4Pin_3.2x2.5mm": {
+  "file": "ABM8-16.000MHZ-B2-T__Crystal_SMD_3225-4Pin_3.2x2.5mm.lbrx",
+  "package": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+  "packages": [
+   "Crystal_SMD_3225-4Pin_3.2x2.5mm"
+  ],
+  "symbols": [
+   "ABM8-16.000MHZ-B2-T"
+  ]
+ },
+ "CH340G": {
+  "file": "CH340G.lbrx",
+  "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+  "packages": [
+   "SOIC-16_3.9x9.9mm_P1.27mm"
+  ],
+  "symbols": [
+   "CH340G"
+  ]
+ },
+ "CH340G::SOIC-16_3.9x9.9mm_P1.27mm": {
+  "file": "CH340G__SOIC-16_3.9x9.9mm_P1.27mm.lbrx",
+  "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+  "packages": [
+   "SOIC-16_3.9x9.9mm_P1.27mm"
+  ],
+  "symbols": [
+   "CH340G"
+  ]
+ },
+ "IN-S63BTG": {
+  "file": "IN-S63BTG.lbrx",
+  "package": "IN-S63BTG",
+  "packages": [
+   "IN-S63BTG"
+  ],
+  "symbols": [
+   "IN-S63BTG"
+  ]
+ },
+ "IN-S63BTG::IN-S63BTG": {
+  "file": "IN-S63BTG__IN-S63BTG.lbrx",
+  "package": "IN-S63BTG",
+  "packages": [
+   "IN-S63BTG"
+  ],
+  "symbols": [
+   "IN-S63BTG"
+  ]
+ },
+ "LAN7800": {
+  "file": "LAN7800.lbrx",
+  "package": "QFN-48_7x7mm",
+  "packages": [
+   "QFN-48_7x7mm"
+  ],
+  "symbols": [
+   "LAN7800"
+  ]
+ },
+ "LAN7800::QFN-48_7x7mm": {
+  "file": "LAN7800__QFN-48_7x7mm.lbrx",
+  "package": "QFN-48_7x7mm",
+  "packages": [
+   "QFN-48_7x7mm"
+  ],
+  "symbols": [
+   "LAN7800"
+  ]
+ },
+ "STM32L431RCT6TR": {
+  "file": "STM32L431RCT6TR.lbrx",
+  "package": "LQFP-64_10x10mm_P0.5mm",
+  "packages": [
+   "LQFP-64_10x10mm_P0.5mm"
+  ],
+  "symbols": [
+   "STM32L431RCT6TR"
+  ]
+ },
+ "STM32L431RCT6TR::LQFP-64_10x10mm_P0.5mm": {
+  "file": "STM32L431RCT6TR__LQFP-64_10x10mm_P0.5mm.lbrx",
+  "package": "LQFP-64_10x10mm_P0.5mm",
+  "packages": [
+   "LQFP-64_10x10mm_P0.5mm"
+  ],
+  "symbols": [
+   "STM32L431RCT6TR"
+  ]
+ }
+}

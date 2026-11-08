@@ -1,0 +1,98 @@
+{
+ "date": "2026-10-29_1529",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 9,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 6,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 14.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_report",
+   "status": "PASS",
+   "why": "",
+   "sec": 39.7,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_import_part",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_not_supported",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_models",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_add_models",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_swap_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 55.7
+}

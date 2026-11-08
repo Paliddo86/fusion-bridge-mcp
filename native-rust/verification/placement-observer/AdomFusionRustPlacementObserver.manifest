@@ -1,0 +1,12 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "addin",
+  "id": "4de3f7d6-5562-4e4c-b78d-41b3a4ee7fae",
+  "author": "Adom",
+  "description": {
+    "": "Read-only selected occurrence pose, snapshot and assembly observer."
+  },
+  "version": "0.1.0",
+  "runOnStartup": false,
+  "supportedOS": "windows"
+}

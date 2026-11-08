@@ -1,0 +1,58 @@
+{
+ "dev": [
+  "LAN7800",
+  "CH340G",
+  "STM32L431RCT6TR",
+  "ABM8-16.000MHZ-B2-T",
+  "IN-S63BTG"
+ ],
+ "dev_pac": {
+  "ABM8-16.000MHZ-B2-T": [
+   "Crystal_SMD_3225-4Pin_3.2x2.5mm"
+  ],
+  "CH340G": [
+   "SOIC-16_3.9x9.9mm_P1.27mm"
+  ],
+  "IN-S63BTG": [
+   "IN-S63BTG"
+  ],
+  "LAN7800": [
+   "QFN-48_7x7mm"
+  ],
+  "STM32L431RCT6TR": [
+   "LQFP-64_10x10mm_P0.5mm"
+  ]
+ },
+ "dev_sym": {
+  "ABM8-16.000MHZ-B2-T": [
+   "ABM8-16.000MHZ-B2-T"
+  ],
+  "CH340G": [
+   "CH340G"
+  ],
+  "IN-S63BTG": [
+   "IN-S63BTG"
+  ],
+  "LAN7800": [
+   "LAN7800"
+  ],
+  "STM32L431RCT6TR": [
+   "STM32L431RCT6TR"
+  ]
+ },
+ "p3d": [],
+ "pac": [
+  "QFN-48_7x7mm",
+  "SOIC-16_3.9x9.9mm_P1.27mm",
+  "LQFP-64_10x10mm_P0.5mm",
+  "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+  "IN-S63BTG"
+ ],
+ "sym": [
+  "LAN7800",
+  "CH340G",
+  "STM32L431RCT6TR",
+  "ABM8-16.000MHZ-B2-T",
+  "IN-S63BTG"
+ ]
+}

@@ -1,0 +1,56 @@
+{
+ "date": "2026-08-14_1943",
+ "target": "AdomLapper",
+ "tier": "daily",
+ "pass": 2,
+ "fail": 2,
+ "sections": {
+  "exports": {
+   "PASS": 0,
+   "FAIL": 2,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_export_optimized_glb",
+   "status": "FAIL",
+   "why": "expected success, got error=Fusion main thread busy \u2014 get_app_state running for 6.5s (from another bridge/se code=main_thread_busy; missing field 'exportId'",
+   "sec": 0.7,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_fetch_optimized_glb",
+   "status": "FAIL",
+   "why": "fixture staging failed: export_optimized_glb returned no exportId (async start failed)",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_demo_progress#unknown",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 0.9
+}

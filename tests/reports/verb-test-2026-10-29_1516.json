@@ -1,0 +1,98 @@
+{
+ "date": "2026-10-29_1516",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 6,
+ "fail": 3,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 5,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 0,
+   "FAIL": 2,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 0,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'lane-import', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'counts'; missing field 'engine'",
+   "sec": 1.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_report",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'lane-import', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'path'; missing field 'engine'",
+   "sec": 1.2,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_footprint_from_land_pattern",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_import_part",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_build_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_test_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_plan_route",
+   "status": "FAIL",
+   "why": "expected success, got error=Activate a PCB board before reading or routing it code=wrong_document",
+   "sec": 1.4,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 6.7
+}

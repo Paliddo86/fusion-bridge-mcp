@@ -1,0 +1,38 @@
+{
+ "date": "2026-08-15_0204",
+ "target": "AdomLapper",
+ "tier": "daily",
+ "pass": 0,
+ "fail": 3,
+ "sections": {
+  "gui-driving": {
+   "PASS": 0,
+   "FAIL": 3,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_show_schematic",
+   "status": "FAIL",
+   "why": "expected success, got error=Switch to schematic failed: 3 : Please open or create an electronics design to c code=None",
+   "sec": 1.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_2d_board",
+   "status": "FAIL",
+   "why": "expected success, got error=Switch to 2D board failed: 3 : Please open or create an electronics design to co code=None",
+   "sec": 0.8,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "FAIL",
+   "why": "foreground is 'Fusion360' after the run",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 2.0
+}

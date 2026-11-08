@@ -1,0 +1,98 @@
+{
+ "date": "2026-10-30_1423",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 9,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 5,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_sch_batch#rollback",
+   "status": "PASS",
+   "why": "",
+   "sec": 17.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_report",
+   "status": "PASS",
+   "why": "",
+   "sec": 21.7,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_placement_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic_data",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic_review",
+   "status": "PASS",
+   "why": "",
+   "sec": 6.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_pin_pad_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.5,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 68.4
+}

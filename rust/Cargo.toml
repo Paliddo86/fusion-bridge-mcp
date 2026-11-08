@@ -1,0 +1,22 @@
+[workspace]
+resolver = "2"
+members = ["core", "lbr", "os-win", "os-mac", "bridge"]
+
+# One version for the whole bridge, in lockstep with BRIDGE_VERSION (tools/release.sh bumps both).
+[workspace.package]
+version = "1.13.84"
+edition = "2021"
+license = "MIT"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
+thiserror = "1"
+tiny_http = "0.12"
+ureq = { version = "2", features = ["json"] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+strip = true
+codegen-units = 1

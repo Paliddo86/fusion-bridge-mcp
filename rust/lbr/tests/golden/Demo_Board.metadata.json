@@ -1,0 +1,101 @@
+{
+ "devicesets": [
+  {
+   "description": "Microchip LAN7800 SuperSpeed USB 3.1 Gen1 to 10/100/1000 Ethernet Controller, QFN-48",
+   "name": "LAN7800",
+   "variants": [
+    {
+     "attributes": {},
+     "device": "",
+     "fullName": "LAN7800",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "package": "QFN-48_7x7mm",
+     "technology": ""
+    }
+   ]
+  },
+  {
+   "description": "USB serial converter, UART, SOIC-16",
+   "name": "CH340G",
+   "variants": [
+    {
+     "attributes": {},
+     "device": "",
+     "fullName": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+     "technology": ""
+    }
+   ]
+  },
+  {
+   "description": "",
+   "name": "STM32L431RCT6TR",
+   "variants": [
+    {
+     "attributes": {},
+     "device": "",
+     "fullName": "STM32L431RCT6TR",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "package": "LQFP-64_10x10mm_P0.5mm",
+     "technology": ""
+    }
+   ]
+  },
+  {
+   "description": "Four pin crystal, GND on pins 2 and 4",
+   "name": "ABM8-16.000MHZ-B2-T",
+   "variants": [
+    {
+     "attributes": {},
+     "device": "",
+     "fullName": "ABM8-16.000MHZ-B2-T",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "package": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+     "technology": ""
+    }
+   ]
+  },
+  {
+   "description": "Light emitting diode",
+   "name": "IN-S63BTG",
+   "variants": [
+    {
+     "attributes": {},
+     "device": "",
+     "fullName": "IN-S63BTG",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "package": "IN-S63BTG",
+     "technology": ""
+    }
+   ]
+  }
+ ],
+ "ok": true,
+ "totals": {
+  "devicesets": 5,
+  "variants": 5,
+  "withDistributor": 0,
+  "withMpn": 0
+ }
+}

@@ -1,0 +1,112 @@
+{
+ "date": "2026-10-29_1544",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 10,
+ "fail": 1,
+ "sections": {
+  "routing": {
+   "PASS": 6,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "bridge-lifecycle": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_fab_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 5.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_silk_designators",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_assembly_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 7.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_report",
+   "status": "PASS",
+   "why": "",
+   "sec": 28.2,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_thermal_vias",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_via_fence",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_teardrops",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_panelize",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.5,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_plan_route",
+   "status": "FAIL",
+   "why": "expected success, got error=expectDocument must match the active board name exactly code=wrong_document",
+   "sec": 1.2,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 56.3
+}

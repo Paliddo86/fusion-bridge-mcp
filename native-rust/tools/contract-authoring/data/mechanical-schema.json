@@ -1,0 +1,6993 @@
+{
+  "inspect": {
+    "type": "object",
+    "required": [
+      "op"
+    ],
+    "properties": {},
+    "description": "Inspect the active Design without mutation. Returns target identity/revision, native component-space bodies and occurrence transforms, parameters and feature health."
+  },
+  "inspect_entity": {
+    "type": "object",
+    "required": [
+      "op",
+      "target",
+      "entity"
+    ],
+    "properties": {
+      "entity": {
+        "type": "object",
+        "description": "Exact reference returned by inspect; resolves uniquely with document/revision/type/occurrence guards."
+      }
+    }
+  },
+  "new_design": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "operationId"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "box": {
+        "type": "object",
+        "required": [
+          "width",
+          "height",
+          "depth"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "width": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "height": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "depth": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        }
+      }
+    },
+    "description": "Create an unnamed unsaved parametric hybrid Design; name is retained as requestedName metadata to keep failure recovery free of save dialogs. Optional box dimensions in mm create a driving-parameter fixture. Never edits an existing document."
+  },
+  "parameter_set": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "name",
+      "expression"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "expression": {
+        "type": "string"
+      }
+    },
+    "description": "Set an expression, recompute and inspect health. Failure restores old expression and reports a semantic recovery witness; not an atomic transaction."
+  },
+  "parameter_create": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "name",
+      "expression",
+      "unit"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "expression": {
+        "type": "string"
+      },
+      "unit": {
+        "enum": [
+          "mm",
+          "deg",
+          "kg",
+          ""
+        ]
+      },
+      "comment": {
+        "type": "string"
+      }
+    }
+  },
+  "health": {
+    "type": "object",
+    "required": [
+      "op",
+      "target"
+    ],
+    "properties": {
+      "recompute": {
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "description": "Read timeline warnings/errors. recompute:true also requires current target revision, sessionId and operationId."
+  },
+  "export": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "outputPath"
+    ],
+    "properties": {
+      "format": {
+        "enum": [
+          "step",
+          "stl",
+          "3mf",
+          "f3d",
+          "iges",
+          "sat",
+          "smt",
+          "usdz",
+          "fbx",
+          "skp"
+        ],
+        "default": "step"
+      },
+      "outputPath": {
+        "type": "string"
+      },
+      "overwrite": {
+        "type": "boolean",
+        "default": false
+      },
+      "refinement": {
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "default": "medium"
+      }
+    },
+    "description": "Export entire design using runtime-checked API. Preflight and unique same-filesystem staging preserve the destination on failure; publish only nonempty verified output. Availability differs by Fusion build. STL numeric coordinates use mm."
+  },
+  "transaction_probe": {
+    "type": "object",
+    "properties": {},
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target"
+    ],
+    "description": "Verify runtime PTransaction abort+commit using temporary user parameters, remove probe data and compare semantic restoration. Required once per running add-in session before feature/sketch/atomic-batch writes. Returns fresh target; inspect again for current references."
+  },
+  "sketch_create": {
+    "type": "object",
+    "properties": {
+      "plane": {
+        "oneOf": [
+          {
+            "enum": [
+              "xy",
+              "xz",
+              "yz"
+            ]
+          },
+          {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          }
+        ]
+      },
+      "component": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "name": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target"
+    ],
+    "description": "Create a native component-definition sketch on an origin/construction plane or planar face. Coordinates in subsequent geometry are sketch-space mm."
+  },
+  "sketch_geometry": {
+    "type": "object",
+    "properties": {
+      "sketch": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "point"
+                  ]
+                },
+                "position": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "type",
+                "position"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "line"
+                  ]
+                },
+                "start": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "end": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "construction": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "start",
+                "end"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "rectangle"
+                  ]
+                },
+                "start": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "end": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "construction": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "start",
+                "end"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "circle"
+                  ]
+                },
+                "center": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "radius": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "construction": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "center",
+                "radius"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "arc"
+                  ]
+                },
+                "center": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "start": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "sweep": {
+                  "type": "number"
+                },
+                "construction": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "center",
+                "start",
+                "sweep"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "polygon"
+                  ]
+                },
+                "center": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "radius": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "sides": {
+                  "type": "integer",
+                  "minimum": 3,
+                  "maximum": 128
+                },
+                "angle": {
+                  "type": "number"
+                },
+                "construction": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "center",
+                "radius",
+                "sides"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "slot"
+                  ]
+                },
+                "start": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "end": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 3
+                },
+                "width": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "construction": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "start",
+                "end",
+                "width"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "spline"
+                  ]
+                },
+                "points": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 3
+                  },
+                  "minItems": 2,
+                  "maxItems": 128
+                },
+                "closed": {
+                  "type": "boolean"
+                },
+                "construction": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "points"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 128
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "sketch",
+      "items"
+    ],
+    "description": "Create a transactionally grouped set of sketch primitives. Numeric geometry uses mm and arc sweeps/polygon angles use deg."
+  },
+  "sketch_constraint": {
+    "type": "object",
+    "properties": {
+      "sketch": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "type": {
+        "enum": [
+          "horizontal",
+          "vertical",
+          "coincident",
+          "parallel",
+          "perpendicular",
+          "tangent",
+          "equal",
+          "concentric",
+          "collinear",
+          "midpoint",
+          "symmetry",
+          "fix"
+        ]
+      },
+      "entities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "documentId",
+            "revision",
+            "objectType"
+          ],
+          "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+        },
+        "minItems": 1,
+        "maxItems": 256
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "sketch",
+      "type",
+      "entities"
+    ],
+    "description": "Constrain entities in one sketch. midpoint order is point,line; symmetry order entity1,entity2,symmetryLine. fix sets one entity fixed."
+  },
+  "sketch_dimension": {
+    "type": "object",
+    "properties": {
+      "sketch": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "type": {
+        "enum": [
+          "distance",
+          "horizontal",
+          "vertical",
+          "radius",
+          "diameter",
+          "angle"
+        ]
+      },
+      "entities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "documentId",
+            "revision",
+            "objectType"
+          ],
+          "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+        },
+        "minItems": 1,
+        "maxItems": 256
+      },
+      "expression": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "position": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 3
+      },
+      "parameterName": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "sketch",
+      "type",
+      "entities",
+      "expression",
+      "position"
+    ],
+    "description": "Add driving dimensions. Distance uses two point references; radius/diameter one curve; angle two lines. Numeric expressions use mm or deg."
+  },
+  "sketch_project": {
+    "type": "object",
+    "properties": {
+      "sketch": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "entities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "documentId",
+            "revision",
+            "objectType"
+          ],
+          "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+        },
+        "minItems": 1,
+        "maxItems": 256
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "sketch",
+      "entities"
+    ],
+    "description": "Project selected topology into a sketch with Fusion associative projection."
+  },
+  "sketch_edit": {
+    "type": "object",
+    "properties": {
+      "sketch": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "entity": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "changes": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          },
+          "start": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          },
+          "end": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          },
+          "center": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          },
+          "radius": {
+            "type": "number"
+          },
+          "construction": {
+            "type": "boolean"
+          },
+          "fixed": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "sketch",
+      "entity",
+      "changes"
+    ],
+    "description": "Move sketch points/endpoints/centers in sketch-space mm, change radius or construction/fixed flags; solver failure aborts the operation."
+  },
+  "plane_create": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "enum": [
+          "offset",
+          "angle"
+        ]
+      },
+      "plane": {
+        "oneOf": [
+          {
+            "enum": [
+              "xy",
+              "xz",
+              "yz"
+            ]
+          },
+          {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          }
+        ]
+      },
+      "component": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "offset": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "axis": {
+        "oneOf": [
+          {
+            "enum": [
+              "x",
+              "y",
+              "z"
+            ]
+          },
+          {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          }
+        ]
+      },
+      "angle": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "name": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "type"
+    ],
+    "description": "Create offset plane (offset in mm) or angled plane around axis (angle in deg).",
+    "oneOf": [
+      {
+        "type": "object",
+        "required": [
+          "type",
+          "offset"
+        ],
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ]
+          },
+          "plane": {
+            "oneOf": [
+              {
+                "enum": [
+                  "xy",
+                  "xz",
+                  "yz"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "offset"
+            ]
+          },
+          "offset": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "required": [
+          "type",
+          "axis",
+          "angle"
+        ],
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ]
+          },
+          "plane": {
+            "oneOf": [
+              {
+                "enum": [
+                  "xy",
+                  "xz",
+                  "yz"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "angle"
+            ]
+          },
+          "axis": {
+            "oneOf": [
+              {
+                "enum": [
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "angle": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    ]
+  },
+  "feature_create": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "enum": [
+          "extrude",
+          "revolve",
+          "fillet",
+          "chamfer",
+          "shell",
+          "hole",
+          "loft",
+          "sweep",
+          "combine",
+          "split",
+          "move",
+          "mirror",
+          "rectangular_pattern",
+          "circular_pattern",
+          "draft",
+          "thread"
+        ]
+      },
+      "component": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "name": {
+        "type": "string"
+      },
+      "profiles": {},
+      "distance": {},
+      "direction": {},
+      "taper": {},
+      "bodies": {},
+      "operation": {},
+      "axis": {},
+      "angle": {},
+      "edges": {},
+      "radius": {},
+      "tangentChain": {},
+      "faces": {},
+      "thickness": {},
+      "points": {},
+      "diameter": {},
+      "depth": {},
+      "path": {},
+      "body": {},
+      "tools": {},
+      "keepTools": {},
+      "plane": {},
+      "extend": {},
+      "translation": {},
+      "origin": {},
+      "count": {},
+      "spacing": {},
+      "axis2": {},
+      "count2": {},
+      "spacing2": {},
+      "internal": {},
+      "threadType": {},
+      "designation": {},
+      "threadClass": {},
+      "modeled": {}
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "type"
+    ],
+    "description": "Create a typed native solid feature. All length quantities are mm (or expressions), angles deg. Cut/intersect require explicit participant bodies. Join needs a single existing component body; combine selects multiple bodies explicitly. Feature availability is runtime-checked; missing APIs fail before commit.",
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "extrude"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "distance": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "direction": {
+            "enum": [
+              "positive",
+              "negative",
+              "symmetric"
+            ]
+          },
+          "taper": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "operation": {
+            "enum": [
+              "new_body",
+              "join",
+              "cut",
+              "intersect"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "profiles",
+          "distance"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "revolve"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "axis": {
+            "oneOf": [
+              {
+                "enum": [
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "angle": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "operation": {
+            "enum": [
+              "new_body",
+              "join",
+              "cut",
+              "intersect"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "profiles",
+          "axis",
+          "angle"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "fillet"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "radius": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "tangentChain": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "edges",
+          "radius"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "chamfer"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "distance": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "tangentChain": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "edges",
+          "distance"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "shell"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "faces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "thickness": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "tangentChain": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "faces",
+          "thickness"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "hole"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "diameter": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "depth": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          }
+        },
+        "required": [
+          "type",
+          "points",
+          "diameter",
+          "depth",
+          "bodies"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "loft"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "operation": {
+            "enum": [
+              "new_body",
+              "join",
+              "cut",
+              "intersect"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "profiles"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "sweep"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "path": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "operation": {
+            "enum": [
+              "new_body",
+              "join",
+              "cut",
+              "intersect"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "profiles",
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "combine"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "body": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "operation": {
+            "enum": [
+              "join",
+              "cut",
+              "intersect"
+            ]
+          },
+          "keepTools": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "body",
+          "tools",
+          "operation"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "split"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "plane": {
+            "oneOf": [
+              {
+                "enum": [
+                  "xy",
+                  "xz",
+                  "yz"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "extend": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "bodies",
+          "plane"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "move"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          },
+          "axis": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "angle": {
+            "type": "number"
+          },
+          "origin": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "type",
+          "bodies"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "mirror"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "plane": {
+            "oneOf": [
+              {
+                "enum": [
+                  "xy",
+                  "xz",
+                  "yz"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "bodies",
+          "plane"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "rectangular_pattern"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "axis": {
+            "oneOf": [
+              {
+                "enum": [
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 1000
+          },
+          "spacing": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "axis2": {
+            "oneOf": [
+              {
+                "enum": [
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "count2": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "spacing2": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "bodies",
+          "axis",
+          "count",
+          "spacing"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "circular_pattern"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "bodies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "axis": {
+            "oneOf": [
+              {
+                "enum": [
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 1000
+          },
+          "angle": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "bodies",
+          "axis",
+          "count"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "draft"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "faces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "plane": {
+            "oneOf": [
+              {
+                "enum": [
+                  "xy",
+                  "xz",
+                  "yz"
+                ]
+              },
+              {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+              }
+            ]
+          },
+          "angle": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "tangentChain": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "faces",
+          "plane",
+          "angle"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "thread"
+            ]
+          },
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision"
+            ],
+            "properties": {
+              "documentId": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+          },
+          "name": {
+            "type": "string"
+          },
+          "faces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "documentId",
+                "revision",
+                "objectType"
+              ],
+              "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "internal": {
+            "type": "boolean"
+          },
+          "threadType": {
+            "type": "string"
+          },
+          "designation": {
+            "type": "string"
+          },
+          "threadClass": {
+            "type": "string"
+          },
+          "modeled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "faces",
+          "internal",
+          "threadType",
+          "designation",
+          "threadClass"
+        ],
+        "additionalProperties": false
+      }
+    ]
+  },
+  "feature_edit": {
+    "type": "object",
+    "properties": {
+      "feature": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      },
+      "name": {
+        "type": "string"
+      },
+      "suppressed": {
+        "type": "boolean"
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "feature"
+    ],
+    "description": "Rename/suppress a feature or change expressions of model parameters whose createdBy is that exact feature; read health and abort on downstream errors."
+  },
+  "entity_delete": {
+    "type": "object",
+    "properties": {
+      "entity": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Reference returned by inspect/inspect_entity in this document revision; native component-definition references for authoring."
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "entity"
+    ],
+    "description": "Delete sketch geometry or independently deletable timeline features. Model transaction and semantic recovery cover downstream failures; document and external file deletion are excluded."
+  },
+  "parameter_batch": {
+    "type": "object",
+    "properties": {
+      "changes": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "enum": [
+                    "create"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                },
+                "unit": {
+                  "enum": [
+                    "mm",
+                    "deg",
+                    "kg",
+                    ""
+                  ]
+                },
+                "comment": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "action",
+                "name",
+                "expression",
+                "unit"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "enum": [
+                    "set"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "action",
+                "name",
+                "expression"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "enum": [
+                    "delete"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "action",
+                "name"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 128
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "changes"
+    ],
+    "description": "Atomic sequential create/set/delete parameter edits with one recompute+health gate; delete supports user parameters only. Any failure aborts all edits and reports semantic recovery."
+  },
+  "component_create": {
+    "type": "object",
+    "properties": {
+      "parent": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "name": {
+        "type": "string"
+      },
+      "transform": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "axis": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "angle": {
+            "type": "number"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "description": "Absolute rotation about the given nonzero axis through origin (deg), then translation (mm). Create/insert use parent component coordinates; updates use the selected occurrence assembly context."
+      },
+      "metadata": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "partNumber": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "supplier": {
+            "type": "string"
+          },
+          "supplierPartNumber": {
+            "type": "string"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "asPurchased": {
+            "type": "boolean"
+          },
+          "excludeFromBom": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "name"
+    ],
+    "description": "Create a native internal component and its first occurrence in a Hybrid design. parent is a component definition; edits to it affect every instance. Returns a representative root-context occurrence and all affectedOccurrences when the parent definition is reused."
+  },
+  "occurrence_insert": {
+    "type": "object",
+    "properties": {
+      "component": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "parent": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "transform": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "axis": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "angle": {
+            "type": "number"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "description": "Absolute rotation about the given nonzero axis through origin (deg), then translation (mm). Create/insert use parent component coordinates; updates use the selected occurrence assembly context."
+      },
+      "independentCopy": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "component"
+    ],
+    "description": "Insert another occurrence of an existing definition; independentCopy:true uses Paste New to create a separate definition. Nested placement is in parent component coordinates. Returns a representative root-context occurrence and all affectedOccurrences when the parent definition is reused."
+  },
+  "occurrence_update": {
+    "type": "object",
+    "properties": {
+      "occurrence": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "transform": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "axis": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "angle": {
+            "type": "number"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "description": "Absolute rotation about the given nonzero axis through origin (deg), then translation (mm). Create/insert use parent component coordinates; updates use the selected occurrence assembly context."
+      },
+      "grounded": {
+        "type": "boolean"
+      },
+      "groundedToParent": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "occurrence"
+    ],
+    "description": "Set occurrence pose in its assembly context and capture position; explicit grounding/ungrounding. Grounded or constrained transforms fail with recovery."
+  },
+  "occurrence_delete": {
+    "type": "object",
+    "properties": {
+      "occurrence": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "occurrence"
+    ],
+    "description": "Delete one selected occurrence through the shared transaction executor."
+  },
+  "component_metadata": {
+    "type": "object",
+    "properties": {
+      "component": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "changes": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "partNumber": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "supplier": {
+            "type": "string"
+          },
+          "supplierPartNumber": {
+            "type": "string"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "asPurchased": {
+            "type": "boolean"
+          },
+          "excludeFromBom": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "changes"
+    ],
+    "description": "Update component-definition name/part number/description and persistent supplier or BOM attributes. Shared occurrences all see this metadata."
+  },
+  "joint_create": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "enum": [
+          "rigid",
+          "revolute",
+          "slider",
+          "cylindrical",
+          "pin_slot",
+          "planar",
+          "ball"
+        ]
+      },
+      "occurrenceOne": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "occurrenceTwo": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "geometry": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "keyPoint": {
+            "enum": [
+              "center",
+              "start",
+              "middle",
+              "end"
+            ]
+          }
+        },
+        "required": [
+          "entity"
+        ],
+        "additionalProperties": false
+      },
+      "axis": {
+        "enum": [
+          "x",
+          "y",
+          "z"
+        ]
+      },
+      "name": {
+        "type": "string"
+      },
+      "suppressed": {
+        "type": "boolean"
+      },
+      "rotationLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "slideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "rotationValue": {
+        "type": "number"
+      },
+      "slideValue": {
+        "type": "number"
+      },
+      "primarySlideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "primarySlideValue": {
+        "type": "number"
+      },
+      "secondarySlideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "secondarySlideValue": {
+        "type": "number"
+      },
+      "pitchLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "pitchValue": {
+        "type": "number"
+      },
+      "rollLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "rollValue": {
+        "type": "number"
+      },
+      "yawLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "yawValue": {
+        "type": "number"
+      },
+      "slideAxis": {
+        "enum": [
+          "x",
+          "y",
+          "z"
+        ]
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "type",
+      "occurrenceOne",
+      "occurrenceTwo"
+    ],
+    "description": "Create an as-built joint without moving occurrences. Non-rigid motion requires explicit joint geometry; x/y/z are joint-coordinate directions. Limits and drive values use mm/deg. Seven native motion types; ball uses joint Z pitch/X yaw; planar uses native primary slide direction reported on readback. Use regular_joint_create for geometry-solving placement.",
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object"
+          },
+          "type": {
+            "enum": [
+              "rigid"
+            ]
+          },
+          "occurrenceOne": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "occurrenceTwo": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "name": {
+            "type": "string"
+          },
+          "suppressed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object"
+          },
+          "type": {
+            "enum": [
+              "revolute"
+            ]
+          },
+          "occurrenceOne": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "occurrenceTwo": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "name": {
+            "type": "string"
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          "axis": {
+            "enum": [
+              "x",
+              "y",
+              "z"
+            ]
+          },
+          "rotationLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "rotationValue": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "geometry"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object"
+          },
+          "type": {
+            "enum": [
+              "slider"
+            ]
+          },
+          "occurrenceOne": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "occurrenceTwo": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "name": {
+            "type": "string"
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          "axis": {
+            "enum": [
+              "x",
+              "y",
+              "z"
+            ]
+          },
+          "slideLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "slideValue": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "geometry"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object"
+          },
+          "type": {
+            "enum": [
+              "cylindrical"
+            ]
+          },
+          "occurrenceOne": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "occurrenceTwo": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "name": {
+            "type": "string"
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          "axis": {
+            "enum": [
+              "x",
+              "y",
+              "z"
+            ]
+          },
+          "rotationLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "rotationValue": {
+            "type": "number"
+          },
+          "slideLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "slideValue": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "geometry"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object"
+          },
+          "type": {
+            "enum": [
+              "pin_slot"
+            ]
+          },
+          "occurrenceOne": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "occurrenceTwo": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "name": {
+            "type": "string"
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          "axis": {
+            "enum": [
+              "x",
+              "y",
+              "z"
+            ]
+          },
+          "slideAxis": {
+            "enum": [
+              "x",
+              "y",
+              "z"
+            ]
+          },
+          "rotationLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "rotationValue": {
+            "type": "number"
+          },
+          "slideLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "slideValue": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "geometry"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object"
+          },
+          "type": {
+            "enum": [
+              "planar"
+            ]
+          },
+          "occurrenceOne": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "occurrenceTwo": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "name": {
+            "type": "string"
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          "axis": {
+            "enum": [
+              "x",
+              "y",
+              "z"
+            ]
+          },
+          "rotationLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "rotationValue": {
+            "type": "number"
+          },
+          "primarySlideLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "primarySlideValue": {
+            "type": "number"
+          },
+          "secondarySlideLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "secondarySlideValue": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "geometry"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object"
+          },
+          "type": {
+            "enum": [
+              "ball"
+            ]
+          },
+          "occurrenceOne": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "occurrenceTwo": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "name": {
+            "type": "string"
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          "pitchLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "pitchValue": {
+            "type": "number"
+          },
+          "rollLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "rollValue": {
+            "type": "number"
+          },
+          "yawLimits": {
+            "type": "object",
+            "properties": {
+              "minimum": {
+                "type": "number"
+              },
+              "maximum": {
+                "type": "number"
+              },
+              "rest": {
+                "type": "number"
+              },
+              "minimumEnabled": {
+                "type": "boolean"
+              },
+              "maximumEnabled": {
+                "type": "boolean"
+              },
+              "restEnabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "yawValue": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "geometry"
+        ],
+        "additionalProperties": false
+      }
+    ]
+  },
+  "joint_edit": {
+    "type": "object",
+    "properties": {
+      "joint": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "name": {
+        "type": "string"
+      },
+      "suppressed": {
+        "type": "boolean"
+      },
+      "rotationLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "slideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "rotationValue": {
+        "type": "number"
+      },
+      "slideValue": {
+        "type": "number"
+      },
+      "primarySlideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "primarySlideValue": {
+        "type": "number"
+      },
+      "secondarySlideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "secondarySlideValue": {
+        "type": "number"
+      },
+      "pitchLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "pitchValue": {
+        "type": "number"
+      },
+      "rollLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "rollValue": {
+        "type": "number"
+      },
+      "yawLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "yawValue": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "joint"
+    ],
+    "description": "Edit joint name/suppression, enabled limits, rest and drive values; wrong motion type or out-of-limit values fail with recovery. For driven root joints, active motion links must preserve their settings and their partner motion must follow the native ratio; a coupling mismatch aborts."
+  },
+  "joint_delete": {
+    "type": "object",
+    "properties": {
+      "joint": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "joint"
+    ],
+    "description": "Delete one selected Joint or AsBuiltJoint with recovery verification."
+  },
+  "interference": {
+    "type": "object",
+    "properties": {
+      "entities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "documentId",
+            "revision",
+            "objectType"
+          ],
+          "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+        },
+        "minItems": 2,
+        "maxItems": 256
+      },
+      "includeTouching": {
+        "type": "boolean"
+      },
+      "volumeTolerance": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "entities"
+    ],
+    "description": "Analyze root-context occurrences/body proxies; returns overlap volume mm3 or touching. Does not create interference bodies."
+  },
+  "bom": {
+    "type": "object",
+    "properties": {
+      "explodePurchased": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "target"
+    ],
+    "description": "Structured component-definition and instance BOM; quantities by actual identity, root bodies plus nested children; purchased metadata collapses subtrees unless exploded. Physical mass includes all unsuppressed bodies exactly once per instance. Includes exact current active configuration provenance; incomplete configuration scope refuses. Visibility does not remove quantity."
+  },
+  "bom_export": {
+    "type": "object",
+    "properties": {
+      "filename": {
+        "type": "string"
+      },
+      "overwrite": {
+        "type": "boolean"
+      },
+      "explodePurchased": {
+        "type": "boolean"
+      },
+      "mode": {
+        "enum": [
+          "flat",
+          "structured"
+        ]
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "filename"
+    ],
+    "description": "Export flat grouped purchasing rows or structured parent/path/depth instance rows and supplier provenance to CSV with exclusive/atomic publication. This external effect is separate from model transactions. Both CSV modes include document/revision and current active configuration table/row provenance."
+  },
+  "cad_import": {
+    "type": "object",
+    "properties": {
+      "filename": {
+        "type": "string"
+      },
+      "sha256": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "parent": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "transform": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "axis": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "angle": {
+            "type": "number"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "description": "Absolute rotation about the given nonzero axis through origin (deg), then translation (mm). Create/insert use parent component coordinates; updates use the selected occurrence assembly context."
+      },
+      "provenance": {
+        "type": "object",
+        "properties": {
+          "supplier": {
+            "type": "string"
+          },
+          "supplierPartNumber": {
+            "type": "string"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "supplier",
+          "supplierPartNumber",
+          "sourceUrl"
+        ],
+        "additionalProperties": false
+      },
+      "asPurchased": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "filename",
+      "provenance"
+    ],
+    "description": "Import a pre-downloaded local STEP/SAT into a new wrapper component in Hybrid design. Validate optional expected SHA-256, record actual source/hash/supplier metadata, preserve camera, measure model recovery. Does not fetch URLs or create cloud documents. Returns a representative root-context occurrence and all affectedOccurrences when the parent definition is reused."
+  },
+  "mcmaster_discover": {
+    "type": "object",
+    "properties": {},
+    "required": [
+      "op"
+    ],
+    "description": "Discover Fusion native Insert McMaster-Carr command and requirements in the active design."
+  },
+  "mcmaster_open": {
+    "type": "object",
+    "properties": {},
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target"
+    ],
+    "description": "Invoke Fusion native McMaster UI in the targeted Hybrid design. Interactive external operation: completion/insert/cancel stays with Fusion; inspect afterward. Idempotency records launch only."
+  },
+  "material_list": {
+    "type": "object",
+    "properties": {
+      "libraryId": {
+        "type": "string"
+      },
+      "query": {
+        "type": "string"
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1000
+      }
+    },
+    "required": [
+      "op",
+      "target"
+    ],
+    "description": "List loaded material libraries and matching materials by stable library/material IDs. Omit libraryId for document materials."
+  },
+  "material_assign": {
+    "type": "object",
+    "properties": {
+      "entity": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "libraryId": {
+        "type": "string"
+      },
+      "materialId": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "entity",
+      "materialId"
+    ],
+    "description": "Assign a loaded library or document material to an exact native Component/BRepBody; verify material ID readback with model transaction recovery. Query assembly_properties for resulting mass."
+  },
+  "rigid_group_create": {
+    "type": "object",
+    "properties": {
+      "occurrences": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "documentId",
+            "revision",
+            "objectType"
+          ],
+          "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+        },
+        "minItems": 2,
+        "maxItems": 256
+      },
+      "includeChildren": {
+        "type": "boolean"
+      },
+      "name": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "sessionId",
+      "operationId",
+      "occurrences"
+    ],
+    "description": "Create a native rigid group from exact occurrence instances; includeChildren defaults true."
+  },
+  "rigid_group_edit": {
+    "type": "object",
+    "properties": {
+      "group": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "name": {
+        "type": "string"
+      },
+      "suppressed": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "sessionId",
+      "operationId",
+      "group"
+    ],
+    "description": "Rename or suppress an exact rigid group with transaction recovery."
+  },
+  "rigid_group_delete": {
+    "type": "object",
+    "properties": {
+      "group": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "sessionId",
+      "operationId",
+      "group"
+    ],
+    "description": "Delete an exact rigid group with transaction recovery."
+  },
+  "assembly_properties": {
+    "type": "object",
+    "properties": {
+      "entity": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      }
+    },
+    "required": [
+      "op",
+      "target"
+    ],
+    "description": "High-accuracy physical properties of whole root assembly (default) or an exact Component/Occurrence/BRepBody. Returns mass kg, volume mm3, area mm2, center of mass mm, mean density kg/mm3 and definition/instance coordinate scope."
+  },
+  "geometry_query": {
+    "type": "object",
+    "properties": {
+      "body": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+      },
+      "kind": {
+        "enum": [
+          "faces",
+          "edges",
+          "vertices"
+        ]
+      },
+      "space": {
+        "enum": [
+          "root",
+          "component"
+        ]
+      },
+      "selection": {
+        "enum": [
+          "one",
+          "many"
+        ]
+      },
+      "filters": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "Plane",
+              "Cylinder",
+              "Cone",
+              "Sphere",
+              "Torus",
+              "NurbsSurface",
+              "Line3D",
+              "Arc3D",
+              "Circle3D",
+              "Ellipse3D",
+              "EllipticalArc3D",
+              "NurbsCurve3D",
+              "Point3D",
+              "degenerate"
+            ]
+          },
+          "area": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number",
+                "minimum": 0
+              },
+              "max": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "length": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number",
+                "minimum": 0
+              },
+              "max": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "radius": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number",
+                "minimum": 0
+              },
+              "max": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [],
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          "near": {
+            "type": "object",
+            "properties": {
+              "point": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "point",
+              "tolerance"
+            ],
+            "additionalProperties": false
+          },
+          "direction": {
+            "type": "object",
+            "properties": {
+              "vector": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 90
+              },
+              "orientation": {
+                "enum": [
+                  "same",
+                  "parallel"
+                ]
+              }
+            },
+            "required": [
+              "vector"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "maxResults": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1024
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "body",
+      "kind",
+      "space"
+    ],
+    "description": "Complete body-scoped topology query, no arbitrary first-match selection. selection one (default) refuses zero/multiple matches; many may return empty. Geometry types are exact native types; size ranges inclusive in mm/mm2, near is minimum distance in the explicit frame; direction is outward planar face normal or linear edge tangent. Returned refs retain instance context even for component-space filters. Exceeding maxResults fails rather than truncating."
+  },
+  "measure": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "enum": [
+          "distance",
+          "angle"
+        ]
+      },
+      "space": {
+        "enum": [
+          "root"
+        ]
+      },
+      "entities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "documentId",
+            "revision",
+            "objectType"
+          ],
+          "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+        },
+        "minItems": 2,
+        "maxItems": 3
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "type",
+      "space",
+      "entities"
+    ],
+    "description": "Native engineering minimum distance or angle in root assembly space. Non-root definition refs require an occurrence context. Distance needs2 entities; angle needs2 lines/planes or3 points (second apex). Returns mm/deg and native witness positions in root mm. witnessValidation identifies native points or native geometry directions used for valid parallel angles with degenerate native points; degenerate point angles and unavailable/inconsistent witnesses fail."
+  },
+  "sketch_curve_edit": {
+    "type": "object",
+    "properties": {
+      "sketch": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+      },
+      "curve": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+      },
+      "action": {
+        "enum": [
+          "trim",
+          "extend",
+          "split",
+          "break"
+        ]
+      },
+      "pick": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 3
+      },
+      "createConstraints": {
+        "type": "boolean"
+      },
+      "allowDelete": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "sessionId",
+      "operationId",
+      "sketch",
+      "curve",
+      "action",
+      "pick"
+    ],
+    "description": "Edit one native sketch curve with sketch-space mm pick. trim removes the nearest segment; extend chooses nearest endpoint; split requires an interior on-curve point; break uses neighboring intersections. Fresh replacement refs are returned; original may be deleted. In-place extend returns the original with a fresh ref only after its geometry change survives recompute. No change or empty break/split fails. Full trim deletion requires allowDelete true. Linked/derived/deferred-compute geometry refused."
+  },
+  "sketch_offset": {
+    "type": "object",
+    "properties": {
+      "sketch": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+      },
+      "curves": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "documentId",
+            "revision",
+            "objectType"
+          ],
+          "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+        },
+        "minItems": 1,
+        "maxItems": 256
+      },
+      "distance": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "topologyMatched": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "sessionId",
+      "operationId",
+      "sketch",
+      "curves",
+      "distance"
+    ],
+    "description": "Modern createOffsetInput/addOffset2. Curves must be native 2D, unique, in connected flow order (never reordered). Nonzero signed mm number/expression: positive right, negative left; a single circle/ellipse positive outside. Topology matched defaults true. Read back native signed distance, parent/child refs and controlling parameter after recompute. No retired Sketch.offset fallback."
+  },
+  "construction_axis": {
+    "type": "object",
+    "properties": {
+      "component": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+      },
+      "type": {
+        "enum": [
+          "edge",
+          "circular_face",
+          "two_planes",
+          "two_points"
+        ]
+      },
+      "entities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "documentId",
+            "revision",
+            "objectType"
+          ],
+          "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+        },
+        "minItems": 1,
+        "maxItems": 2
+      },
+      "creationOccurrence": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+      },
+      "name": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "sessionId",
+      "operationId",
+      "type",
+      "entities"
+    ],
+    "description": "Create a parametric axis from native references (edge/circular face/two intersecting planes/two distinct points). Root-space external geometry requires exact occurrence context. For cross-component geometry into a non-root target component, creationOccurrence must identify a root-context instance of that target. Returns component-space native axis geometry/health. No direct-only infinite-line or preview snap APIs."
+  },
+  "sketch_diagnostics": {
+    "type": "object",
+    "properties": {
+      "sketch": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Current guarded entity reference; root-space child geometry requires its exact occurrence context."
+      }
+    },
+    "required": [
+      "op",
+      "target",
+      "sketch"
+    ],
+    "description": "Read native sketch health/message, fully-constrained/fixed/linked/reference flags, geometric constraints and driving dimensions. Reports no solver DOF count or conflict-set explanation; no recompute/mutation."
+  },
+  "joint_origin_create": {
+    "type": "object",
+    "properties": {
+      "component": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "geometry": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "keyPoint": {
+            "enum": [
+              "center",
+              "start",
+              "middle",
+              "end"
+            ]
+          },
+          "edge": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          }
+        },
+        "required": [
+          "entity"
+        ],
+        "additionalProperties": false
+      },
+      "flipped": {
+        "type": "boolean"
+      },
+      "xAxisEntity": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "zAxisEntity": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "angle": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offsetX": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offsetY": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offsetZ": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "geometry"
+    ],
+    "description": "Create a native component-definition joint origin from guarded native geometry, with mm offsets/deg angle and optional straight axis references. Child occurrence origin references are exposed by inspect_entity(occurrence)."
+  },
+  "joint_origin_edit": {
+    "type": "object",
+    "properties": {
+      "origin": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "geometry": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          },
+          "keyPoint": {
+            "enum": [
+              "center",
+              "start",
+              "middle",
+              "end"
+            ]
+          },
+          "edge": {
+            "type": "object",
+            "required": [
+              "documentId",
+              "revision",
+              "objectType"
+            ],
+            "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+          }
+        },
+        "required": [
+          "entity"
+        ],
+        "additionalProperties": false
+      },
+      "flipped": {
+        "type": "boolean"
+      },
+      "xAxisEntity": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "zAxisEntity": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "angle": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offsetX": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offsetY": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offsetZ": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "origin"
+    ],
+    "description": "Edit a native joint origin definition; rolls before its timeline item and restores the original marker in finally. Recomputes and verifies attachment, axes, offsets, angle, name and flip."
+  },
+  "joint_origin_delete": {
+    "type": "object",
+    "properties": {
+      "origin": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "origin"
+    ],
+    "description": "Delete a native joint origin; unhealthy downstream joints cause transaction rollback."
+  },
+  "regular_joint_create": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "enum": [
+          "rigid",
+          "revolute",
+          "slider",
+          "cylindrical",
+          "pin_slot",
+          "planar",
+          "ball"
+        ]
+      },
+      "axis": {
+        "enum": [
+          "x",
+          "y",
+          "z"
+        ]
+      },
+      "name": {
+        "type": "string"
+      },
+      "rotationLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "slideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "rotationValue": {
+        "type": "number"
+      },
+      "slideValue": {
+        "type": "number"
+      },
+      "primarySlideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "primarySlideValue": {
+        "type": "number"
+      },
+      "secondarySlideLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "secondarySlideValue": {
+        "type": "number"
+      },
+      "pitchLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "pitchValue": {
+        "type": "number"
+      },
+      "rollLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "rollValue": {
+        "type": "number"
+      },
+      "yawLimits": {
+        "type": "object",
+        "properties": {
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "rest": {
+            "type": "number"
+          },
+          "minimumEnabled": {
+            "type": "boolean"
+          },
+          "maximumEnabled": {
+            "type": "boolean"
+          },
+          "restEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "yawValue": {
+        "type": "number"
+      },
+      "slideAxis": {
+        "enum": [
+          "x",
+          "y",
+          "z"
+        ]
+      },
+      "geometryOne": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              },
+              "edge": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "origin": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              }
+            },
+            "required": [
+              "origin"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "geometryTwo": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              },
+              "edge": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "origin": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              }
+            },
+            "required": [
+              "origin"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "angle": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offset": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "flipped": {
+        "type": "boolean"
+      },
+      "locked": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "type",
+      "geometryOne",
+      "geometryTwo"
+    ],
+    "description": "Create a geometry-solving regular joint in the root component using two distinct instance-context attachments or joint origins. All seven native motion families; offsets mm, angle and angular limits deg. Read back freshly resolved attachment graph, native parameters and root-space occurrence placement. Root/non-root sides must be unambiguous; both grounded and ancestor/descendant pairs are refused. Inferred joints are unsupported. Existing pending positions must be captured or reverted first. Before applying drive values, checks native joint-transform anchor offset magnitude/axiality and zero-angle axis collinearity. Native joint matrices have explicit provenance; physical angle/flip sense requires independent occurrence-geometry acceptance."
+  },
+  "regular_joint_edit": {
+    "type": "object",
+    "properties": {
+      "joint": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "geometryOne": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              },
+              "edge": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "origin": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              }
+            },
+            "required": [
+              "origin"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "geometryTwo": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              },
+              "keyPoint": {
+                "enum": [
+                  "center",
+                  "start",
+                  "middle",
+                  "end"
+                ]
+              },
+              "edge": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "origin": {
+                "type": "object",
+                "required": [
+                  "documentId",
+                  "revision",
+                  "objectType"
+                ],
+                "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+              }
+            },
+            "required": [
+              "origin"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "type": {
+        "enum": [
+          "rigid",
+          "revolute",
+          "slider",
+          "cylindrical",
+          "pin_slot",
+          "planar",
+          "ball"
+        ]
+      },
+      "axis": {
+        "enum": [
+          "x",
+          "y",
+          "z"
+        ]
+      },
+      "slideAxis": {
+        "enum": [
+          "x",
+          "y",
+          "z"
+        ]
+      },
+      "angle": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offset": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offsetX": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "offsetY": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "flipped": {
+        "type": "boolean"
+      },
+      "locked": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "joint"
+    ],
+    "description": "Redefine root-owned regular joint geometry, motion family, offsets, angle, flip or lock. Restore timeline in finally and verify after recompute. Use joint_edit for name, suppression, limits and drive values; joint_delete for deletion."
+  },
+  "motion_link_create": {
+    "type": "object",
+    "properties": {
+      "jointOne": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "jointTwo": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "motionOne": {
+        "enum": [
+          "rotation",
+          "slide",
+          "primarySlide",
+          "secondarySlide",
+          "pitch",
+          "roll",
+          "yaw"
+        ]
+      },
+      "motionTwo": {
+        "enum": [
+          "rotation",
+          "slide",
+          "primarySlide",
+          "secondarySlide",
+          "pitch",
+          "roll",
+          "yaw"
+        ]
+      },
+      "valueOne": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "valueTwo": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "reversed": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "jointOne",
+      "motionOne",
+      "motionTwo",
+      "valueOne",
+      "valueTwo"
+    ],
+    "description": "Create a native motion link between two root-owned joints, or two different motions of jointOne when jointTwo is omitted. Positive ratio magnitudes use mm for translation and deg for rotation; reversed selects opposite direction. Requires the November 2025+ API; no script fallback."
+  },
+  "motion_link_edit": {
+    "type": "object",
+    "properties": {
+      "link": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      },
+      "suppressed": {
+        "type": "boolean"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "motionOne": {
+        "enum": [
+          "rotation",
+          "slide",
+          "primarySlide",
+          "secondarySlide",
+          "pitch",
+          "roll",
+          "yaw"
+        ]
+      },
+      "motionTwo": {
+        "enum": [
+          "rotation",
+          "slide",
+          "primarySlide",
+          "secondarySlide",
+          "pitch",
+          "roll",
+          "yaw"
+        ]
+      },
+      "valueOne": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "valueTwo": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        ],
+        "description": "Number in mm (angle in deg), or a dimensionally valid Fusion parameter expression."
+      },
+      "reversed": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "link"
+    ],
+    "description": "Edit a root-owned motion link ratio, degree-of-freedom pair, direction, name or suppression. Joint membership is immutable; recreate the link to change members. Verify exact joint identities, ratio, flags and health."
+  },
+  "motion_link_delete": {
+    "type": "object",
+    "properties": {
+      "link": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision",
+          "objectType"
+        ],
+        "description": "Guarded reference from inspect in this document/revision; occurrence references retain instance context."
+      }
+    },
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "link"
+    ],
+    "description": "Delete a root-owned motion link under the same transaction/recovery contract."
+  },
+  "configuration_inspect": {
+    "type": "object",
+    "description": "Read the loaded Design configuration graph without activation or recompute: ordinary rows, the separate native reserved test row, all supported typed cells including inactive/test cells, exact controlled-source links and current ordinary row. Unreadable fields and unknown/theme/hierarchical/inserted scopes remain explicit incomplete diagnostics. Configuration lifecycle and configured-design model mutations remain disabled pending native recovery/archive gates.",
+    "properties": {},
+    "required": [
+      "op",
+      "target"
+    ]
+  },
+  "render_scene_inspect": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "target"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string"
+      },
+      "target": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          }
+        }
+      },
+      "maxEnvironments": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 32
+      },
+      "camera": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "space",
+              "unit",
+              "eye",
+              "target",
+              "upVector",
+              "extents"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "orthographic"
+                ]
+              },
+              "space": {
+                "type": "string",
+                "enum": [
+                  "world"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm"
+                ]
+              },
+              "eye": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "target": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "upVector": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "extents": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": {
+                  "type": "number",
+                  "minimum": 1e-06,
+                  "maximum": 1000000000.0
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "space",
+              "unit",
+              "eye",
+              "target",
+              "upVector",
+              "perspectiveAngle",
+              "angleUnit"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "perspective"
+                ]
+              },
+              "space": {
+                "type": "string",
+                "enum": [
+                  "world"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm"
+                ]
+              },
+              "eye": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "target": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "upVector": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "perspectiveAngle": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 179.999999999
+              },
+              "angleUnit": {
+                "type": "string",
+                "enum": [
+                  "deg"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "description": "Guarded main-thread read of current viewport camera, render settings and up to 32 environments. Optional detached world-mm camera is constructed and read back without viewport assignment. Missing fields return PARTIAL; observationComplete covers only bounded available scope. sceneWitnessComplete and renderQualified remain false. No rendering, workspace activation or scene writes."
+  },
+  "exploded_view_plan": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "target",
+      "unit",
+      "steps"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string"
+      },
+      "target": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          }
+        }
+      },
+      "unit": {
+        "type": "string",
+        "enum": [
+          "mm"
+        ]
+      },
+      "steps": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 32,
+        "items": {
+          "type": "object",
+          "required": [
+            "durationSeconds",
+            "moves"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "durationSeconds": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 3600
+            },
+            "moves": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 128,
+              "items": {
+                "type": "object",
+                "required": [
+                  "occurrence",
+                  "direction",
+                  "distance",
+                  "frame"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "occurrence": {
+                    "type": "object",
+                    "description": "Exact guarded occurrence reference from inspect; every repeated/nested instance is distinct."
+                  },
+                  "direction": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    }
+                  },
+                  "distance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000000.0
+                  },
+                  "frame": {
+                    "type": "string",
+                    "enum": [
+                      "world",
+                      "parent",
+                      "local"
+                    ]
+                  }
+                }
+              }
+            },
+            "instruction": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "sampleTimes": {
+        "type": "array",
+        "maxItems": 62,
+        "items": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3600
+        }
+      },
+      "playback": {
+        "type": "string",
+        "enum": [
+          "explode",
+          "assemble"
+        ]
+      }
+    },
+    "description": "Read-only source-bound exploded assembly plan. Normalized translation directions in immutable home world/parent/local axes; simultaneous moves within ordered steps. Descendants inherit ancestor translations once, plus own moves. Bounded deterministic sample matrices and exact home reverse endpoint. No native moves, graphics, BOM quantity changes, render/video or storyboard creation. Complete configuration identity required."
+  },
+  "exploded_preview_create": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "sourceTarget",
+      "creationOperationId",
+      "expectedPlanId",
+      "planner"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string"
+      },
+      "target": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          }
+        }
+      },
+      "sourceTarget": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          }
+        }
+      },
+      "creationOperationId": {
+        "type": "string"
+      },
+      "expectedPlanId": {
+        "type": "string"
+      },
+      "planner": {
+        "type": "object",
+        "required": [
+          "unit",
+          "steps"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "unit": {
+            "type": "string",
+            "enum": [
+              "mm"
+            ]
+          },
+          "steps": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "required": [
+                "durationSeconds",
+                "moves"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "durationSeconds": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 3600
+                },
+                "moves": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 128,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "occurrence",
+                      "direction",
+                      "distance",
+                      "frame"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "occurrence": {
+                        "type": "object",
+                        "description": "Exact guarded occurrence reference from inspect; every repeated/nested instance is distinct."
+                      },
+                      "direction": {
+                        "type": "array",
+                        "minItems": 3,
+                        "maxItems": 3,
+                        "items": {
+                          "type": "number",
+                          "minimum": -1000000000.0,
+                          "maximum": 1000000000.0
+                        }
+                      },
+                      "distance": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000000.0
+                      },
+                      "frame": {
+                        "type": "string",
+                        "enum": [
+                          "world",
+                          "parent",
+                          "local"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "instruction": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "sampleTimes": {
+            "type": "array",
+            "maxItems": 62,
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 3600
+            }
+          },
+          "playback": {
+            "type": "string",
+            "enum": [
+              "explode",
+              "assemble"
+            ]
+          }
+        }
+      }
+    },
+    "description": "Create finite copied solid-BRep presentation graphics in the exact active blank unsaved Design proven by a committed current-session new_design result. Regenerates the guarded source plan; leaves source active. Exclusive session lease, no source moves/visibility writes, no model transaction, automatic document close, render or capture. Live capability and native backend qualification are separate from durable operation receipts."
+  },
+  "exploded_preview_sample": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "previewId",
+      "expectedGeneration",
+      "sampleIndex"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string"
+      },
+      "target": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          }
+        }
+      },
+      "previewId": {
+        "type": "string"
+      },
+      "expectedGeneration": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1000000000
+      },
+      "sampleIndex": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 63
+      }
+    },
+    "description": "Apply one server-stored absolute sample to exact-owned graphics; preserve active document. Source must remain unchanged. Requires the current controller capability, presentation target, generation and a durable operation ID. Old-session native resources are never rebound."
+  },
+  "exploded_preview_show": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "previewId",
+      "expectedGeneration"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string"
+      },
+      "target": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          }
+        }
+      },
+      "previewId": {
+        "type": "string"
+      },
+      "expectedGeneration": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1000000000
+      }
+    },
+    "description": "Explicitly activate the exact-owned presentation in Fusion; refuse an intervening foreign active document. No OS foreground, camera change or capture. Requires the current controller capability, presentation target, generation and a durable operation ID. Old-session native resources are never rebound."
+  },
+  "exploded_preview_dispose": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "operationId",
+      "target",
+      "previewId",
+      "expectedGeneration"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string"
+      },
+      "target": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "revision"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          }
+        }
+      },
+      "previewId": {
+        "type": "string"
+      },
+      "expectedGeneration": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1000000000
+      }
+    },
+    "description": "Delete only the exact retained graphics tree and leave the blank document open for caller. Supports a narrowly proven cleanup after unresolved terminal storage without rewriting that history; no global Undo or close. Requires the current controller capability, presentation target, generation and a durable operation ID. Old-session native resources are never rebound."
+  },
+  "exploded_preview_inspect": {
+    "type": "object",
+    "required": [
+      "op",
+      "sessionId",
+      "previewId"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string"
+      },
+      "previewId": {
+        "type": "string"
+      }
+    },
+    "description": "Main-thread live preview ownership/geometry/history observation. Cached operation receipts do not establish current graphics liveness. Old-session history remains separately readable through mech_operation_status; no native reference adoption or lifecycle repair is provided here."
+  }
+}

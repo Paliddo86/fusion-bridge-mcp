@@ -1,0 +1,44 @@
+{
+ "lines": [
+  "20260903T074019 W .28736 New Alert message. Tooltip: Components, Short Message: Components, Long Message: Components",
+  "20260903T074019 W .28736 New Alert message. Tooltip: Components, Short Message: Components, Long Message: Components",
+  "20260903T074100 W .28736 New Alert message. Tooltip: Library 'Foo' could not be saved, Short Message: Save failed, Long Message: The cloud rejected the save\n",
+  "20260903T074101 W .28736 New Alert message. Tooltip: Only a tooltip here\n",
+  "20260903T074102 W .28736 New Alert message.   \n",
+  "20260903T074103 I .1 Something else entirely\n",
+  "garbage without a stamp New Alert message. Tooltip: stampless, Short Message: no stamp\n",
+  "20260101T000000 W .1 New Alert message. Tooltip: ancient, Short Message: too old\n",
+  "20260903T074104 W .28736 New Alert message. Tooltip: , Short Message: , Long Message: only long\n"
+ ],
+ "cutoffUtc": "20260903T073000",
+ "expected": [
+  {
+   "at": "20260903T074019",
+   "text": "Components"
+  },
+  {
+   "at": "20260903T074019",
+   "text": "Components"
+  },
+  {
+   "at": "20260903T074100",
+   "text": "Save failed"
+  },
+  {
+   "at": "20260903T074101",
+   "text": "Only a tooltip here"
+  },
+  {
+   "at": "20260903T074102",
+   "text": ""
+  },
+  {
+   "at": null,
+   "text": "no stamp"
+  },
+  {
+   "at": "20260903T074104",
+   "text": "Tooltip: , Short Message: , Long Message: only long"
+  }
+ ]
+}

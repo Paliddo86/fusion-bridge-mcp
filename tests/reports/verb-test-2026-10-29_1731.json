@@ -1,0 +1,85 @@
+{
+ "date": "2026-10-29_1731",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 8,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 5,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_mechanical",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 6.4,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_simulate",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_replicate_layout",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_symbol_prims",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_visibility",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 13.4
+}

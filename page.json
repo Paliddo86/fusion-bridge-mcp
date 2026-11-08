@@ -1,0 +1,155 @@
+{
+  "slug": "fusion-bridge",
+  "version": "1.13.84",
+  "type": "app",
+  "description": "This package installs the bridge's SKILLS into your container so your AI knows how to drive it; Adom Bridge loads the bridge runtime itself from the release zip.",
+  "dependencies": {
+    "adom/adom-bridge": "*"
+  },
+  "scripts": {
+    "install": "./install.sh",
+    "uninstall": "./uninstall.sh"
+  },
+  "tags": [
+    "fusion360",
+    "autodesk",
+    "cad",
+    "pcb",
+    "exports",
+    "aps",
+    "modeling",
+    "mechanical",
+    "assemblies"
+  ],
+  "org": "adom",
+  "title": "Fusion - the Fusion 360 Bridge",
+  "changelog": "1.9.42: THE DASHBOARD - the bridge's Launch Page: a web app with LED status for every facet (Fusion, sign-in, APS, MCP, Data Hub, pending update), Setup flow, Settings, copy-paste AI prompts, demo tour, and wiki part import - served by the NEW fusion-dashboard Rust CLI this pkg now installs into the container (first bridge with a container binary; dock.json makes it a Dock Bar candidate). Bridge side: fusion_state (kicad_state parity - renders any background show verb, works even mid-wedge), save-prompt sentinel (auto-dismisses Fusion's unsaved-doc modal for bridge-created docs so doc switches can never wedge the main thread), classified blockingDialogs on fusion_window_info, and the Recovered Documents dialog is now auto-closed by the 5-min background sweep.",
+  "updated_at": "2026-07-06T16:30:00.000Z",
+  "hero": {
+    "type": "image",
+    "path": "screenshots/hero.png"
+  },
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "VERBS.md",
+    "install.sh",
+    "uninstall.sh",
+    "page.json",
+    "CHANGELOG.md",
+    "skills/fusion-aps-search/**",
+    "skills/fusion-aps-signin/**",
+    "skills/fusion-autodesk-signin/**",
+    "skills/fusion-build-parts-library/**",
+    "skills/fusion-cloud-hygiene/**",
+    "skills/fusion-cloud-save/**",
+    "skills/fusion-driving/**",
+    "skills/fusion-eagle-commands/**",
+    "skills/fusion-electronics/**",
+    "skills/fusion-libraries/**",
+    "skills/fusion-multipart-libraries/**",
+    "skills/fusion-onboarding/**",
+    "skills/fusion-molecule-export/**",
+    "skills/pcb-stackup/**",
+    "skills/fusion-demo/**",
+    "skills/fusion-multiprofile-signin/**",
+    "dockbar.json",
+    "docs/img/dock-fusion.svg",
+    "skills/fusion-dashboard/**",
+    "skills/fusion-dark-mode/**",
+    "skills/fusion-file-search/**",
+    "skills/fusion-mcp-and-preferences/**",
+    "skills/fusion-web-export/**"
+  ],
+  "discovery_triggers": [
+    "drive fusion 360",
+    "open a fusion design",
+    "open my pcb in fusion",
+    "launch fusion 360",
+    "search our fusion cloud files",
+    "find a fusion design in our cloud",
+    "export a step file from fusion",
+    "export gerbers from fusion",
+    "get a bom from fusion",
+    "lay out a pcb in fusion",
+    "design electronics in fusion",
+    "build a component library in fusion",
+    "build a basic parts library",
+    "add a 3d model to a component",
+    "make a fusion 360 library with 3d",
+    "set up the fusion bridge",
+    "aps not configured",
+    "share aps client id across my org",
+    "set up fusion cloud search for my company",
+    "org settings autodesk aps",
+    "read my fusion board as data",
+    "which nets are not connected in fusion",
+    "fusion board stack-up and dielectric",
+    "fusion pcb layer stack thickness",
+    "netlist of my fusion board",
+    "check the fusion netlist against my circuit",
+    "read an eagle schematic file",
+    "pin electrical types from a schematic",
+    "part heights on my fusion board",
+    "which fusion parts have no 3d model",
+    "will my fusion board fit the enclosure",
+    "build a parametric part in fusion",
+    "assemble mechanical parts in fusion",
+    "insert a McMaster part in fusion",
+    "generate a mechanical assembly BOM"
+  ],
+  "discovery_pitch": "Use the Adom Bridge Fusion 360 bridge when the user wants to DRIVE Autodesk Fusion 360 from the cloud: open/search their team's Fusion cloud designs, author parametric mechanical parts and internal assemblies, ingest McMaster CAD and generate mechanical BOMs, lay out a PCB or do electronics, export STEP/IGES/STL/Gerbers/BOM, or build a component library with real rendering 3D. It runs Fusion on the user's own machine via Adom Bridge. NOT for web/browser/login/form-filling (that's the native-browser extension) and NOT for KiCad (that's the kicad bridge).",
+  "brief": "Drive Autodesk Fusion 360 from the cloud via Adom Bridge: component libraries, IPC package generation, board layout, exports (STEP/Gerbers/BOM/CPL), fast APS cloud search, and parametric modeling.",
+  "sample_prompts": [
+    {
+      "label": "Find a design",
+      "prompt": "Search our Fusion cloud files for the wire bender and open it"
+    },
+    {
+      "label": "Costed BOM",
+      "prompt": "Give me a parts list for this assembly with quantities, and don't double-count the hardware inside the bracket kits"
+    },
+    {
+      "label": "Open a board",
+      "prompt": "Open my BQ25792 charger board in Fusion and show me the 3D PCB"
+    },
+    {
+      "label": "Export for manufacturing",
+      "prompt": "Export gerbers, the BOM and the CPL for this board so I can send it to JLCPCB"
+    },
+    {
+      "label": "Sign Fusion in",
+      "prompt": "Fusion is signed into the wrong Autodesk account, put it on my work profile"
+    },
+    {
+      "label": "Part volume",
+      "prompt": "How much material does each printed part in this assembly use?"
+    }
+  ],
+  "agent_permissions": {
+    "allow_bash": [],
+    "allow": [
+      "adom-desktop-fusion-bridge read-only verbs (via the adom-bridge CLI): fusion_readiness, fusion_get_app_state, fusion_addin_status, fusion_check_dialogs - state queries; they change nothing.",
+      "adom-desktop-fusion-bridge read-only verbs: fusion_alerts (reads Fusion's own log for toasts), fusion_document_info, fusion_window_info, fusion_board_info, fusion_library_parts - inspect only.",
+      "adom-desktop-fusion-bridge read-only verbs: fusion_prove_result (a persisted run report), fusion_plan_library_import (report-only preflight), fusion_list_cloud_projects, fusion_describe.",
+      "adom-desktop-fusion-bridge evidence captures fusion_screenshot_fusion and fusion_capture_library_views read pixels and write local image files only."
+    ],
+    "soft_deny": [
+      "adom-desktop-fusion-bridge lifecycle verbs fusion_stop, fusion_kill, fusion_restart_for_addin close or kill the Fusion application - keep the human prompt.",
+      "adom-desktop-fusion-bridge fusion_install_fusion silently installs Autodesk Fusion on the user's machine.",
+      "adom-desktop-fusion-bridge fusion_cleanup_cloud_files deletes files from the user's Autodesk cloud hub.",
+      "adom-desktop-fusion-bridge managed-library verbs (fusion_managed_library_push/pull/create/link/unlink) publish to or overwrite the user's library.io libraries."
+    ],
+    "environment": [
+      "adom-desktop-fusion-bridge is the Fusion 360 bridge for Adom Bridge; its fusion_* verbs are invoked through the adom-bridge CLI and drive Autodesk Fusion on the user's own desktop.",
+      "adom-desktop-fusion-bridge desktop actions also pass Adom Bridge's own human-approval gate (caller identity, per-call reason, Activity Log) - a container approval is the first of two gates."
+    ]
+  },
+  "author": {
+    "name": "John Lauer",
+    "email": "john@adom.inc"
+  },
+  "confirmed_user_skills": [
+    "fusion-design-efficiency"
+  ]
+}

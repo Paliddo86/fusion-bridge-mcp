@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='utf-8'?>
+<eagle version="9.6.2">
+<drawing>
+<settings><setting alwaysvectorfont="no" /></settings>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch" />
+<layers>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes" />
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes" />
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes" />
+<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes" />
+<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes" />
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes" />
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes" />
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes" />
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes" />
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes" />
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes" />
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes" />
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes" />
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes" />
+<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes" />
+<layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes" />
+<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes" />
+<layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes" />
+<layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes" />
+<layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes" />
+<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes" />
+<layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes" />
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes" />
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes" />
+<layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="yes" />
+<layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="yes" />
+<layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="yes" />
+<layer number="42" name="bRestrict" color="1" fill="10" visible="no" active="yes" />
+<layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="yes" />
+<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes" />
+<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes" />
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes" />
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes" />
+<layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes" />
+<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes" />
+<layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes" />
+<layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes" />
+<layer number="93" name="Pins" color="2" fill="1" visible="no" active="yes" />
+<layer number="94" name="Symbols" color="4" fill="1" visible="yes" active="yes" />
+<layer number="95" name="Names" color="7" fill="1" visible="yes" active="yes" />
+<layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes" />
+<layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes" />
+<layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes" />
+</layers>
+<library>
+<description>Demo_Board (wiki.adom.inc Cloud Library)</description>
+<packages><package name="QFN-48_7x7mm">
+  <description>QFN-48, 7 x 7 mm</description>
+  <smd name="1" x="-3.5000" y="2.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="2" x="-3.5000" y="2.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="3" x="-3.5000" y="1.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="4" x="-3.5000" y="1.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="5" x="-3.5000" y="0.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="6" x="-3.5000" y="0.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="7" x="-3.5000" y="-0.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="8" x="-3.5000" y="-0.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="9" x="-3.5000" y="-1.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="10" x="-3.5000" y="-1.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="11" x="-3.5000" y="-2.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="12" x="-3.5000" y="-2.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="13" x="-2.7500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="14" x="-2.2500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="15" x="-1.7500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="16" x="-1.2500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="17" x="-0.7500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="18" x="-0.2500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="19" x="0.2500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="20" x="0.7500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="21" x="1.2500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="22" x="1.7500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="23" x="2.2500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="24" x="2.7500" y="-3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="25" x="3.5000" y="-2.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="26" x="3.5000" y="-2.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="27" x="3.5000" y="-1.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="28" x="3.5000" y="-1.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="29" x="3.5000" y="-0.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="30" x="3.5000" y="-0.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="31" x="3.5000" y="0.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="32" x="3.5000" y="0.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="33" x="3.5000" y="1.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="34" x="3.5000" y="1.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="35" x="3.5000" y="2.2500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="36" x="3.5000" y="2.7500" dx="1.0000" dy="0.2800" layer="1" roundness="100" />
+  <smd name="37" x="2.7500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="38" x="2.2500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="39" x="1.7500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="40" x="1.2500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="41" x="0.7500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="42" x="0.2500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="43" x="-0.2500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="44" x="-0.7500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="45" x="-1.2500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="46" x="-1.7500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="47" x="-2.2500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="48" x="-2.7500" y="3.5000" dx="0.2800" dy="1.0000" layer="1" roundness="100" />
+  <smd name="49" x="0.0000" y="-0.0000" dx="5.3000" dy="5.3000" layer="1" />
+  <circle x="-3.5000" y="3.5000" radius="0.0300" width="0.0600" layer="21" />
+  <polygon width="0.1000" layer="51">
+    <vertex x="-2.5000" y="3.5000" />
+    <vertex x="3.5000" y="3.5000" />
+    <vertex x="3.5000" y="-3.5000" />
+    <vertex x="-3.5000" y="-3.5000" />
+    <vertex x="-3.5000" y="2.5000" />
+  </polygon>
+  <wire x1="3.7200" y1="3.7200" x2="3.7200" y2="3.2800" width="0.2000" layer="21" />
+  <wire x1="3.2800" y1="3.7200" x2="3.7200" y2="3.7200" width="0.2000" layer="21" />
+  <wire x1="-3.7200" y1="3.7200" x2="-3.2800" y2="3.7200" width="0.2000" layer="21" />
+  <wire x1="-3.7200" y1="3.2800" x2="-3.7200" y2="3.7200" width="0.2000" layer="21" />
+  <wire x1="-3.7200" y1="-3.2800" x2="-3.7200" y2="-3.7200" width="0.2000" layer="21" />
+  <wire x1="3.7200" y1="-3.7200" x2="3.7200" y2="-3.2800" width="0.2000" layer="21" />
+  <wire x1="3.2800" y1="-3.7200" x2="3.7200" y2="-3.7200" width="0.2000" layer="21" />
+  <wire x1="-3.7200" y1="-3.7200" x2="-3.2800" y2="-3.7200" width="0.2000" layer="21" />
+  <wire x1="-4.1000" y1="3.5200" x2="-4.1200" y2="3.4452" width="0.3000" layer="21" />
+  <wire x1="-4.1200" y1="3.4452" x2="-4.1747" y2="3.3903" width="0.3000" layer="21" />
+  <wire x1="-4.1747" y1="3.3903" x2="-4.2494" y2="3.3700" width="0.3000" layer="21" />
+  <wire x1="-4.2494" y1="3.3700" x2="-4.3243" y2="3.3897" width="0.3000" layer="21" />
+  <wire x1="-4.3243" y1="3.3897" x2="-4.3794" y2="3.4441" width="0.3000" layer="21" />
+  <wire x1="-4.3794" y1="3.4441" x2="-4.4000" y2="3.5188" width="0.3000" layer="21" />
+  <wire x1="-4.4000" y1="3.5188" x2="-4.3806" y2="3.5938" width="0.3000" layer="21" />
+  <wire x1="-4.3806" y1="3.5938" x2="-4.3264" y2="3.6491" width="0.3000" layer="21" />
+  <wire x1="-4.3264" y1="3.6491" x2="-4.2519" y2="3.6700" width="0.3000" layer="21" />
+  <wire x1="-4.2519" y1="3.6700" x2="-4.1768" y2="3.6510" width="0.3000" layer="21" />
+  <wire x1="-4.1768" y1="3.6510" x2="-4.1213" y2="3.5970" width="0.3000" layer="21" />
+  <wire x1="-4.1213" y1="3.5970" x2="-4.1000" y2="3.5225" width="0.3000" layer="21" />
+  <text x="0" y="4.600" size="1.27" layer="25" align="bottom-center">&gt;NAME</text>
+  <text x="0" y="-4.600" size="1.27" layer="27" align="top-center">&gt;VALUE</text>
+</package>
+</packages><symbols><symbol name="LAN7800">
+  <description>Microchip LAN7800 SuperSpeed USB 3.1 Gen1 to 10/100/1000 Ethernet Controller, QFN-48</description>
+  <wire x1="-34.29" y1="33.02" x2="34.29" y2="33.02" width="0.254" layer="94" />
+  <wire x1="34.29" y1="33.02" x2="34.29" y2="-33.02" width="0.254" layer="94" />
+  <wire x1="34.29" y1="-33.02" x2="-34.29" y2="-33.02" width="0.254" layer="94" />
+  <wire x1="-34.29" y1="-33.02" x2="-34.29" y2="33.02" width="0.254" layer="94" />
+  <circle x="-33.0200" y="31.7500" radius="0.3800" width="0.1524" layer="94" />
+  <text x="0.0000" y="35.5600" size="1.27" layer="95" align="center">&gt;NAME</text>
+  <text x="0.0000" y="-35.5600" size="1.27" layer="96" align="center">&gt;VALUE</text>
+  <pin name="TR0P" x="-36.83" y="27.94" length="short" direction="io" />
+  <pin name="TR0N" x="-36.83" y="25.4" length="short" direction="io" />
+  <pin name="VDD25A" x="-36.83" y="22.86" length="short" direction="io" />
+  <pin name="TR1P" x="-36.83" y="20.32" length="short" direction="io" />
+  <pin name="TR1N" x="-36.83" y="17.78" length="short" direction="io" />
+  <pin name="VDD25A@2" x="-36.83" y="15.24" length="short" direction="io" />
+  <pin name="TR2P" x="-36.83" y="12.7" length="short" direction="io" />
+  <pin name="TR2N" x="-36.83" y="10.16" length="short" direction="io" />
+  <pin name="VDD25A@3" x="-36.83" y="7.62" length="short" direction="io" />
+  <pin name="TR3P" x="-36.83" y="5.08" length="short" direction="io" />
+  <pin name="TR3N" x="-36.83" y="2.54" length="short" direction="io" />
+  <pin name="VDD25A@4" x="-36.83" y="0" length="short" direction="io" />
+  <pin name="VDD12_SW_OUT" x="-36.83" y="-2.54" length="short" direction="io" />
+  <pin name="VDD_SW_IN" x="-36.83" y="-5.08" length="short" direction="io" />
+  <pin name="VDD12_SW_FB" x="-36.83" y="-7.62" length="short" direction="io" />
+  <pin name="EECS/GPIO0" x="-36.83" y="-10.16" length="short" direction="io" />
+  <pin name="EEDI/GPIO1" x="-36.83" y="-12.7" length="short" direction="io" />
+  <pin name="EEDO/LED0/GPIO2" x="-36.83" y="-15.24" length="short" direction="io" />
+  <pin name="EECLK/LED1/GPIO3" x="-36.83" y="-17.78" length="short" direction="io" />
+  <pin name="VDDVARIO" x="-36.83" y="-20.32" length="short" direction="io" />
+  <pin name="VDD12CORE" x="-36.83" y="-22.86" length="short" direction="io" />
+  <pin name="PME_N/GPIO4" x="-36.83" y="-25.4" length="short" direction="io" />
+  <pin name="VBUS_DET" x="-36.83" y="-27.94" length="short" direction="io" />
+  <pin name="SUSPEND_N/LED2/GPIO5" x="-36.83" y="-30.48" length="short" direction="io" />
+  <pin name="VSS" x="36.83" y="30.48" length="short" direction="io" rot="R180" />
+  <pin name="REF_FILT" x="36.83" y="27.94" length="short" direction="io" rot="R180" />
+  <pin name="REF_REXT" x="36.83" y="25.4" length="short" direction="io" rot="R180" />
+  <pin name="VDD33_REG_IN" x="36.83" y="22.86" length="short" direction="io" rot="R180" />
+  <pin name="VDD25_REG_OUT" x="36.83" y="20.32" length="short" direction="io" rot="R180" />
+  <pin name="VDD12A" x="36.83" y="17.78" length="short" direction="io" rot="R180" />
+  <pin name="PME_MODE/GPIO7" x="36.83" y="15.24" length="short" direction="io" rot="R180" />
+  <pin name="VDD12CORE@2" x="36.83" y="12.7" length="short" direction="io" rot="R180" />
+  <pin name="XO" x="36.83" y="10.16" length="short" direction="io" rot="R180" />
+  <pin name="XI" x="36.83" y="7.62" length="short" direction="io" rot="R180" />
+  <pin name="VDDVARIO@2" x="36.83" y="5.08" length="short" direction="io" rot="R180" />
+  <pin name="VDD33A" x="36.83" y="2.54" length="short" direction="io" rot="R180" />
+  <pin name="USBRBIAS" x="36.83" y="0" length="short" direction="io" rot="R180" />
+  <pin name="VDDVARIO@3" x="36.83" y="-2.54" length="short" direction="io" rot="R180" />
+  <pin name="RESET_N/PME_CLEAR" x="36.83" y="-5.08" length="short" direction="io" rot="R180" />
+  <pin name="TEST" x="36.83" y="-7.62" length="short" direction="io" rot="R180" />
+  <pin name="LED3/GPIO6" x="36.83" y="-10.16" length="short" direction="io" rot="R180" />
+  <pin name="USB3_RXDM" x="36.83" y="-12.7" length="short" direction="io" rot="R180" />
+  <pin name="USB3_RXDP" x="36.83" y="-15.24" length="short" direction="io" rot="R180" />
+  <pin name="VDD12A@2" x="36.83" y="-17.78" length="short" direction="io" rot="R180" />
+  <pin name="USB3_TXDM" x="36.83" y="-20.32" length="short" direction="io" rot="R180" />
+  <pin name="USB3_TXDP" x="36.83" y="-22.86" length="short" direction="io" rot="R180" />
+  <pin name="USB2_DM" x="36.83" y="-25.4" length="short" direction="io" rot="R180" />
+  <pin name="USB2_DP" x="36.83" y="-27.94" length="short" direction="io" rot="R180" />
+  <pin name="VDD12A@3" x="36.83" y="-30.48" length="short" direction="io" rot="R180" />
+</symbol>
+</symbols><devicesets><deviceset name="LAN7800" prefix="U">
+  <description>Microchip LAN7800 SuperSpeed USB 3.1 Gen1 to 10/100/1000 Ethernet Controller, QFN-48</description>
+  <gates>
+    <gate name="G$1" symbol="LAN7800" x="0" y="0" />
+  </gates>
+  <devices>
+    <device name="" package="QFN-48_7x7mm">
+      <connects>
+        <connect gate="G$1" pin="TR0P" pad="1" />
+        <connect gate="G$1" pin="TR0N" pad="2" />
+        <connect gate="G$1" pin="VDD25A" pad="3" />
+        <connect gate="G$1" pin="TR1P" pad="4" />
+        <connect gate="G$1" pin="TR1N" pad="5" />
+        <connect gate="G$1" pin="VDD25A@2" pad="6" />
+        <connect gate="G$1" pin="TR2P" pad="7" />
+        <connect gate="G$1" pin="TR2N" pad="8" />
+        <connect gate="G$1" pin="VDD25A@3" pad="9" />
+        <connect gate="G$1" pin="TR3P" pad="10" />
+        <connect gate="G$1" pin="TR3N" pad="11" />
+        <connect gate="G$1" pin="VDD25A@4" pad="12" />
+        <connect gate="G$1" pin="VDD12_SW_OUT" pad="13" />
+        <connect gate="G$1" pin="VDD_SW_IN" pad="14" />
+        <connect gate="G$1" pin="VDD12_SW_FB" pad="15" />
+        <connect gate="G$1" pin="EECS/GPIO0" pad="16" />
+        <connect gate="G$1" pin="EEDI/GPIO1" pad="17" />
+        <connect gate="G$1" pin="EEDO/LED0/GPIO2" pad="18" />
+        <connect gate="G$1" pin="EECLK/LED1/GPIO3" pad="19" />
+        <connect gate="G$1" pin="VDDVARIO" pad="20" />
+        <connect gate="G$1" pin="VDD12CORE" pad="21" />
+        <connect gate="G$1" pin="PME_N/GPIO4" pad="22" />
+        <connect gate="G$1" pin="VBUS_DET" pad="23" />
+        <connect gate="G$1" pin="SUSPEND_N/LED2/GPIO5" pad="24" />
+        <connect gate="G$1" pin="VSS" pad="49" />
+        <connect gate="G$1" pin="REF_FILT" pad="48" />
+        <connect gate="G$1" pin="REF_REXT" pad="47" />
+        <connect gate="G$1" pin="VDD33_REG_IN" pad="46" />
+        <connect gate="G$1" pin="VDD25_REG_OUT" pad="45" />
+        <connect gate="G$1" pin="VDD12A" pad="44" />
+        <connect gate="G$1" pin="PME_MODE/GPIO7" pad="43" />
+        <connect gate="G$1" pin="VDD12CORE@2" pad="42" />
+        <connect gate="G$1" pin="XO" pad="41" />
+        <connect gate="G$1" pin="XI" pad="40" />
+        <connect gate="G$1" pin="VDDVARIO@2" pad="39" />
+        <connect gate="G$1" pin="VDD33A" pad="38" />
+        <connect gate="G$1" pin="USBRBIAS" pad="37" />
+        <connect gate="G$1" pin="VDDVARIO@3" pad="36" />
+        <connect gate="G$1" pin="RESET_N/PME_CLEAR" pad="35" />
+        <connect gate="G$1" pin="TEST" pad="34" />
+        <connect gate="G$1" pin="LED3/GPIO6" pad="33" />
+        <connect gate="G$1" pin="USB3_RXDM" pad="32" />
+        <connect gate="G$1" pin="USB3_RXDP" pad="31" />
+        <connect gate="G$1" pin="VDD12A@2" pad="30" />
+        <connect gate="G$1" pin="USB3_TXDM" pad="29" />
+        <connect gate="G$1" pin="USB3_TXDP" pad="28" />
+        <connect gate="G$1" pin="USB2_DM" pad="27" />
+        <connect gate="G$1" pin="USB2_DP" pad="26" />
+        <connect gate="G$1" pin="VDD12A@3" pad="25" />
+      </connects>
+      <technologies><technology name="" /></technologies>
+    </device>
+  </devices>
+</deviceset>
+</devicesets></library>
+</drawing>
+</eagle>

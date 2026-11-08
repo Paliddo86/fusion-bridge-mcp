@@ -1,0 +1,91 @@
+{
+ "date": "2026-10-30_1937",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 5,
+ "fail": 3,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 2,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 0,
+   "FAIL": 2,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_readiness",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_board_summary",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'Untitled', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'summary'",
+   "sec": 2.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'Untitled', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'counts'; missing field 'engine'",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_document_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.2,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_bom",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'Untitled', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'lines'; missing field 'checks'; missing field 'fittedParts'",
+   "sec": 2.9,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 8.6
+}

@@ -1,0 +1,7 @@
+# R20 fix3 initial root/component revision readback freeze
+
+Baseline: exact R20-fix2 product freeze1, 184 files, manifest SHA256 `63ae9355a32fc07ad77c5ff970a658c43043d4be113c9e68d8a152de9cdaf7d4`. `BASELINE-R20-FIX2-PRODUCT-FREEZE1.txt` and `evidence/baseline-source` preserve those bytes. All previous product directories and live journals remain unchanged.
+
+Only acknowledged assembly effect readback with an initial root-revision-only drift may also normalize initial component revision witnesses to their second observed values. Two subsequent internally stable full captures must exactly equal the normalized projection and each other. At most three captures occur. Every other field/error remains strict. The separate pre-effect delta comparison still rejects unrelated component revision changes. Combined root/component diagnostics have one 8 KiB acceptance budget. No mutation is repeated; ordinary reads/preflight remain strict. See `docs/R20-INITIAL-COMPONENT-REVISION-FIX3.md`.
+
+Linux full workspace: 494 tests (316 native, four compile-fail doctests), all passed. Focused assembly suite: 41 passed. GNU Windows workspace tests/bindings, native bindings tests, adapted installed SDK syntax, and formatting checks passed. These are source/platform checks, not actual Windows execution or Fusion qualification. Independent root review, MSVC build and a fresh bounded actual-app campaign remain separate gates. No prior unknown operation is reconciled by this change.

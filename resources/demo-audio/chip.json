@@ -1,0 +1,8 @@
+{
+  "desc": "",
+  "label": "",
+  "rate": "+0%",
+  "text": "Now the showpiece: the 3D chip. The bridge imports the part's STEP model onto its footprint in Fusion's package generator, orients it flat, checks pin one against pad one, saves it into your Autodesk hub, and binds that cloud model into the library. This takes about two minutes. It is real work, not a preview.",
+  "tts_hash": "89178dd502c9a1e77235ab669dfcc4435fe03096f925acc143e5962d79d0f80a",
+  "voice": "en-US-AndrewNeural"
+}

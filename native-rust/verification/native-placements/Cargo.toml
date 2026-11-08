@@ -1,0 +1,12 @@
+[package]
+name = "fusion-native-placement-verifier"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+fusion-mechanical-core = { path = "../../mechanical" }
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
+sha2 = "0.10"

@@ -1,0 +1,69 @@
+{
+ "date": "2026-08-14_1921",
+ "target": "AdomLapper",
+ "tier": "daily",
+ "pass": 2,
+ "fail": 3,
+ "sections": {
+  "mcp-server": {
+   "PASS": 0,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 0,
+   "FAIL": 2,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_mcp_call",
+   "status": "FAIL",
+   "why": "expected success, got error=Request timed out code=None",
+   "sec": 60.0,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_export_optimized_glb",
+   "status": "FAIL",
+   "why": "expected success, got error=Fusion main thread busy \u2014 export_step running for 8.9s (from another bridge/sess code=main_thread_busy; missing field 'exportId'",
+   "sec": 0.7,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_fetch_optimized_glb",
+   "status": "FAIL",
+   "why": "fixture staging failed: export_optimized_glb returned no exportId (async start failed)",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_demo_progress#unknown",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 61.0
+}

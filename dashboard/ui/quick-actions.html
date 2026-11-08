@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fusion Quick Actions</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+:root{
+  --bg:#0d1117;--surface:#161b22;--elevated:#1c2128;--overlay:#21262d;--border:#30363d;
+  --text:#e6edf3;--text-body:#c9d1d9;--text-2:#8b949e;
+  --accent:#00b8b1;--accent-hover:#00d4cb;--green:#3fb950;--red:#f85149;--yellow:#d29922;--blue:#64abff;
+  --sans:'Familjen Grotesk',system-ui,sans-serif;--body:'Satoshi',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+*{scrollbar-width:thin;scrollbar-color:rgba(139,148,158,.38) transparent}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(139,148,158,.32);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,184,177,.55);background-clip:padding-box}
+@font-face{font-family:'Familjen Grotesk';src:url('https://adom.inc/fonts/FamiljenGrotesk-SemiBold.woff2') format('woff2');font-weight:600}
+@font-face{font-family:'Satoshi';src:url('https://adom.inc/fonts/Satoshi-Regular.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Satoshi';src:url('https://adom.inc/fonts/Satoshi-Medium.woff2') format('woff2');font-weight:500}
+body{background:var(--bg);color:var(--text-body);font:15px/1.5 var(--body);min-height:100vh}
+header{height:44px;display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:600;color:var(--accent);white-space:nowrap;position:relative}
+.brand svg{width:16px;height:16px;stroke:var(--text)}
+.brand-pop{display:none;position:absolute;top:34px;left:0;z-index:9000;background:var(--overlay);border:1px solid var(--border);border-radius:10px;padding:10px 12px;min-width:260px;font:12px var(--mono);color:var(--text-2)}
+.brand:hover .brand-pop{display:block}
+.brand-pop div{display:flex;justify-content:space-between;gap:16px;padding:2px 0}.brand-pop b{color:var(--text);font-weight:500}.brand-pop a{color:var(--accent);text-decoration:none}
+.vsep{width:1px;height:20px;background:var(--border)}
+.subject{font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta{font:12px var(--mono);color:var(--text-2)}
+@media(max-width:720px){.meta{display:none}}
+.actions{margin-left:auto;display:flex;gap:8px}
+.tchip{display:inline-flex;align-items:center;gap:7px;background:var(--elevated);border:1px solid var(--border);border-radius:999px;padding:3px 11px;font:12px var(--mono);color:var(--text-2)}
+.led{width:8px;height:8px;border-radius:50%;background:var(--text-2);flex-shrink:0}.led.on{background:var(--green)}.led.warn{background:var(--yellow)}.led.bad{background:var(--red)}
+.iconbtn,.btn{font:inherit;cursor:pointer;color:var(--text);background:var(--elevated);border:1px solid var(--border);border-radius:8px;transition:background .15s ease,border-color .15s ease,transform .06s ease}
+.iconbtn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border-color:transparent}
+.iconbtn:hover,.btn:hover{background:var(--overlay);border-color:var(--accent)}
+.iconbtn:active,.btn:active{transform:translateY(1px) scale(.98)}
+.btn{padding:8px 14px;font-weight:500;display:inline-flex;align-items:center;gap:8px;min-height:40px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#04201f}.btn.primary:hover{background:var(--accent-hover)}
+.btn.danger{color:var(--red);border-color:rgba(248,81,73,.5)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn:focus-visible,.iconbtn:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{max-width:1080px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:860px){main{grid-template-columns:1fr}}
+.card{background:var(--elevated);border:1px solid var(--border);border-left:3px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:10px;padding:14px 16px 16px;min-width:0}
+.card.wide{grid-column:1/-1}
+.card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card-status{font-size:11px;color:var(--text-2);font-weight:400}.card-status.ok{color:var(--green)}.card-status.bad{color:var(--red)}.card-status.warn{color:var(--yellow)}
+.card-desc{font-size:12px;line-height:1.55;color:var(--text-2);margin:6px 0 10px}
+.card-desc code,.kv code{font:11px var(--mono);background:rgba(110,118,129,.2);padding:1px 4px;border-radius:4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+input[type=text]{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-height:40px;flex:1;min-width:160px}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;font:12px var(--mono);color:var(--text-2);margin-top:8px}
+.kv b{color:var(--text);font-weight:500;word-break:break-all}
+.prog{height:8px;background:var(--overlay);border:1px solid var(--border);border-radius:999px;overflow:hidden;margin-top:10px}
+.prog>div{height:100%;width:0;background:var(--accent);transition:width .4s ease}
+.prog.fail>div{background:var(--red)}.prog.done>div{background:var(--green)}
+.stage{font:12px var(--mono);color:var(--text-2);margin-top:6px;min-height:18px}
+.stage b{color:var(--text);font-weight:500}
+.plan{list-style:none;margin-top:8px;font:12px var(--mono)}.plan li{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px solid var(--border)}
+.plan li:last-child{border-bottom:0}.plan .c{color:var(--text-2)}.plan .c.measured{color:var(--green)}
+.live{margin-top:10px;background:#000;border:1px solid var(--border);border-radius:10px;padding:8px;max-width:720px}
+.live-head{display:flex;align-items:center;gap:8px;font:11px var(--mono);color:var(--text-2);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
+.live-led{width:8px;height:8px;border-radius:50%;background:var(--text-2)}.live-led.on{background:var(--red);box-shadow:0 0 6px var(--red);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.35}}
+.live canvas[hidden]{display:none}
+.live canvas{display:block;width:100%;height:auto;border-radius:6px;background:#111}
+.toggle{background:none;border:none;padding:2px;cursor:pointer;flex-shrink:0;transition:transform .06s ease}
+.toggle-track{display:block;width:32px;height:18px;background:var(--overlay);border:1px solid var(--border);border-radius:9px;position:relative;transition:background .15s ease,border-color .15s ease}
+.toggle:hover .toggle-track{border-color:var(--accent)}.toggle:active{transform:translateY(1px) scale(.97)}
+.toggle.active .toggle-track{background:var(--accent);border-color:var(--accent)}
+.toggle-thumb{position:absolute;top:2px;left:2px;width:12px;height:12px;background:#fff;border-radius:50%;transition:transform .18s ease}
+.toggle.active .toggle-thumb{transform:translateX(14px)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font:12px var(--mono);color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:5px 11px;cursor:pointer;min-height:32px;transition:border-color .15s ease,transform .06s ease}
+.chip:hover{border-color:var(--accent)}.chip:active{transform:translateY(1px)}.chip.active{border-color:var(--accent);color:var(--accent)}
+.chip small{color:var(--text-2);margin-left:6px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:10px}
+.shot{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.shot img{display:block;width:100%;height:auto;background:#000}
+.shot .cap{font:11px var(--mono);color:var(--text-2);padding:6px 8px;display:flex;justify-content:space-between;gap:6px}
+.tag{display:inline-block;font:10px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:999px;border:1px solid var(--border);color:var(--text-2)}
+.tag.proof{color:var(--accent);border-color:rgba(0,184,177,.5)}.tag.feed{color:var(--blue);border-color:rgba(100,171,255,.5)}
+.lint{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-size:12px;line-height:1.5}
+.lint.warn{border-color:rgba(210,153,34,.5)}.lint.ok{border-color:rgba(63,185,80,.5)}
+.lint ul{margin:6px 0 0 18px}
+.ask{margin-top:10px;padding:12px;border-radius:8px;border:1px solid rgba(210,153,34,.6);background:rgba(210,153,34,.08)}
+.ask h4{font-size:13px;color:var(--text);margin-bottom:4px}.ask p{font-size:12px;color:var(--text-2)}
+.ask ul{font:12px var(--mono);margin:6px 0 8px 18px;color:var(--text-2)}
+.docs{list-style:none;font:12px var(--mono);margin-top:8px}.docs li{padding:3px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.docs li:last-child{border:0}
+.docs .mod{color:var(--yellow)}
+.log{font:11px/1.5 var(--mono);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;max-height:320px;overflow:auto;margin-top:8px;white-space:pre-wrap;word-break:break-word}
+.log .ok{color:var(--green)}.log .err{color:var(--red)}.log .t{color:var(--text-2)}.log .v{color:var(--accent)}
+.toasts{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;flex-direction:column-reverse;gap:8px;z-index:9999;pointer-events:none;width:min(520px,calc(100vw - 24px))}
+.toast{pointer-events:auto;background:var(--overlay);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text);box-shadow:0 8px 24px rgba(0,0,0,.4);animation:tin .18s ease}
+.toast.ok{border-left-color:var(--green)}.toast.err{border-left-color:var(--red)}
+@keyframes tin{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
+.grid3 .btn{width:100%;justify-content:center}
+.hint{font-size:12px;color:var(--text-2);margin-top:8px}
+.mini{font:11px var(--mono);color:var(--text-2)}
+.catalog{max-height:260px;overflow:auto;margin-top:8px;font:12px var(--mono)}
+.catalog div{padding:4px 0;border-bottom:1px solid var(--border)}.catalog b{color:var(--accent);font-weight:500}.catalog span{color:var(--text-2)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="M3 16l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+    Fusion Bridge <span style="color:var(--text-2)">&middot; Quick Actions</span>
+    <div class="brand-pop">
+      <div><span>page</span><b>web-control quick actions demo</b></div>
+      <div><span>lane</span><b>browser &rarr; 127.0.0.1:2468x &rarr; ab &rarr; fusion bridge</b></div>
+      <div><span>ab</span><b id="bpAb">-</b></div>
+      <div><a href="https://wiki.adom.inc/adom/fusion-bridge" target="_blank" rel="noopener">wiki.adom.inc/adom/fusion-bridge</a></div>
+    </div>
+  </div>
+  <div class="vsep"></div>
+  <div class="subject"><span class="tchip"><span class="led" id="led"></span><span id="conn">not connected</span></span></div>
+  <div class="meta" id="meta">press Connect</div>
+  <div class="actions">
+    <a class="iconbtn" href="./" title="Back to the Fusion Dashboard" aria-label="Fusion Dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg></a>
+    <button class="iconbtn" id="btnClear" title="Clear the verb log" aria-label="Clear log"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
+  </div>
+</header>
+
+<main>
+  <section class="card wide" data-card="connection">
+    <div class="card-title">Adom Bridge on this machine <span class="card-status" id="connStatus">not probed yet</span></div>
+    <div class="card-desc">This page talks to Adom Bridge the same way a wiki part page does: it probes <code>http://127.0.0.1:24680-24689/status</code> for the local web-control listener, then sends every action as <code>POST /command {command, args}</code>. Each command that changes something asks you once in Adom Bridge (Allow once / Allow 1 hr / Deny). Your browser may ask for local network access first; allow it. Nothing leaves this machine except the part files it fetches from the wiki.</div>
+    <div class="row">
+      <button class="btn primary" id="btnConnect" data-action="connect">Connect</button>
+      <span class="mini" id="connNote"></span>
+    </div>
+    <div class="kv" id="connKv"></div>
+  </section>
+
+  <section class="card" data-card="part">
+    <div class="card-title">Part to import <span class="card-status" id="partStatus"></span></div>
+    <div class="card-desc">A wiki component page publishes its Fusion files (<code>.lbr</code> plus a <code>.step</code>). Resolve them here; the import below zips them in the browser and stages the zip on this machine in one call.</div>
+    <div class="row"><input type="text" id="partRef" value="ray/dac80504" aria-label="Wiki page reference" placeholder="owner/slug, or several separated by commas for one multi-part library"><button class="btn" id="btnResolve" data-action="resolve">Resolve files</button></div>
+    <div class="row" style="align-items:center"><label class="mini" style="display:flex;align-items:center;gap:8px;cursor:pointer"><button class="toggle" id="tglNoModel" role="switch" aria-checked="false" aria-label="Skip the 3D model" data-action="skip_model"><span class="toggle-track"><span class="toggle-thumb"></span></span></button>skip the 3D model (symbol + footprint only; the library installs unbound)</label></div>
+    <div class="row" style="align-items:baseline"><span class="mini">or pick one of Ray's recent parts (click several to build a multi-part library):</span><button class="btn" id="btnShuffle" data-action="shuffle" style="min-height:32px;padding:4px 10px">Shuffle</button></div>
+    <div class="chips" id="chips"></div>
+    <div class="kv" id="partKv"></div>
+  </section>
+
+  <section class="card" data-card="fusion">
+    <div class="card-title">Fusion on this machine <span class="card-status" id="fusionStatus"></span></div>
+    <div class="card-desc">Read before you act: is Fusion installed, running, and is the Adom add-in answering? The open documents are listed with their unsaved marker, so a restart is never a surprise.</div>
+    <div class="row"><button class="btn" id="btnFusion" data-action="fusion_state">Read Fusion state</button><button class="btn" id="btnPlan" data-action="plan">Pre-flight the import</button></div>
+    <div class="kv" id="fusionKv"></div>
+    <ul class="docs" id="docs"></ul>
+    <ul class="plan" id="plan"></ul>
+    <div id="ask"></div>
+  </section>
+
+  <section class="card wide" data-card="import">
+    <div class="card-title">Import into Fusion, one call <span class="card-status" id="importStatus"></span></div>
+    <div class="card-desc"><code>fusion_install_library_bundle {zipPath, libraryName}</code> returns immediately with a receipt (what was placed, which devicesets paired with a STEP, the part-number lint) and a <code>runId</code>. The page then polls <code>fusion_prove_result</code>: the bar is the bridge's measured percent, the line is its stage text, and the frames are the proof it captured, four per part, labelled so a proof shot is never mistaken for a live-feed frame.</div>
+    <div class="row">
+      <button class="btn primary" id="btnImport" data-action="import_bundle" disabled>Create Fusion library</button>
+      <button class="btn" id="btnAttach" data-action="attach_run" title="Attach to a run already in flight">Attach to running import</button>
+      <button class="btn danger" id="btnCancel" data-action="cancel_run" title="Stop the running import at its next part boundary; parts already bound keep their 3D, the library stays open" hidden>Cancel import</button>
+      <span class="mini" id="importNote">resolve a part first</span>
+    </div>
+    <div class="live" id="live" hidden>
+      <div class="live-head"><span class="live-led" id="liveLed"></span><span id="liveLabel">live · Fusion on this machine</span><span class="mini" id="liveTick"></span></div>
+      <canvas id="liveImg" hidden></canvas>
+      <div class="mini" id="liveNote"></div>
+    </div>
+    <div class="prog" id="prog"><div></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="kv" id="receipt"></div>
+    <div id="lint"></div>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section class="card" data-card="feed">
+    <div class="card-title">Live feed health <span class="card-status" id="feedStatus"></span></div>
+    <div class="card-desc">The 1 fps feed captures the Fusion window on this machine into a ring buffer. <code>running</code> alone proves nothing; a feed is live when <code>captured</code> climbs. The bridge says so itself in <code>healthy</code> and <code>_honesty</code>.</div>
+    <div class="row"><button class="btn" data-action="feed_status" id="btnFeed">Read feed status</button><button class="btn" data-action="feed_start" id="btnFeedStart">Start feed</button><button class="btn" data-action="feed_stop" id="btnFeedStop">Stop feed</button></div>
+    <div class="kv" id="feedKv"></div>
+  </section>
+
+  <section class="card" data-card="banner">
+    <div class="card-title">In-Fusion banner <span class="card-status" id="bannerStatus"></span></div>
+    <div class="card-desc">The Adom-branded status palette inside Fusion's own window. The import drives it automatically; these buttons drive it by hand so you can see what the user at Fusion sees.</div>
+    <div class="row"><button class="btn" data-action="banner_show" id="btnBannerShow">Show banner</button><button class="btn" data-action="banner_hide" id="btnBannerHide">Hide banner</button></div>
+    <div class="kv" id="bannerKv"></div>
+  </section>
+
+  <section class="card wide" data-card="catalog">
+    <div class="card-title">Every verb, one surface <span class="card-status" id="catStatus"></span></div>
+    <div class="card-desc">Web control and an AI thread hit the same dispatcher. <code>fusion_describe</code> is the catalog; anything listed here can be sent from this page or from <code>adom-bridge fusion_*</code>.</div>
+    <div class="row"><button class="btn" data-action="describe" id="btnDescribe">Load the catalog</button><input type="text" id="catFilter" placeholder="filter" aria-label="Filter verbs" style="max-width:220px"></div>
+    <div class="catalog" id="catalog"></div>
+  </section>
+
+  <section class="card wide" data-card="log">
+    <div class="card-title">Verb log <span class="card-status" id="logStatus">0 calls</span></div>
+    <div class="card-desc">Every <code>POST /command</code> this page sent, with its arguments, the round-trip time and the response summary. This is the same trace an agent reads when it ralph-tests the page.</div>
+    <div class="log" id="log" data-log></div>
+  </section>
+</main>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+var PORTS=[];for(var p=24680;p<=24689;p++)PORTS.push(p);
+var bridge=null, part=null, staged=null, runId=null, pollTimer=null, calls=0;
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function toast(msg,kind){var t=document.createElement('div');t.className='toast '+(kind||'');t.textContent=msg;$('toasts').appendChild(t);setTimeout(function(){t.remove()},kind==='err'?7000:4000)}
+function kv(el,obj){el.innerHTML=Object.keys(obj).map(function(k){return '<span>'+esc(k)+'</span><b>'+esc(obj[k])+'</b>'}).join('')}
+function status(el,text,cls){el.textContent=text;el.className='card-status '+(cls||'')}
+function logLine(html){var l=$('log');l.insertAdjacentHTML('afterbegin','<div>'+html+'</div>');calls++;$('logStatus').textContent=calls+' call'+(calls===1?'':'s')}
+function summarize(d){if(!d||typeof d!=='object')return String(d);var keys=['success','ok','errorCode','error','stage','percent','runId','installed','partsToBind','healthy','captured','tick','running','status','verdict','evidenceCount'];var out=[];keys.forEach(function(k){if(k in d&&d[k]!==null&&d[k]!==undefined&&d[k]!=='')out.push(k+'='+JSON.stringify(d[k]).slice(0,60))});return out.join(' ')||Object.keys(d).slice(0,6).join(',')}
+function toB64(buf){var u=new Uint8Array(buf),s='';for(var i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)}
+function timeout(ms){try{return AbortSignal.timeout(ms)}catch(e){return undefined}}
+
+// ---- transport: probe + command -------------------------------------------------
+function probe(){return Promise.all(PORTS.map(function(p){return fetch('http://127.0.0.1:'+p+'/status',{signal:timeout(1500)}).then(function(r){return r.ok?r.json():null}).then(function(j){return j&&j.service==='adom-bridge'?{port:p,raw:j}:null}).catch(function(){return null})})).then(function(rs){for(var i=0;i<rs.length;i++)if(rs[i])return rs[i];return null})}
+function cmd(command,args,opts){opts=opts||{};if(!bridge){return Promise.reject(new Error('not connected'))}var t0=performance.now();var body=JSON.stringify({command:command,args:args||{}});var short=body.length>300?body.slice(0,300)+'...':body;return fetch('http://127.0.0.1:'+bridge.port+'/command',{method:'POST',headers:{'Content-Type':'application/json'},body:body,signal:timeout(opts.timeoutMs||135000)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{status:r.status,j:j}})}).then(function(x){var ms=Math.round(performance.now()-t0);var d=x.j||{};var data=d.data&&typeof d.data==='object'?d.data:d;var ok=x.status===200&&d.success!==false&&data.success!==false&&!d.errorCode;logLine('<span class="t">'+new Date().toLocaleTimeString()+'</span> <span class="v">'+esc(command)+'</span> '+esc(short.slice(0,220))+' <span class="'+(ok?'ok':'err')+'">'+(ok?'ok':'FAIL')+'</span> '+ms+'ms '+esc(summarize(data.result||data))+(d._hint?'\n   hint: '+esc(String(d._hint).slice(0,200)):''));if(!ok){var e=new Error(data.error||d.error||d.errorCode||data.errorCode||('HTTP '+x.status));e.code=d.errorCode||data.errorCode||(x.status===403?'web_denied':null);e.payload=data;throw e}return data}).catch(function(e){if(!e.payload)logLine('<span class="t">'+new Date().toLocaleTimeString()+'</span> <span class="v">'+esc(command)+'</span> <span class="err">unreachable: '+esc(e.message)+'</span>');throw e})}
+
+// ---- connection --------------------------------------------------------------------
+function connect(){status($('connStatus'),'probing 127.0.0.1:24680-24689...');$('connNote').textContent='allow local network access if your browser asks';$('led').className='led';return probe().then(function(b){bridge=b;if(!b){status($('connStatus'),'Adom Bridge not detected','bad');$('led').className='led bad';$('conn').textContent='not connected';$('meta').textContent='is Adom Bridge running?';toast('Adom Bridge not found on 24680-24689. Is ab running on this machine?','err');return null}var wc=b.raw.webControl||{};var m=b.raw.machine;var name=(m&&typeof m==='object')?(m.clientName||m.hostname||'this machine'):(m||'this machine');$('led').className='led '+(wc.enabled?'on':'warn');$('conn').textContent=name+' :'+b.port;$('meta').textContent='ab '+(b.raw.version||'?')+' · web control '+(wc.enabled?'on':'OFF')+(wc.grantedForYou?' · this page is granted':(wc.promptExpected?' · ab will ask you per command':''));$('bpAb').textContent=(b.raw.version||'?')+' on '+name;status($('connStatus'),wc.enabled?'connected, web control enabled':'connected, web control is OFF in ab Settings',wc.enabled?'ok':'warn');$('connNote').textContent='';kv($('connKv'),{machine:name,'ab version':b.raw.version||'?',endpoint:'http://127.0.0.1:'+b.port,'web control':wc.enabled?'enabled':'disabled','this page':wc.grantedForYou?'granted (no prompts)':(wc.promptExpected?'ab asks you once per command (Allow once / Allow 1 hr / Deny)':'unknown'),'handshake required':wc.requireHandshake?'yes':'no'});toast('Connected to Adom Bridge on '+name,'ok');$('btnConnect').textContent='Reconnect';return b})}
+
+// ---- part files ----------------------------------------------------------------------
+var skipModel=false;
+function fetchPartFiles(ref){return fetch('https://wiki.adom.inc/api/v1/pages/'+ref+'/files',{signal:timeout(15000)}).then(function(r){if(!r.ok)throw new Error(ref+': wiki answered '+r.status);return r.json()}).then(function(j){var files=j.files||[];var lbr=files.filter(function(f){return /\.lbr$/i.test(f.name)});var ksym=files.filter(function(f){return /\.kicad_sym$/i.test(f.name)})[0];var steps=files.filter(function(f){return /\.(step|stp)$/i.test(f.name)});if(!lbr.length)throw new Error(ref+' publishes no .lbr');var base='https://wiki.adom.inc/api/v1/pages/'+ref+'/files/';return fetch('https://wiki.adom.inc/api/v1/pages/'+ref,{signal:timeout(15000)}).then(function(r){return r.ok?r.json():{}}).catch(function(){return{}}).then(function(pg){var page=pg.page||pg;var mpnP=ksym?fetch(base+ksym.name,{signal:timeout(15000)}).then(function(r){return r.ok?r.text():''}).then(function(t){var m=/\(property "Value" "([^"]+)"/.exec(t);return m?m[1]:''}).catch(function(){return''}):Promise.resolve('');return mpnP.then(function(mpn){return{ref:ref,name:ref.split('/').pop(),title:page.title||'',brief:page.brief||'',mpn:mpn,lbr:{name:lbr[0].name,url:base+lbr[0].name,size:lbr[0].size},steps:steps.map(function(f){return{name:f.name,url:base+f.name,size:f.size}}),lastCommit:files.map(function(f){return (f.lastCommit||{}).timestamp||0}).reduce(function(a,b){return Math.max(a,b)},0)}})})})}
+function resolvePart(rec){var refs=$('partRef').value.split(',').map(function(x){return x.trim().replace(/^\/+|\/+$/g,'')}).filter(Boolean);if(!refs.length)return;status($('partStatus'),'resolving '+refs.length+' page'+(refs.length===1?'':'s')+'...');part=null;$('btnImport').disabled=true;return Promise.all(refs.map(fetchPartFiles)).then(function(ps){var multi=ps.length>1;part={refs:refs,parts:ps,multi:multi,name:multi?('adom-multi-'+ps.length+'parts'):ps[0].name,lbr:ps[0].lbr,steps:skipModel?[]:[].concat.apply([],ps.map(function(p){return p.steps}))};var info={};if(multi){info.library=part.name+' (merged from '+ps.length+' pages)';ps.forEach(function(p,i){var r=catalogPages[p.ref];info['part '+(i+1)]=p.ref+(r?' · published '+fmtDate(r.last_commit_at||r.updated_at):'')+' · '+p.lbr.name+(p.steps.length?' + '+p.steps[0].name:' (no model)')})}else{var p=ps[0];rec=rec&&rec.slug?rec:(catalogPages[p.ref]||null);info.page='https://wiki.adom.inc/'+p.ref;if(rec){info.title=(rec.title||'')+(rec.brief?' - '+String(rec.brief).slice(0,90):'');info.version=rec.version||'';info.published=fmtDate(rec.last_commit_at||rec.updated_at)+(rec.created_at?' (page created '+fmtDate(rec.created_at)+')':'')}else if(p.lastCommit){info['files published']=fmtDate(p.lastCommit*1000)}info.library=p.lbr.name+' ('+p.lbr.size+' B)';info.models=p.steps.map(function(s){return s.name+' ('+s.size+' B)'}).join(', ')||'none'}if(skipModel)info.models='SKIPPED by the switch above: the library will install unbound';kv($('partKv'),info);status($('partStatus'),multi?ps.length+' parts, ready':'ready','ok');$('btnImport').disabled=false;$('importNote').textContent=part.steps.length?(multi?'one call for all '+ps.length+' parts, then the page polls':'one call, then the page polls'):'no STEP: nothing to bind, the library installs unbound';toast('Resolved '+(multi?ps.length+' parts':ps[0].lbr.name)+(part.steps.length?' + '+part.steps.length+' model(s)':' (no models)'),'ok')}).catch(function(e){status($('partStatus'),e.message,'bad');toast('Could not resolve: '+e.message,'err')})}
+// Merge N EAGLE libraries into one multi-deviceset library (packages, symbols, devicesets appended; first library's header kept).
+// A library with no deviceset description or MPN is unusable to an EE; when the wiki page has
+// them (its title is the part number, its brief the one-line description) fill the gaps and say so.
+var GENERIC_DESC=/^(inductor|resistor|capacitor|unpolarized capacitor|polarized capacitor|light emitting diode|led|diode|generic connector.*|four pin crystal.*|crystal|two pin crystal.*|fuse|ferrite bead|transistor.*|mosfet.*)$/i;var GENERIC_NAME=/^(L|R|C|D|LED|Q|Y|X|F|FB|J|Conn_\d+x\d+.*|Crystal(_\w+)?|Resistor|Capacitor|Inductor)$/i;
+function fillPartMeta(text,rec,fills){if(!rec||(!rec.brief&&!rec.title))return text;try{var P=new DOMParser();var d=P.parseFromString(text,'application/xml');var changed=false;[].forEach.call(d.querySelectorAll('library > devicesets > deviceset'),function(ds){var name=ds.getAttribute('name');var mpn=(rec.mpn||'').trim();if(!mpn||GENERIC_NAME.test(mpn))mpn=(rec.ref||'').split('/').pop().toUpperCase();if(GENERIC_NAME.test(name||'')&&mpn){var newName=mpn.replace(/[^A-Za-z0-9._-]+/g,'_');ds.setAttribute('name',newName);fills.push({deviceset:name,field:'name -> '+newName,from:rec.ref});name=newName;changed=true}var desc=ds.querySelector(':scope > description');var descText=desc?(desc.textContent||'').trim():'';if((!descText||GENERIC_DESC.test(descText))&&rec.brief){if(!desc){desc=d.createElement('description');ds.insertBefore(desc,ds.firstChild)}desc.textContent=rec.brief;fills.push({deviceset:name,field:'description',from:rec.ref});changed=true}[].forEach.call(ds.querySelectorAll('devices > device'),function(dev){var techs=dev.querySelectorAll('technologies > technology');if(!techs.length){var ts=dev.querySelector('technologies');if(!ts){ts=d.createElement('technologies');dev.appendChild(ts)}var t=d.createElement('technology');t.setAttribute('name','');ts.appendChild(t);techs=[t]}[].forEach.call(techs,function(t){var has=[].some.call(t.querySelectorAll('attribute'),function(a){return (a.getAttribute('name')||'').toUpperCase()==='MPN'&&(a.getAttribute('value')||'').trim()});if(!has&&mpn){var a=d.createElement('attribute');a.setAttribute('name','MPN');a.setAttribute('value',mpn);a.setAttribute('constant','no');t.appendChild(a);fills.push({deviceset:name,field:'MPN',from:rec.ref});changed=true}})})});return changed?new XMLSerializer().serializeToString(d):text}catch(e){return text}}
+function mergeLbrs(texts){if(texts.length===1)return texts[0];var P=new DOMParser();var base=P.parseFromString(texts[0],'application/xml');function sec(doc,tag){var el=doc.querySelector('library > '+tag);if(!el){el=doc.createElement(tag);doc.querySelector('library').appendChild(el)}return el}var seen={packages:{},symbols:{},devicesets:{}};['packages','symbols','devicesets'].forEach(function(t){[].forEach.call(sec(base,t).children,function(c){seen[t][c.getAttribute('name')]=1})});for(var i=1;i<texts.length;i++){var d=P.parseFromString(texts[i],'application/xml');['packages','symbols','devicesets'].forEach(function(t){var src=d.querySelector('library > '+t);if(!src)return;[].forEach.call(src.children,function(c){var n=c.getAttribute('name');if(seen[t][n])return;seen[t][n]=1;sec(base,t).appendChild(base.importNode(c,true))})});var p3=d.querySelector('library > packages3d');if(p3){var b3=sec(base,'packages3d');[].forEach.call(p3.children,function(c){b3.appendChild(base.importNode(c,true))})}}return new XMLSerializer().serializeToString(base)}
+
+// ---- Ray's recent parts: random picks with their publish date --------------------------
+var catalogPages={},rayPages=null;
+function fmtDate(v){if(!v)return '';var d=new Date(typeof v==='number'?v:String(v).replace(' ','T'));if(isNaN(d))return String(v);return d.toLocaleString(undefined,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+function loadRay(){if(rayPages)return Promise.resolve(rayPages);return fetch('https://wiki.adom.inc/api/v1/pages?owner=ray&limit=500',{signal:timeout(15000)}).then(function(r){return r.json()}).then(function(j){rayPages=(j.pages||[]).filter(function(p){return p.kind==='component'});rayPages.forEach(function(p){catalogPages[p.owner+'/'+p.slug]=p});rayPages.sort(function(a,b){return String(b.last_commit_at||'').localeCompare(String(a.last_commit_at||''))});return rayPages})}
+function shuffle(){$('chips').innerHTML='<span class="mini">loading Ray\'s parts...</span>';loadRay().then(function(ps){var recent=ps.slice(0,120),pick=[];while(pick.length<6&&recent.length){var i=Math.floor(Math.random()*recent.length);pick.push(recent.splice(i,1)[0])}$('chips').innerHTML='';pick.forEach(function(p){var b=document.createElement('button');b.className='chip';b.setAttribute('data-action','pick');b.setAttribute('data-ref',p.owner+'/'+p.slug);b.innerHTML=esc(p.slug)+'<small>'+esc(fmtDate(p.last_commit_at||p.updated_at).replace(/,? \d{4}/,''))+'</small>';b.title=(p.title||'')+' - '+(p.brief||'');b.onclick=function(){var ref=p.owner+'/'+p.slug;var cur=$('partRef').value.split(',').map(function(x){return x.trim()}).filter(Boolean);if(b.className.indexOf('active')>=0){cur=cur.filter(function(x){return x!==ref});b.className='chip'}else{if(!$('partRef').dataset.multiStart)cur=[];cur.push(ref);b.className='chip active'}$('partRef').dataset.multiStart='1';$('partRef').value=cur.join(', ');resolvePart(cur.length===1?p:null)};$('chips').appendChild(b)});var newest=ps[0];if(newest)$('chips').insertAdjacentHTML('beforeend','<span class="mini" style="align-self:center">'+ps.length+' parts by Ray, newest '+esc(fmtDate(newest.last_commit_at))+'</span>')}).catch(function(e){$('chips').innerHTML='<span class="mini">could not list Ray\'s pages: '+esc(e.message)+'</span>'})}
+// ---- zip (STORE only) built in the browser ------------------------------------------
+var CRC=(function(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u8){var c=0xFFFFFFFF;for(var i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function makeZip(entries){var parts=[],central=[],offset=0,enc=new TextEncoder();entries.forEach(function(en){var name=enc.encode(en.name),data=new Uint8Array(en.data),crc=crc32(data);var lh=new DataView(new ArrayBuffer(30));lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0,true);lh.setUint16(8,0,true);lh.setUint16(10,0,true);lh.setUint16(12,0x21,true);lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,data.length,true);lh.setUint16(26,name.length,true);lh.setUint16(28,0,true);parts.push(new Uint8Array(lh.buffer),name,data);var ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0,true);ch.setUint16(10,0,true);ch.setUint16(12,0,true);ch.setUint16(14,0x21,true);ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,data.length,true);ch.setUint16(28,name.length,true);ch.setUint16(30,0,true);ch.setUint16(32,0,true);ch.setUint16(34,0,true);ch.setUint16(36,0,true);ch.setUint32(38,0,true);ch.setUint32(42,offset,true);central.push(new Uint8Array(ch.buffer),name);offset+=30+name.length+data.length});var cdSize=central.reduce(function(a,b){return a+b.length},0);var eocd=new DataView(new ArrayBuffer(22));eocd.setUint32(0,0x06054b50,true);eocd.setUint16(8,entries.length,true);eocd.setUint16(10,entries.length,true);eocd.setUint32(12,cdSize,true);eocd.setUint32(16,offset,true);var all=parts.concat(central,[new Uint8Array(eocd.buffer)]);var total=all.reduce(function(a,b){return a+b.length},0),out=new Uint8Array(total),pos=0;all.forEach(function(b){out.set(b,pos);pos+=b.length});return out.buffer}
+function granted(){return !!(bridge&&bridge.raw&&bridge.raw.webControl&&bridge.raw.webControl.grantedForYou)}
+function askNote(){return granted()?'':' · Adom Bridge is asking you on this machine: click Allow (1 hr) in its toast'}
+function stage(path,buf,note){var u=new Uint8Array(buf),CH=1024*1024,n=Math.max(1,Math.ceil(u.length/CH));function one(off){var end=Math.min(off+CH,u.length),fin=end>=u.length;setStage(note+' (chunk '+(Math.floor(off/CH)+1)+'/'+n+')'+askNote());return cmd('write_file_chunk',{path:path,dataB64:toB64(u.subarray(off,end)),offset:off,final:fin,createDirs:true}).then(function(d){if(fin)return d.path||path;return one(typeof d.nextOffset==='number'?d.nextOffset:end)})}return one(0)}
+
+// ---- import: one call, then poll --------------------------------------------------------
+function setProg(p,cls){var el=$('prog');el.className='prog '+(cls||'');el.firstElementChild.style.width=Math.max(0,Math.min(100,p||0))+'%'}
+function setStage(html){$('stage').innerHTML=html}
+function renderLint(pm){if(!pm){$('lint').innerHTML='';return}var ok=pm.ok!==false;var mc=pm.missingCounts||{};var tot=pm.componentsTotal||pm.variantsTotal||0;var parts=[];['MPN','MANUFACTURER'].forEach(function(k){if(mc[k])parts.push(k.toLowerCase()==='mpn'?'manufacturer part number':'manufacturer')});if(pm.componentsWithoutAnyDistributor)parts.push('a distributor number (Mouser, DigiKey or LCSC)');var n=Math.max(pm.componentsWithoutAnyDistributor||0,mc.MPN||0,mc.MANUFACTURER||0,mc.MOUSER_PN||0,mc.DIGIKEY_PN||0,mc.LCSC_PN||0)||tot;var line=ok?'every component carries a manufacturer part number and a distributor number.':(tot?n+' of '+tot+' component'+(tot===1?'':'s')+' missing ':'missing ')+(parts.join(', ')||'part numbers')+'. The import is fine; the BOM will be blank for it until the numbers are added upstream.';$('lint').innerHTML='<div class="lint '+(ok?'ok':'warn')+'"><b>Part numbers</b> '+esc(line)+'</div>'}
+function renderReceipt(d){var unb=(d.unbound||[]).map(function(u){return u.package+' ('+u.why+')'}).join('; ');var fl=(part&&part.metaFills)||[];kv($('receipt'),{installed:d.installed?'yes, '+d.libraryPath:'no',library:d.libraryName||'',parts:(d.partsToBind||0)+' of '+(d.partsTotal||0)+' paired with a STEP'+((d.parts||[]).length>1?': '+d.parts.map(function(p){return p.package}).join(', '):''),'named skips':unb||'none','filled from wiki pages':fl.length?fl.map(function(f){return f.deviceset+' '+f.field}).join(', '):'nothing (source libraries were complete)','fusion':(d.fusion&&d.fusion.message)||'',runId:d.runId||'','estimated':d.estimatedSec?Math.round(d.estimatedSec)+'s':''});renderLint(d.partMetadata)}
+var frameCache={};
+function frameSrc(f){var src=f.thumbnailDataUrl||f.dataUrl;if(src)return Promise.resolve(src);var p=f.screenshot||f.path;if(!p)return Promise.resolve(null);if(frameCache[p])return Promise.resolve(frameCache[p]);return cmd('read_file',{path:p,encoding:'base64'},{timeoutMs:60000}).then(function(d){var c=d.content||'';if(!c)return null;var u='data:image/'+(/\.png$/i.test(p)?'png':'webp')+';base64,'+c;frameCache[p]=u;return u}).catch(function(){return null})}
+function renderFrames(ev){var g=$('gallery');g.innerHTML='';(ev||[]).forEach(function(f,i){var id='shot'+i;var h='<div class="shot" id="'+id+'"><div class="cap" style="padding:18px 8px">'+(f.ok===false?'REFUSED: '+esc(f.error||'not evidence'):'loading frame...')+'</div><div class="cap"><span><span class="tag '+(f.kind==='proof'?'proof':'feed')+'">'+esc(f.kind||'frame')+'</span> '+esc(f.step||f.view||'')+(f.width?' '+f.width+'x'+f.height:'')+'</span><span>'+esc(f.part||'')+'</span></div></div>';g.insertAdjacentHTML('beforeend',h);if(f.ok===false)return;frameSrc(f).then(function(src){var el=document.getElementById(id);if(!el)return;if(src){el.firstElementChild.outerHTML='<img src="'+src+'" alt="'+esc(f.step||f.view||'frame')+'">'}else{el.firstElementChild.textContent='frame could not be fetched from the box: '+((f.screenshot||'').split('/').pop())}})})}
+// ---- the 1 fps live view: a slow movie of the Fusion window while the run works ------
+var live={timer:null,since:0,on:false};
+function liveStart(){if(live.on)return;live.on=true;live.since=0;$('live').hidden=false;$('liveImg').hidden=true;$('liveLabel').textContent='live · Fusion on this machine';$('liveLed').className='live-led';$('liveTick').textContent='';$('liveNote').textContent='starting the 1 fps capture on this machine...';cmd('fusion_live_feed',{action:'start',intervalSec:1,maxSec:1500}).then(function(){liveTick()}).catch(function(e){$('liveNote').textContent='feed could not start: '+e.message})}
+function loadImg(src){return new Promise(function(res){if(!src)return res(null);var im=new Image();im.onload=function(){res(im)};im.onerror=function(){res(null)};im.src=src})}
+// Composite what the user's screen shows: the main window plus every owned popup (the Adom
+// banner, Fusion's Browser and comment panels, any dialog) at their real screen positions.
+function drawLive(main,popups){var cv=$('liveImg');return loadImg(main.src).then(function(mi){if(!mi)return false;var r=main.rect||{};var W=r.width||mi.naturalWidth,H=r.height||mi.naturalHeight;cv.width=mi.naturalWidth;cv.height=mi.naturalHeight;var sx=cv.width/W,sy=cv.height/H;var ctx=cv.getContext('2d');ctx.drawImage(mi,0,0);return Promise.all(popups.map(function(p){return loadImg(p.src).then(function(pi){if(!pi)return;var pr=p.rect||{};var x=(pr.x!=null?pr.x:(pr.left||0))-(r.left||0),y=(pr.y!=null?pr.y:(pr.top||0))-(r.top||0),w=pr.w||pr.width||pi.naturalWidth,h=pr.h||pr.height||pi.naturalHeight;if(w<3||h<3)return;ctx.drawImage(pi,x*sx,y*sy,w*sx,h*sy);ctx.strokeStyle='rgba(0,184,177,.6)';ctx.lineWidth=2;ctx.strokeRect(x*sx,y*sy,w*sx,h*sy)})})).then(function(){return true})})}
+function liveTick(){if(!live.on)return;cmd('fusion_live_feed',{action:'frames',since:live.since},{timeoutMs:20000}).then(function(d){var all=d.frames||[];var fr=all.filter(function(f){return f.kind==='main'});if(d.healthy===false&&!fr.length){$('liveLed').className='live-led';$('liveNote').textContent=(d.noHwnd&&!d.captured)?'waiting for the Fusion window (Fusion is launching)':(d._honesty||'feed is not capturing');}if(fr.length){var f=fr[fr.length-1];var pops=all.filter(function(p){return p.kind==='popup'&&p.tick===f.tick});live.since=Math.max(live.since,f.tick);return frameSrc(f).then(function(src){if(!src||!live.on)return;return Promise.all(pops.map(function(p){return frameSrc(p).then(function(ps){return{src:ps,rect:p.rect,title:p.title}})})).then(function(ps){return drawLive({src:src,rect:f.rect},ps.filter(function(p){return p.src}))}).then(function(ok){if(ok&&live.on){$('liveImg').hidden=false;$('liveLed').className='live-led on';var names=pops.map(function(p){return p.title}).filter(function(t){return t&&!/MessageTray/.test(t)});$('liveTick').textContent='frame '+f.tick+' · '+(names.length?names.length+' panel(s)/dialog(s) over it':'no dialogs');$('liveNote').textContent=f.title||''}})})}}).catch(function(e){$('liveNote').textContent='feed: '+e.message}).then(function(){if(live.on)live.timer=setTimeout(liveTick,1500)})}
+function liveStop(why){if(!live.on)return;live.on=false;clearTimeout(live.timer);$('liveLed').className='live-led';$('liveLabel').textContent='live view ended · '+(why||'');cmd('fusion_live_feed',{action:'stop'}).catch(function(){})}
+function poll(id){runId=id;clearTimeout(pollTimer);var tick=0;liveStart();$('btnCancel').hidden=false;$('btnCancel').disabled=false;$('btnCancel').textContent='Cancel import';(function loop(){tick++;cmd('fusion_prove_result',{runId:id}).then(function(d){var r=d.result||d;var pct=typeof r.percent==='number'?r.percent:null;if(r.stage==='cancelled'){$('btnCancel').hidden=true;liveStop('cancelled');setProg(100,'fail');setStage('<b>cancelled</b> · '+esc(r.error||('stopped while '+(r.cancelledAt||''))));status($('importStatus'),'cancelled','warn');renderFrames(r.evidence);toast('Import cancelled: '+esc(r.error||''),'ok');return}if(r.stage==='done'||r.stage==='failed')$('btnCancel').hidden=true;if(r.cancelRequested&&r.stage!=='cancelled'){$('btnCancel').disabled=true;$('btnCancel').textContent='stopping at the next part...'}if(r.stage==='failed'){liveStop('failed');setProg(100,'fail');status($('importStatus'),r.errorCode==='bridge_restarted_mid_run'?'bridge restarted mid-run':'failed','bad');renderFrames(r.evidence);if(r.errorCode==='bridge_restarted_mid_run'){showRestartedMidRun(r);return}setStage('<b>failed</b> '+esc(r.error||(r.bind&&r.bind.error)||r.errorCode||''));toast('Import failed: '+(r.error||(r.bind&&r.bind.error)||'see the log'),'err');return}if(r.stage==='done'){liveStop('done');setProg(100,'done');var pv=r.prove||{};setStage('<b>done</b> verdict: '+esc(r.verdict||(pv.proven?'proven':'not proven'))+' · '+(pv.partsProven||0)+'/'+(pv.partsTotal||r.partsTotal||0)+' parts proven · '+(r.evidenceCount||0)+' frames');status($('importStatus'),r.verdict==='proven'||pv.proven?'proven':'finished, not proven',r.verdict==='proven'||pv.proven?'ok':'warn');if(r.partMetadata)renderLint(r.partMetadata);toast('Library created in Fusion: '+(pv.partsProven||0)+'/'+(pv.partsTotal||0)+' parts proven','ok');return cmd('fusion_prove_result',{runId:id,inlineFrames:true},{timeoutMs:120000}).then(function(d2){var r2=d2.result||d2;renderFrames(r2.evidence||r.evidence)}).catch(function(){renderFrames(r.evidence)})}if(pct!==null)setProg(pct);setStage('<b>'+esc(r.stage||'working')+'</b>'+(r.stageLabel?' · '+esc(r.stageLabel):'')+(pct!==null?' · '+Math.round(pct)+'%':'')+(typeof r.etaSec==='number'?' · ~'+Math.round(r.etaSec)+'s left':''));if(r.evidence&&r.evidence.length)renderFrames(r.evidence);if(r.errorCode==='addin_restart_required'){if(!document.querySelector('[data-ask]'))showAsk(r);liveStop('waiting for your answer')}pollTimer=setTimeout(loop,tick<3?5000:10000)}).catch(function(e){var notYet=e.code==='run_not_found'||e.code==='unknown_run_id'||/no prove run/i.test(e.message||'');var transient=notYet||/error sending request|unreachable|HTTP 0|HTTP 5\d\d|timed out|main_thread_busy/i.test(e.message||'');if(transient&&tick<12){setStage('<b>'+(notYet?'starting (the run is not on file yet)':'bridge not answering, retrying')+'</b> · '+esc((e.message||'').slice(0,90))+' (try '+tick+' of 12)');pollTimer=setTimeout(loop,8000);return}liveStop('poll failed');setProg(100,'fail');setStage('<b>poll failed</b> '+esc(e.message));status($('importStatus'),'poll failed','bad')})})()}
+function showRestartedMidRun(r){$('stage').innerHTML='<b>the bridge restarted under this run</b> '+esc(r.error||'')+' <button class="btn" data-action="start_again" style="min-height:32px;padding:4px 10px;margin-left:8px">Start again</button>';$('stage').querySelector('[data-action=start_again]').onclick=importBundle;toast('The bridge restarted mid-run (an update or a crash). Press Start again.','err')}
+function importBundle(){if(!part)return;probe().then(function(b){if(b)bridge=b});var b=$('btnImport');b.disabled=true;status($('importStatus'),'working');$('gallery').innerHTML='';$('receipt').innerHTML='';$('lint').innerHTML='';setProg(0);var ps=part.parts||[part];setStage('fetching '+ps.length+' librar'+(ps.length===1?'y':'ies')+(part.steps.length?' and '+part.steps.length+' model(s)':'')+' from the wiki...');var lbrFetches=ps.map(function(p){return fetch(p.lbr.url).then(function(r){return r.text()})});var stepFetches=part.steps.map(function(s){return fetch(s.url).then(function(r){return r.arrayBuffer()})});Promise.all([Promise.all(lbrFetches),Promise.all(stepFetches)]).then(function(res){var texts=res[0],bufs=res[1];setStage((ps.length>1?'merging '+ps.length+' libraries into one and ':'')+'zipping in the browser...');var fills=[];texts=texts.map(function(t,i){return fillPartMeta(t,ps[i],fills)});part.metaFills=fills;var merged=mergeLbrs(texts);var name=part.name.replace(/[^A-Za-z0-9._-]+/g,'_');var entries=[{name:name+'.lbr',data:new TextEncoder().encode(merged).buffer}].concat(part.steps.map(function(s,i){return{name:s.name,data:bufs[i]}}));var zip=makeZip(entries);return stage('~/adom-wiki-libs/'+name+'.zip',zip,'staging the bundle on this machine (approve in Adom Bridge)').then(function(p){staged=p;setStage('installing the bundle (one call)...');return cmd('fusion_install_library_bundle',{zipPath:p,libraryName:name})})}).then(function(d){renderReceipt(d);if(d.errorCode==='nothing_to_bind'||d.started===false){setProg(100,'done');setStage('<b>installed, unbound</b> · '+esc(d._hint||'nothing to bind'));status($('importStatus'),'installed, unbound','warn');toast('Library placed at '+d.libraryPath+' with no 3D bound','ok');b.disabled=false;return}if(d.attached)toast('An import is already running; attached to '+d.runId);else toast('Installed and started run '+d.runId,'ok');poll(d.runId)}).catch(function(e){setProg(100,'fail');setStage('<b>'+esc(e.code||'failed')+'</b> '+esc(e.message));status($('importStatus'),'failed','bad');if(e.payload&&e.payload.errorCode==='addin_restart_required')showAsk(e.payload);if(e.code==='web_denied'){setStage('<b>not allowed</b> Adom Bridge asked you to allow this page and did not get a click in time. Press the button again and click Allow (1 hr) in the Adom Bridge toast, or grant this page in ab Settings > Web Control.');}toast((e.code==='web_denied'?'Adom Bridge did not get your Allow click. ':'')+e.message,'err')}).finally(function(){b.disabled=false})}
+function cancelRun(){if(!runId){toast('No run to cancel','err');return}var b=$('btnCancel');b.disabled=true;b.textContent='stopping at the next part...';cmd('fusion_cancel_run',{runId:runId}).then(function(d){var r=d.result||d;if(r.alreadyFinished){toast('That run had already ended ('+r.stage+')');b.hidden=true;return}toast('Stopping the import at the next part boundary (a STEP import in progress finishes first)')}).catch(function(e){b.disabled=false;b.textContent='Cancel import';toast(e.message,'err')})}
+function attachRun(){cmd('fusion_prove_result',{}).then(function(d){var r=d.result||d;if(!r.runId){toast('No run to attach to','err');return}toast('Attached to run '+r.runId);poll(r.runId)}).catch(function(e){toast(e.message,'err')})}
+
+// ---- the restart ask: always a choice --------------------------------------------------
+function showAsk(p){var docs=(p.openDocuments||p.documentNames||[]);var unsaved=p.unsavedDocuments||[];$('ask').innerHTML='<div class="ask" data-ask="addin_restart_required"><h4>Fusion needs a restart to load the Adom add-in</h4><p>'+esc(p.userMessage||'The add-in is not answering. Restarting Fusion loads it. Your documents will be saved first.')+'</p>'+(docs.length?'<ul>'+docs.map(function(d){return '<li>'+esc(typeof d==='string'?d:(d.name||''))+(unsaved.indexOf(typeof d==='string'?d:d.name)>=0?' (unsaved)':'')+'</li>'}).join('')+'</ul>':'<p class="mini">'+(p.documentsKnown===false?'The bridge could not list open documents.':'No open documents.')+'</p>')+'<div class="row"><button class="btn primary" data-action="restart_save">Save and restart Fusion</button><button class="btn" data-action="restart_hold">I\'ll handle it</button></div></div>';$('ask').querySelector('[data-action=restart_save]').onclick=function(){cmd(p.remedyVerb||'fusion_restart_for_addin',{save:true},{timeoutMs:135000}).then(function(){toast('Fusion is restarting with your documents saved','ok');$('ask').innerHTML=''}).catch(function(e){toast(e.message,'err')})};$('ask').querySelector('[data-action=restart_hold]').onclick=function(){cmd(p.remedyVerb||'fusion_restart_for_addin',{decline:true,notificationId:p.notificationId||''}).catch(function(){});$('ask').innerHTML='<div class="mini">You own the restart. Nothing will restart Fusion until you do; the running import stops.</div>';toast('Okay, the restart is yours')}}
+
+// ---- fusion state, plan ------------------------------------------------------------------
+function fusionState(){status($('fusionStatus'),'reading...');return cmd('fusion_readiness',{}).then(function(r){var x=r.data||r;var d={installed:x.installed?'yes':'no',running:x.running?'yes':'no',ready:x.ready?'yes':'no','bridge':x.bridgeVersion||'?'};if(x.needsSignin)d['needs sign-in']='yes';kv($('fusionKv'),d);status($('fusionStatus'),x.ready?'ready':(x.running?'running, add-in not ready':(x.installed?'installed, not running':'not installed')),x.ready?'ok':'warn');return cmd('fusion_get_app_state',{})}).then(function(r){var x=r.data||r;var docs=x.documents||[];$('docs').innerHTML=docs.length?docs.map(function(d){return '<li><span>'+esc(d.name||'')+(d.isModified||d.modified?' <span class="mod">unsaved</span>':'')+'</span><span>'+esc(d.isActive?'active':'')+'</span></li>'}).join(''):'<li><span>no documents open</span><span></span></li>'}).catch(function(e){status($('fusionStatus'),e.message,'bad');toast(e.message,'err')})}
+function plan(){var parts=part&&part.steps.length?part.steps.map(function(s){return{package:part.name,modelPath:s.name}}):[];status($('fusionStatus'),'planning...');return cmd('fusion_plan_library_import',{parts:parts}).then(function(d){var f=d.fusion||{};status($('fusionStatus'),f.status||'?',f.status==='ready'?'ok':'warn');kv($('fusionKv'),{status:f.status||'?',message:f.message||'','total':Math.round(d.estimatedSec||0)+'s'+(d.estimatedSecIfAlreadyOpen&&d.estimatedSecIfAlreadyOpen!==d.estimatedSec?' ('+Math.round(d.estimatedSecIfAlreadyOpen)+'s if already open)':''),confidence:d.confidence||''});$('plan').innerHTML=(d.plan||[]).map(function(s){return '<li><span>'+esc(s.label||s.stage)+(s.needsUserConsent?' (asks you first)':'')+'</span><span class="c '+esc(s.confidence||'')+'">'+Math.round(s.estimatedSec||0)+'s · '+esc(s.confidence||'')+'</span></li>'}).join('');if(f.status==='addin_restart_required')showAsk({userMessage:f.message,documentsKnown:false});toast('Plan: '+Math.round(d.estimatedSec||0)+'s, '+(d.plan||[]).length+' stages')}).catch(function(e){status($('fusionStatus'),e.message,'bad');toast(e.message,'err')})}
+
+// ---- feed, banner, catalog ----------------------------------------------------------------
+function feed(action){status($('feedStatus'),action+'...');return cmd('fusion_live_feed',action==='status'?{action:'status'}:{action:action,intervalSec:1,maxSec:300}).then(function(d){var x=d.data||d;kv($('feedKv'),{running:x.running?'yes':'no',healthy:x.healthy===undefined?'(bridge < 1.9.245)':(x.healthy?'yes':'NO'),tick:x.tick,captured:x.captured,buffered:x.buffered,'last error':x.lastError||'none','honesty':x._honesty||''});status($('feedStatus'),x.healthy?'live':(x.running?'running but not live':'stopped'),x.healthy?'ok':(x.running?'warn':''));if(x._honesty)toast(x._honesty,'err')}).catch(function(e){status($('feedStatus'),e.message,'bad');toast(e.message,'err')})}
+function banner(show){var args=show?{action:'show',title:'Quick Actions demo',detail:'driven from the browser through Adom Bridge',percent:42,tone:'working'}:{action:'hide'};return cmd('fusion_activity_banner',args).then(function(d){kv($('bannerKv'),{result:summarize(d.data||d)});status($('bannerStatus'),show?'shown in Fusion':'hidden','ok')}).catch(function(e){status($('bannerStatus'),e.message,'bad');toast(e.message,'err')})}
+var catalog=[];
+function describe(){status($('catStatus'),'loading...');return cmd('fusion_describe',{},{timeoutMs:60000}).then(function(d){var x=d.data||d;var list=x.verbs||x.commands||x.catalog||(Array.isArray(x)?x:[]);if(!Array.isArray(list)){list=Object.keys(x).filter(function(k){return /^fusion_/.test(k)}).map(function(k){return Object.assign({name:k},typeof x[k]==='object'?x[k]:{description:String(x[k])})})}catalog=list.map(function(v){return{name:v.name||v.verb||'',desc:v.description||v.desc||v.summary||''}});status($('catStatus'),catalog.length+' verbs','ok');renderCatalog()}).catch(function(e){status($('catStatus'),e.message,'bad')})}
+function renderCatalog(){var f=$('catFilter').value.toLowerCase();$('catalog').innerHTML=catalog.filter(function(v){return !f||(v.name+' '+v.desc).toLowerCase().indexOf(f)>=0}).slice(0,200).map(function(v){return '<div><b>'+esc(v.name)+'</b> <span>'+esc(String(v.desc).slice(0,160))+'</span></div>'}).join('')||'<div><span>nothing matches</span></div>'}
+
+// ---- wire up ---------------------------------------------------------------------------------
+$('btnConnect').onclick=connect;$('btnResolve').onclick=function(){delete $('partRef').dataset.multiStart;resolvePart()};$('tglNoModel').onclick=function(){skipModel=!skipModel;this.className='toggle'+(skipModel?' active':'');this.setAttribute('aria-checked',String(skipModel));if(part)resolvePart()};$('btnShuffle').onclick=shuffle;$('partRef').addEventListener('keydown',function(e){if(e.key==='Enter')resolvePart()});
+$('btnFusion').onclick=fusionState;$('btnPlan').onclick=plan;$('btnImport').onclick=importBundle;$('btnAttach').onclick=attachRun;$('btnCancel').onclick=cancelRun;
+$('btnFeed').onclick=function(){feed('status')};$('btnFeedStart').onclick=function(){feed('start').then(function(){liveStart()})};$('btnFeedStop').onclick=function(){liveStop('stopped by you');feed('stop')};
+$('btnBannerShow').onclick=function(){banner(true)};$('btnBannerHide').onclick=function(){banner(false)};
+$('btnDescribe').onclick=describe;$('catFilter').addEventListener('input',renderCatalog);
+$('btnClear').onclick=function(){$('log').innerHTML='';calls=0;$('logStatus').textContent='0 calls'};
+window.QuickActions={connect:connect,resolvePart:resolvePart,importBundle:importBundle,poll:poll,cmd:cmd,state:function(){return{bridge:bridge,part:part,staged:staged,runId:runId,calls:calls}}};
+loadRay().then(function(){resolvePart();shuffle()},function(){resolvePart()});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wiki.adom.inc/adom/eda-bridge-standard/schema/companions.schema.json",
+  "title": "Companion models: stack-up, pours, 3D bodies, sheets, netlist",
+  "description": "What the checks need beside the board model. Each is one verb's reply (or its data). Millimetres unless a field's name says otherwise. Reference: altium-bridge 0.2.75.",
+  "$defs": {
+    "stack": {
+      "title": "Stack-up (layer_stack)",
+      "type": "object",
+      "required": ["copperLayers", "layers"],
+      "properties": {
+        "copperLayers": {"type": "integer"},
+        "totalUm": {"type": "number", "description": "board thickness, micrometres"},
+        "layers": {"type": "array", "description": "the copper layers top to bottom, each with the dielectric BELOW it", "items": {"type": "object", "required": ["name", "kind", "copperUm"],
+          "properties": {"name": {"type": "string"}, "kind": {"enum": ["signal", "plane"]}, "copperUm": {"type": "number"},
+            "dielectricUm": {"type": "number", "description": "to the next copper layer; absent on the last"}, "dk1000": {"type": "number", "description": "the dielectric constant x 1000"}, "material": {"type": "string"},
+            "mid": {"type": "integer", "description": "a signal layer's inner index (In<mid>.Cu)"}, "plane": {"type": "integer", "description": "an internal plane's index"}, "net": {"type": "string", "description": "a plane's net"}}}}
+      }
+    },
+    "pours": {
+      "title": "Pours as poured (pour_state)",
+      "type": "object",
+      "properties": {"zones": {"type": "array", "items": {"type": "object", "required": ["net", "layer", "fills"],
+        "properties": {"net": {"type": "string"}, "name": {"type": "string"}, "layer": {"type": "string"}, "outline": {"type": "array"}, "filledMm2": {"type": "number"}, "filled": {"type": "boolean"},
+          "fills": {"type": "array", "description": "the copper actually poured, island by island: each one's outline and its holes. Filled by the even-odd rule, so a fractured fill (holes joined to the outline by zero-width cuts, holes empty, as KiCad stores it) is the same copper", "items": {"type": "object", "required": ["outline"], "properties": {"outline": {"type": "array"}, "holes": {"type": "array"}, "fractured": {"type": "boolean", "description": "the holes are cut into the outline"}}}}}}}}
+    },
+    "bodies": {
+      "title": "3D bodies",
+      "type": "array",
+      "description": "Each part's 3D bodies as boxes: footprint rectangle and height range above the surface it sits on (a bottom part measures down from the bottom). One box per body (Altium) or one per part (Fusion) are both valid; checks take the union per part. Altium's agent sends rows [part, layer, overall, standoff, l, b, r, t] in internal units; the standard form is this, in mm.",
+      "items": {"type": "object", "required": ["ref", "side", "x0", "y0", "x1", "y1", "z0", "z1"],
+        "properties": {"ref": {"type": "string"}, "side": {"enum": ["top", "bottom"]}, "x0": {"type": "number"}, "y0": {"type": "number"}, "x1": {"type": "number"}, "y1": {"type": "number"},
+          "z0": {"type": "number", "description": "the body's bottom above the surface (standoff)"}, "z1": {"type": "number", "description": "its top"}}}
+    },
+    "sheetParts": {
+      "title": "Placed parts of a schematic sheet (read_sheet_file components)",
+      "type": "array",
+      "items": {"type": "object", "required": ["designator", "pins"],
+        "properties": {"designator": {"type": "string"}, "libReference": {"type": "string"}, "comment": {"type": "string"}, "uniqueId": {"type": "string"},
+          "pins": {"type": "array", "items": {"type": "object", "required": ["number", "name", "electrical"],
+            "properties": {"number": {"type": "string"}, "name": {"type": "string"},
+              "electrical": {"description": "the pin's type by name: input, io, output, open_collector, open_emitter, passive, hiz, power (a part's supply input), supply (a supply symbol's pin, which drives its net), not_connected, unknown. Altium's ELECTRICAL code (0 input, 1 io, 2 output, 3 open_collector, 4 passive, 5 hiz, 6 open_emitter, 7 power) is accepted too", "type": ["integer", "string"]}}}}}}
+    },
+    "netlist": {
+      "title": "The compiled netlist (netlist nets)",
+      "type": "object",
+      "description": "{net: [\"U1.8\", \"C3.1\", ...]}: every net with its pins as Designator.PinNumber, across every sheet, the hierarchy resolved",
+      "additionalProperties": {"type": "array", "items": {"type": "string"}}
+    }
+  }
+}

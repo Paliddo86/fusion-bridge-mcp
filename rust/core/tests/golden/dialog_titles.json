@@ -1,0 +1,185 @@
+[
+  {
+    "title": "Fusion",
+    "result": [
+      "generic_modal_read_screenshot",
+      "Generic Fusion modal - its body is not Win32-readable, so a screenshot is attached: READ it and ANALYZE before acting. Do NOT blind-dismiss. If it mentions uploading / 'lose these changes' / 'sure you want to close' -> click No and wait for the Hub upload to drain (fusion-cloud-save). If it is the 'Select Electronics Design File' chooser during an open, its list is not keyboard/Win32-navigable; open the specific design by URN or select on the desktop."
+    ]
+  },
+  {
+    "title": "fusion360",
+    "result": [
+      "generic_modal_read_screenshot",
+      "Generic Fusion modal - its body is not Win32-readable, so a screenshot is attached: READ it and ANALYZE before acting. Do NOT blind-dismiss. If it mentions uploading / 'lose these changes' / 'sure you want to close' -> click No and wait for the Hub upload to drain (fusion-cloud-save). If it is the 'Select Electronics Design File' chooser during an open, its list is not keyboard/Win32-navigable; open the specific design by URN or select on the desktop."
+    ]
+  },
+  {
+    "title": "Autodesk Fusion 360",
+    "result": [
+      "generic_modal_read_screenshot",
+      "Generic Fusion modal - its body is not Win32-readable, so a screenshot is attached: READ it and ANALYZE before acting. Do NOT blind-dismiss. If it mentions uploading / 'lose these changes' / 'sure you want to close' -> click No and wait for the Hub upload to drain (fusion-cloud-save). If it is the 'Select Electronics Design File' chooser during an open, its list is not keyboard/Win32-navigable; open the specific design by URN or select on the desktop."
+    ]
+  },
+  {
+    "title": "Save changes to Demo_Board?",
+    "result": [
+      "save_changes",
+      "Unsaved-changes prompt. Use fusion_close_document (closes without the save modal), or fusion_dismiss_blocking_dialogs, which answers No."
+    ]
+  },
+  {
+    "title": "Document Recovery",
+    "result": [
+      "recovery",
+      "Document Recovery prompt. Call fusion_dismiss_recovery, or fusion_relocate_recovery BEFORE fusion_start to prevent it."
+    ]
+  },
+  {
+    "title": "Active Sessions Exceeded",
+    "result": [
+      "session_conflict_decision",
+      "DECISION DIALOG - do NOT auto-pick. This Autodesk seat is already active on another machine; the options SUSPEND or SHUT DOWN Fusion THERE (risking that machine's unsaved work). fire a notify_user and ASK the user which option they want, then click it. (Suspend = pausable/resumable; Shut down = saves the other machine's work to a recovery file.)"
+    ]
+  },
+  {
+    "title": "Suspend Remote Session",
+    "result": [
+      "session_suspend_confirm",
+      "Confirmation of a chosen 'suspend the OTHER machine's Fusion'. Only click Continue if the user ALREADY chose suspend; otherwise Go Back and ASK. Never auto-confirm a seat action."
+    ]
+  },
+  {
+    "title": "Fusion is already open",
+    "result": [
+      "already_open",
+      "Fusion is ALREADY running - a second launch was attempted. Click CANCEL (never Launch): Fusion is a singleton and the running instance is the one to drive. This usually means a prior fusion_stop/kill did not fully clear the old process before relaunch."
+    ]
+  },
+  {
+    "title": "Signing in - Autodesk Fusion",
+    "result": [
+      "signin_required",
+      "Autodesk sign-in needed (first run). NOTIFY the user, drive the 'Sign In' button (desktop_ui_click), fetch any email OTP via adom-google, and after the browser shows \"You're signed in\" click its 'Open Product' button - but NEVER auto-enter the password/2FA. See fusion-aps-signin."
+    ]
+  },
+  {
+    "title": "Error launching streamed application",
+    "result": [
+      "launch_error",
+      "Launch error from an INCOMPLETE webdeploy folder (missing FusionLauncher.exe.ini). Safe to dismiss (OK/close) - it is only an acknowledgement. Launch the COMPLETE production folder (the hash dir that HAS FusionLauncher.exe.ini); detect_fusion now prefers it."
+    ]
+  },
+  {
+    "title": "Create new footprint 'X'?",
+    "result": [
+      "create_confirm",
+      "Fusion is asking whether to CREATE an artifact we asked to open, which means the name does not exist in the library. Answering 'Yes' invents an empty artifact and hides the real problem, so the bridge answers NO and reports the missing name. Fix the NAME (fusion_show_* refuses up front with `available` listing what the .lbr actually holds)."
+    ]
+  },
+  {
+    "title": "Grid",
+    "result": [
+      "settings_dialog_cancel",
+      "A Fusion electronics SETTINGS dialog (e.g. Grid) is open and blocking. It carries no data - Cancel it (WM_CLOSE / Cancel). Nothing we drive opens these deliberately; if it keeps recurring, something is injecting a stray GRID/settings command or keystroke."
+    ]
+  },
+  {
+    "title": "A software problem has caused Fusion to close unexpectedly",
+    "result": [
+      "crash_report",
+      "Fusion CRASHED. The bridge closes this and relaunches Fusion - the add-in only loads at launch, so a relaunch is the only way back to drivable."
+    ]
+  },
+  {
+    "title": "Packages are being uploaded to your Fusion Hub",
+    "result": [
+      "upload_in_progress",
+      "DATA LOSS RISK. Fusion is still uploading 3D package(s) to the Hub. Do NOT click Yes / do NOT close - you will LOSE the uploaded packages and any unsaved bindings. Click No, then WAIT and poll until the upload finishes before closing or saveAs. See the fusion-cloud-save skill."
+    ]
+  },
+  {
+    "title": "Cannot be saved while packages upload",
+    "result": [
+      "save_blocked_by_upload",
+      "saveAs was refused because 3D packages are still uploading to the Hub (this also throws InternalValidationError). Not fatal: wait for the upload to drain, then retry the saveAs and poll past it. See the fusion-cloud-save skill."
+    ]
+  },
+  {
+    "title": "A software update is available",
+    "result": [
+      "update_nag",
+      "Fusion is prompting to update itself. Do NOT auto-confirm (it can start an update mid-automation). Dismiss it on the desktop or let Fusion update, then retry. A pending update is also a common cause of AdomBridge add-in crashes (add-in/host version drift), so clearing it often fixes those too."
+    ]
+  },
+  {
+    "title": "Select Electronics Design",
+    "result": [
+      "linked_design_picker",
+      "This file links to multiple Electronics designs. The chooser is a CEF/web modal whose list is NOT keyboard- or Win32-navigable (SendInput reaches only the native Cancel/OK), so it can't be resolved headlessly today — select the design on the desktop. (Headless fix tracked: have the add-in open the specific linked design via the Fusion API, avoiding the picker entirely.)"
+    ]
+  },
+  {
+    "title": "Session suspended by: other",
+    "result": [
+      "session_suspended_regrab",
+      "This box's Autodesk session was SUSPENDED by another machine taking the seat. The bridge clicks 'Check again' to regrab it (background UIA). Never click 'Shut Down' - that signs this box out."
+    ]
+  },
+  {
+    "title": "Library.lbr has errors and cannot be opened",
+    "result": [
+      "lbr_open_error",
+      "Fusion could not parse the library file. Click OK, close the leftover empty Untitled design WITHOUT saving, and fix the FILE - as of 1.9.128 fusion_open_lbr refuses unparseable libraries up front (lbr_invalid) so this modal should never appear for a bridge-issued open; a raw caller-staged file can still trip it."
+    ]
+  },
+  {
+    "title": "Could not open file",
+    "result": [
+      "operation_error",
+      "The last operation FAILED - Fusion is showing an Error dialog (the API call may still have returned ok because it opened an EMPTY design). READ the dialog screenshot for the exact message. Common case: '<file>.lbr has errors and cannot be opened' = the library is malformed (re-lint/regenerate; a frequent cause is a single UNNAMED symbol pin - EAGLE <pin name=''> + <connect pin=''> - name the pin from the KiCad pin NUMBER). The bridge already flipped success to False and dismissed the empty design; FIX the source file and retry. Do NOT report success."
+    ]
+  },
+  {
+    "title": "Untitled",
+    "result": [
+      "unknown",
+      "Unrecognized modal - a screenshot is attached: READ it and ANALYZE before acting. Do NOT blindly dismiss (some modals lose work if confirmed wrong). Identify it from the screenshot, then take the work-preserving action."
+    ]
+  },
+  {
+    "title": "",
+    "result": null
+  },
+  {
+    "title": "   ",
+    "result": null
+  },
+  {
+    "title": "WELCOME TO FUSION",
+    "result": [
+      "signin_required",
+      "Autodesk sign-in needed (first run). NOTIFY the user, drive the 'Sign In' button (desktop_ui_click), fetch any email OTP via adom-google, and after the browser shows \"You're signed in\" click its 'Open Product' button - but NEVER auto-enter the password/2FA. See fusion-aps-signin."
+    ]
+  },
+  {
+    "title": "What do you want to design?",
+    "result": [
+      "what_to_design",
+      "Fusion's start picker. fusion_dismiss_blocking_dialogs closes it."
+    ]
+  },
+  {
+    "title": "Session Suspended",
+    "result": [
+      "session_suspended_regrab",
+      "This box's Autodesk session was SUSPENDED by another machine taking the seat. The bridge clicks 'Check again' to regrab it (background UIA). Never click 'Shut Down' - that signs this box out."
+    ]
+  },
+  {
+    "title": "The board file has errors and will be opened with warnings",
+    "result": [
+      "board_opened_with_warnings",
+      "Fusion opened a board file that has errors, and OK is the only answer: it's a notice, not a question, and nothing is saved or lost. fusion_dismiss_blocking_dialogs clicks OK. Read the board before trusting it. A board converted by a bridge before 1.13.61 can have a stack with no through via: fusion_routing_state lists any invalidViaNets, and fusion_set_layer_count at the same count repairs them."
+    ]
+  }
+]

@@ -1,0 +1,111 @@
+{
+ "date": "2026-09-20_1826",
+ "target": "ConfRoomROG",
+ "tier": "daily",
+ "pass": 4,
+ "fail": 7,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "aps": {
+   "PASS": 0,
+   "FAIL": 6,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "auth-tokens": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_readiness",
+   "status": "PASS",
+   "why": "",
+   "sec": 22.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 28.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "FAIL",
+   "why": "expected success, got error=Request timed out code=None",
+   "sec": 60.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "FAIL",
+   "why": "deprecated verb did NOT refuse",
+   "sec": 90.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "FAIL",
+   "why": "deprecated verb did NOT refuse",
+   "sec": 90.1,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 38.2,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_get_browser",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None; expected >0 results",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_recent",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None; expected >0 results",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_browse",
+   "status": "FAIL",
+   "why": "relay lost the target (run aborted; not a verb failure)",
+   "section": "aps"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 329.1
+}

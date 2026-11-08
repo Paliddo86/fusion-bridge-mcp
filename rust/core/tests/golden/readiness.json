@@ -1,0 +1,830 @@
+{
+ "installed_not_running": {
+  "inputs": {
+   "addin": null,
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": false,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {},
+  "result": {
+   "_hint": "Fusion is INSTALLED but not running - call fusion_start (blocks until the add-in is ready), then retry.",
+   "bridgeVersion": "TEST",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "modelingOrientation": null,
+   "ready": false,
+   "running": false,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "installing": {
+  "inputs": {
+   "addin": null,
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": false,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": false,
+   "streaming": true,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {},
+  "result": {
+   "_hint": "Fusion install is STREAMING (10-30 min) - keep polling fusion_readiness until installed:true.",
+   "bridgeVersion": "TEST",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": false,
+   "installing": true,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "modelingOrientation": null,
+   "ready": false,
+   "running": false,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "licensing": {
+  "inputs": {
+   "addin": "1.0.19",
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": true,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "launchStartedAt": 1800000000.0
+  },
+  "result": {
+   "_hint": "Fusion is blocked by a SEAT/LICENSING dialog ('Active Sessions Exceeded' / 'Suspend Remote Session') - detected DETERMINISTICALLY as an OWNED POPUP of the main Fusion window (its title is just 'Fusion360' and it can be as short as 262px, so it is found by owner+parent-screenshot, NOT a size guess). This verb JUST TRIED to auto-resolve it in the BACKGROUND (UIA 'Continue', Suspend pre-selected so it reclaims the seat) but it is still up - it may be mid-render (the first UIA Invoke no-ops). Just POLL fusion_readiness again in a few seconds; it keeps auto-resolving. Never coordinate-click or ask the user, and never kill/relaunch (the server keeps the seat).",
+   "addinStale": false,
+   "addinVersion": "1.0.19",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "licensingDialog": true,
+   "modelingOrientation": null,
+   "progress": {
+    "confidence": "measured",
+    "elapsedSec": 30,
+    "estimatedSec": 45,
+    "etaSec": 15,
+    "overdue": false,
+    "percent": 40,
+    "phase": "launch",
+    "startKind": "cold",
+    "stepLabel": "Clearing the Autodesk seat dialog"
+   },
+   "ready": false,
+   "running": true,
+   "statusVerb": "fusion_readiness",
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "needs_signin": {
+  "inputs": {
+   "addin": null,
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Signing in - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "launchStartedAt": 1800000000.0
+  },
+  "result": {
+   "_hint": "Fusion is RUNNING but stuck at the first-run Autodesk SIGN-IN (main UI blocked, add-in cannot serve) - NOT ready. FULL PLAYBOOK: the `fusion-autodesk-signin` skill. Proven sequence + the pitfalls that cost hours on a fresh Hyper-V VM (John 2026-07-14): (1) BLANK white webview on first launch? fusion_stop then fusion_start - the sign-in renders 'Welcome to Fusion' + a 'Sign In' button only after a clean relaunch. (2) ASK the user FIRST (AskUserQuestion): do they have a warm Google/Apple/Microsoft session for the account LINKED to their Autodesk login? Offer to drive it. A truly fresh box has NO warm browser session, so 'Continue with Google' still hits a password wall. (3) Click Fusion 'Sign In' -> it opens the DEFAULT browser (Edge) to the OAuth. Edge windows DO exist even if PowerShell EnumWindows looks empty - that is CLIXML progress noise; set $ProgressPreference='SilentlyContinue', and just desktop_screenshot_window the Edge hwnd (PrintWindow works backgrounded). (4) In the browser: 'Continue with Google' -> type the user's EMAIL (not secret) -> if it asks for a PASSWORD/2FA, STOP and fusion_notify_owner {title, body} to toast their MAIN computer so THEY type it; NEVER enter password/2FA yourself. (5) Handoff back to Fusion is via the 'Autodesk Identity Manager' protocol - Edge shows a 'This site is trying to open...' overlay: tick 'Always allow' + click 'Open'. (6) SPEED MATTERS: the sign-in code EXPIRES in ~2 min; on a high-latency VM slow screenshot/click round-trips let it expire ('Sign-in request expired') and you loop. Minimize steps; if it expires, click Fusion 'Sign In' again for a FRESH code (the browser session stays warm). Then poll until ready:true. FIRST-TIME DEMO? Run fusion_demo instead - it drives this sign-in through the user's NATIVE browser (already signed into Autodesk) and then gives them a real guided tour (project -> schematic -> 2D board -> 3D board).",
+   "bridgeVersion": "TEST",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "modelingOrientation": null,
+   "needsSignin": true,
+   "progress": {
+    "confidence": "measured",
+    "elapsedSec": 30,
+    "estimatedSec": 45,
+    "etaSec": 15,
+    "overdue": false,
+    "percent": 40,
+    "phase": "launch",
+    "startKind": "cold",
+    "stepLabel": "Signing in to Autodesk"
+   },
+   "ready": false,
+   "running": true,
+   "statusVerb": "fusion_readiness",
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "not_installed": {
+  "inputs": {
+   "addin": null,
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": false,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": false,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {},
+  "result": {
+   "_hint": "Fusion 360 is NOT installed. OFFER to install it for the user, then call fusion_install_fusion (no shell approval needed) - it streams the free trial and this verb reports installing:true until done.",
+   "bridgeVersion": "TEST",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": false,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "modelingOrientation": null,
+   "ready": false,
+   "running": false,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "ready_after_launch": {
+  "inputs": {
+   "addin": "1.0.19",
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {
+    "launchHealAttempts": 1,
+    "launchStartedAt": 1799999960.0
+   },
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "launchHealAttempts": 0,
+   "launchHealedAt": null,
+   "launchStartedAt": null
+  },
+  "result": {
+   "_hint": "READY - drive Fusion (fusion_open_lbr / build_library_3d / etc.). APS cloud search is signed in too, so use fusion_aps_search for cloud lookups (about 20-30 s across the whole hub, a few seconds with projectId). Autodesk's MCP server is OFF - fusion_mcp_enable can turn it on for the user (~10s, drives the Preferences dialog).",
+   "addinStale": false,
+   "addinVersion": "1.0.19",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "modelingOrientation": null,
+   "ready": true,
+   "running": true,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "ready_configured": {
+  "inputs": {
+   "addin": "1.0.19",
+   "apsConfigured": true,
+   "apsSignedIn": false,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "launchHealAttempts": 0,
+   "launchHealedAt": null
+  },
+  "result": {
+   "_hint": "READY to drive Fusion, but APS CLOUD SEARCH IS NOT SIGNED IN - cloud file search will be slow/blocked. DO IT NOW, do not make the user log in a second time: call fusion_aps_signin RIGHT AFTER a Fusion sign-in, while the browser profile still has a warm Autodesk SSO session - it consents silently (no password, no 2FA). Then fusion_aps_search works. Autodesk's MCP server is OFF - fusion_mcp_enable can turn it on for the user (~10s, drives the Preferences dialog).",
+   "addinStale": false,
+   "addinVersion": "1.0.19",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "modelingOrientation": null,
+   "ready": true,
+   "running": true,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "ready_roundtrip_fail": {
+  "inputs": {
+   "addin": "1.0.19",
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": false,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "launchStartedAt": 1800000000.0
+  },
+  "result": {
+   "_hint": "READY - drive Fusion (fusion_open_lbr / build_library_3d / etc.). APS cloud search is signed in too, so use fusion_aps_search for cloud lookups (about 20-30 s across the whole hub, a few seconds with projectId). Autodesk's MCP server is OFF - fusion_mcp_enable can turn it on for the user (~10s, drives the Preferences dialog). NOTE: the add-in's HTTP server is up but its main thread did not execute a test command yet - not drivable this second",
+   "addinStale": false,
+   "addinVersion": "1.0.19",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "modelingOrientation": null,
+   "progress": {
+    "confidence": "measured",
+    "elapsedSec": 30,
+    "estimatedSec": 45,
+    "etaSec": 15,
+    "overdue": false,
+    "percent": 40,
+    "phase": "launch",
+    "startKind": "cold",
+    "stepLabel": "Fusion is up - waiting for the Adom add-in to serve"
+   },
+   "ready": false,
+   "running": true,
+   "statusVerb": "fusion_readiness",
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "ready_signed": {
+  "inputs": {
+   "addin": "1.0.19",
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "launchHealAttempts": 0,
+   "launchHealedAt": null
+  },
+  "result": {
+   "_hint": "READY - drive Fusion (fusion_open_lbr / build_library_3d / etc.). APS cloud search is signed in too, so use fusion_aps_search for cloud lookups (about 20-30 s across the whole hub, a few seconds with projectId). Autodesk's MCP server is OFF - fusion_mcp_enable can turn it on for the user (~10s, drives the Preferences dialog).",
+   "addinStale": false,
+   "addinVersion": "1.0.19",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "modelingOrientation": null,
+   "ready": true,
+   "running": true,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "ready_signed_mcp": {
+  "inputs": {
+   "addin": "1.0.19",
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": true,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "launchHealAttempts": 0,
+   "launchHealedAt": null
+  },
+  "result": {
+   "_hint": "READY - drive Fusion (fusion_open_lbr / build_library_3d / etc.). APS cloud search is signed in too, so use fusion_aps_search for cloud lookups (about 20-30 s across the whole hub, a few seconds with projectId). Autodesk's MCP server is LIVE (fusion_mcp_* verbs work).",
+   "addinStale": false,
+   "addinVersion": "1.0.19",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "modelingOrientation": null,
+   "ready": true,
+   "running": true,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "ready_stale": {
+  "inputs": {
+   "addin": "1.0.16",
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "launchHealAttempts": 0,
+   "launchHealedAt": null
+  },
+  "result": {
+   "_hint": "STALE add-in: Fusion is running add-in v1.0.16 but this bridge bundles v1.0.19. Newer verbs (e.g. fusion_aps_open/open_by_urn) can fail silently. Fix: fusion_stop then fusion_start - the bridge re-syncs the add-in from its cache on start (only possible with Fusion CLOSED).",
+   "_staleHint": "STALE add-in: Fusion is running add-in v1.0.16 but this bridge bundles v1.0.19. Newer verbs (e.g. fusion_aps_open/open_by_urn) can fail silently. Fix: fusion_stop then fusion_start - the bridge re-syncs the add-in from its cache on start (only possible with Fusion CLOSED).",
+   "addinStale": true,
+   "addinVersion": "1.0.16",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "modelingOrientation": null,
+   "ready": true,
+   "running": true,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "ready_unconfigured": {
+  "inputs": {
+   "addin": "1.0.19",
+   "apsConfigured": false,
+   "apsSignedIn": false,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "launchHealAttempts": 0,
+   "launchHealedAt": null
+  },
+  "result": {
+   "_hint": "READY to drive Fusion. APS cloud search is NOT SET UP (no client ID) - cloud search is the slow path without it. Offer to set it up: your org's app ID is usually already on the wiki (`adom-wiki settings get <org> autodesk-aps`), then fusion_aps_set_client_id and fusion_aps_signin (silent while the browser SSO session is warm); fusion_aps_status explains the first-time case. APS is how cloud search finishes in under a minute instead of a 30-minute folder walk. Autodesk's MCP server is OFF - fusion_mcp_enable can turn it on for the user (~10s, drives the Preferences dialog).",
+   "addinStale": false,
+   "addinVersion": "1.0.19",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "modelingOrientation": null,
+   "ready": true,
+   "running": true,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "ready_upd_off": {
+  "inputs": {
+   "addin": "1.0.19",
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": false,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "launchHealAttempts": 0,
+   "launchHealedAt": null
+  },
+  "result": {
+   "_hint": "READY - drive Fusion (fusion_open_lbr / build_library_3d / etc.). APS cloud search is signed in too, so use fusion_aps_search for cloud lookups (about 20-30 s across the whole hub, a few seconds with projectId). Autodesk's MCP server is OFF - fusion_mcp_enable can turn it on for the user (~10s, drives the Preferences dialog). AUTO-UPDATE is OFF (the user opted out, sticky) - do NOT click Fusion's update prompts for them.",
+   "addinStale": false,
+   "addinVersion": "1.0.19",
+   "bridgeVersion": "TEST",
+   "expectedAddinVersion": "1.0.19",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": "2026-09-03T14:00:00",
+   "lastSignedInAt": "2026-09-03T14:00:00",
+   "modelingOrientation": null,
+   "ready": true,
+   "running": true,
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "running_addin_silent": {
+  "inputs": {
+   "addin": null,
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "launchStartedAt": 1800000000.0
+  },
+  "result": {
+   "_hint": "Fusion is RUNNING but its add-in is NOT responding yet - NOT ready to drive. Either it is still finishing launch / signing in (poll fusion_readiness a few more times), or the add-in did not load (fusion_stop then fusion_start to re-deploy + re-load it). Do NOT fire modeling/export verbs until ready:true.",
+   "bridgeVersion": "TEST",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "modelingOrientation": null,
+   "progress": {
+    "confidence": "measured",
+    "elapsedSec": 30,
+    "estimatedSec": 45,
+    "etaSec": 15,
+    "overdue": false,
+    "percent": 40,
+    "phase": "launch",
+    "startKind": "cold",
+    "stepLabel": "Fusion is up - waiting for the Adom add-in to serve"
+   },
+   "ready": false,
+   "running": true,
+   "statusVerb": "fusion_readiness",
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "running_addin_silent_launching": {
+  "inputs": {
+   "addin": null,
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {
+    "launchStartedAt": 1799999970.0
+   },
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": false
+  },
+  "prefsAfter": {
+   "launchStartedAt": 1799999970.0
+  },
+  "result": {
+   "_hint": "Fusion is RUNNING but its add-in is NOT responding yet - NOT ready to drive. Either it is still finishing launch / signing in (poll fusion_readiness a few more times), or the add-in did not load (fusion_stop then fusion_start to re-deploy + re-load it). Do NOT fire modeling/export verbs until ready:true.",
+   "bridgeVersion": "TEST",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "modelingOrientation": null,
+   "progress": {
+    "confidence": "measured",
+    "elapsedSec": 30,
+    "estimatedSec": 45,
+    "etaSec": 15,
+    "overdue": false,
+    "percent": 40,
+    "phase": "launch",
+    "startKind": "cold",
+    "stepLabel": "Fusion is up - waiting for the Adom add-in to serve"
+   },
+   "ready": false,
+   "running": true,
+   "statusVerb": "fusion_readiness",
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   }
+  }
+ },
+ "updating": {
+  "inputs": {
+   "addin": null,
+   "apsConfigured": true,
+   "apsSignedIn": true,
+   "autoUpdate": true,
+   "installed": true,
+   "licensing": false,
+   "mcp": false,
+   "now": 1800000000.0,
+   "prefs": {},
+   "roundtrip": true,
+   "running": true,
+   "streaming": false,
+   "title": "Home - Autodesk Fusion",
+   "updating": true
+  },
+  "prefsAfter": {
+   "launchStartedAt": 1800000000.0
+  },
+  "result": {
+   "_hint": "Fusion is applying an AUTO-UPDATE (multiple webdeploy builds present) and RESTARTS ITSELF every ~30-60s - this is NOT a crash or a bridge failure. Poll fusion_readiness; it stabilizes to ready:true once the update finishes (can take 10-30 min). Meanwhile, wrap modeling/export verbs in a short retry/catch-loop to ride the up-windows rather than treating an intermittent 'not running' as fatal.",
+   "bridgeVersion": "TEST",
+   "fusionUser": null,
+   "hostApp": "Fusion 360",
+   "installed": true,
+   "installing": false,
+   "kicadIngest": false,
+   "lastReadyAt": null,
+   "lastSignedInAt": null,
+   "modelingOrientation": null,
+   "progress": {
+    "confidence": "measured",
+    "elapsedSec": 30,
+    "estimatedSec": 45,
+    "etaSec": 15,
+    "overdue": false,
+    "percent": 40,
+    "phase": "launch",
+    "startKind": "cold",
+    "stepLabel": "Applying a Fusion auto-update"
+   },
+   "ready": false,
+   "running": true,
+   "statusVerb": "fusion_readiness",
+   "success": true,
+   "timings": {
+    "cold": {
+     "count": 4,
+     "lastAt": "2026-09-01T10:00:00",
+     "p50": 45.0,
+     "p90": 53.0
+    }
+   },
+   "updating": true
+  }
+ }
+}

@@ -1,0 +1,9 @@
+[package]
+name = "fusion-os-mac"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "macOS implementation of fusion-core's HostProcess and HostPaths. A compiling skeleton for Kyle's bridge to fill in; see PORTING.md."
+
+[dependencies]
+fusion-core = { path = "../core" }

@@ -1,0 +1,75 @@
+{
+ "date": "2026-08-19_1147",
+ "target": "AdomLapper",
+ "tier": "daily",
+ "pass": 1,
+ "fail": 6,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 0,
+   "FAIL": 4,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "aps": {
+   "PASS": 0,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_set_driving_badge",
+   "status": "FAIL",
+   "why": "described but untriaged in tests/run_verb_tests.py",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_window_sizing",
+   "status": "FAIL",
+   "why": "described but untriaged in tests/run_verb_tests.py",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_readiness",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None; missing field 'bridgeVersion'",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "FAIL",
+   "why": "relay lost the target (run aborted; not a verb failure)",
+   "section": "aps"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 0.0
+}

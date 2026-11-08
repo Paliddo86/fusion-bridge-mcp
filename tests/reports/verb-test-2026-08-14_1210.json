@@ -1,0 +1,21 @@
+{
+ "date": "2026-08-14_1210",
+ "target": "AdomLapper",
+ "tier": "daily",
+ "pass": 2,
+ "fail": 0,
+ "results": [
+  {
+   "verb": "fusion_aps_file_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 33.4
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": ""
+  }
+ ],
+ "durationSec": 33.4
+}

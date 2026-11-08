@@ -1,0 +1,78 @@
+{
+ "date": "2026-08-14_1959",
+ "target": "AdomLapper",
+ "tier": "daily",
+ "pass": 7,
+ "fail": 0,
+ "sections": {
+  "gui-driving": {
+   "PASS": 4,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "mcp-server": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 10.7,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_2d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 8.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_3d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 9.8,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_mcp_call",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_export_optimized_glb",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_fetch_optimized_glb",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "exports"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 157.1
+}

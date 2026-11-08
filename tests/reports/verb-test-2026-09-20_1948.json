@@ -1,0 +1,51 @@
+{
+ "date": "2026-09-20_1948",
+ "target": "arav-rog",
+ "tier": "daily",
+ "pass": 4,
+ "fail": 0,
+ "sections": {
+  "gui-driving": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "python-addin": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 26.5,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_execute_text_command",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_run_modeling_script",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.1,
+   "section": "python-addin"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 31.4
+}

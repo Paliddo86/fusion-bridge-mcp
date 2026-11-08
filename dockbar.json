@@ -1,0 +1,46 @@
+{
+  "dock_manifest": "1.2.0",
+  "webview": {
+    "title": "Fusion Dashboard",
+    "favicon": "docs/img/dock-fusion.svg"
+  },
+  "say": [
+    "open the step in fusion",
+    "export this board to fusion",
+    "build the parts library in fusion",
+    "sign me into fusion",
+    "search my fusion cloud files for the amp board",
+    "export the fusion design as STEP"
+  ],
+  "launch": {
+    "mode": "container_command",
+    "console": "show",
+    "steps": [
+      {
+        "label": "Installing / updating the Fusion bridge",
+        "run": "adom-wiki pkg install adom/fusion-bridge",
+        "timeout_seconds": 180
+      },
+      {
+        "label": "Starting the Fusion Dashboard",
+        "run": "sh -c 'PATH=~/.local/bin:/usr/local/bin:/usr/bin:/bin; exec fusion-dashboard serve --print-url'",
+        "await": "url",
+        "timeout_seconds": 120,
+        "_why": "No $ and no $(...) in a dock step: Hydrogen's /workspace/exec expands them on the HOST before the container sees the command (measured on ConfRoomROG 2026-09-05: `for i in $(seq 1 15)` became a syntax error, exit code null, and the dock showed 'no output' for 649s). The install step before this one guarantees the binary; the serve is self-backgrounding and prints the URL within seconds."
+      }
+    ],
+    "on_ready": "navigate_placeholder",
+    "ai": {
+      "prompt": "The user just opened the Fusion Dashboard from the dock. It shows LED status for every Fusion bridge facet. If any LED is red, offer to fix it (the /api/status payload carries a _hint per LED naming the exact verb). Do not steal their foreground.",
+      "thread": "existing",
+      "thread_fallback": "new",
+      "submit": "staged",
+      "typed": false
+    }
+  },
+  "health": {
+    "url": "/api/health",
+    "poll_seconds": 15,
+    "timeout_ms": 2000
+  }
+}

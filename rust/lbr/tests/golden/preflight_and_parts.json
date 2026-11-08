@@ -1,0 +1,2075 @@
+{
+ "ABM8-16.000MHZ-B2-T.lbrx": {
+  "library_parts": {
+   "_hint": "1 deviceset(s), 1 orderable variant(s); 0 carry an MPN and 0 a distributor PN. 3 warning(s) in `warnings` - these do NOT stop the library opening, but an EE cannot order from it as-is. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [
+    {
+     "description": "Four pin crystal, GND on pins 2 and 4",
+     "name": "ABM8-16.000MHZ-B2-T",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "ABM8-16.000MHZ-B2-T",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "libraryPath": "ABM8-16.000MHZ-B2-T.lbrx",
+   "metadataOk": false,
+   "success": true,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "ABM8-16.000MHZ-B2-T",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "symbol_pins_stacked",
+     "detail": "pins 'G' and 'G@2' sit at the same point (0.0, -5.08); one hides the other",
+     "symbol": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Four pin crystal, GND on pins 2 and 4' says the class, not the part (value, package, maker)",
+     "deviceset": "ABM8-16.000MHZ-B2-T"
+    }
+   ]
+  },
+  "lint": {
+   "ok": false,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "ABM8-16.000MHZ-B2-T",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "symbol_pins_stacked",
+     "detail": "pins 'G' and 'G@2' sit at the same point (0.0, -5.08); one hides the other",
+     "symbol": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Four pin crystal, GND on pins 2 and 4' says the class, not the part (value, package, maker)",
+     "deviceset": "ABM8-16.000MHZ-B2-T"
+    }
+   ]
+  },
+  "preflight": {
+   "_metadataHint": "The library will open, but 3 part-metadata warning(s) mean an EE cannot order from it: MPN / MANUFACTURER / a distributor PN (MOUSER_PN, DIGIKEY_PN, LCSC_PN) are what this bridge's own BOM export reads, and variants that share geometry are told apart ONLY by these. See fusion_library_parts for the per-variant breakdown.",
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "7565 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "7565 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <eagle>",
+     "ok": true
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "1 package(s)",
+     "ok": true
+    },
+    {
+     "check": "symbols-present",
+     "detail": "1 symbol(s)",
+     "ok": true
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "1 deviceset(s)",
+     "ok": true
+    },
+    {
+     "check": "connects-resolve",
+     "detail": "4 connect(s), all resolving",
+     "ok": true
+    },
+    {
+     "check": "pads-unique",
+     "detail": "all pad names unique per package",
+     "ok": true
+    }
+   ],
+   "errors": [],
+   "metadataOk": false,
+   "metadataWarnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "ABM8-16.000MHZ-B2-T",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "symbol_pins_stacked",
+     "detail": "pins 'G' and 'G@2' sit at the same point (0.0, -5.08); one hides the other",
+     "symbol": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Four pin crystal, GND on pins 2 and 4' says the class, not the part (value, package, maker)",
+     "deviceset": "ABM8-16.000MHZ-B2-T"
+    }
+   ],
+   "ok": true,
+   "partTotals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "CH340G.lbrx": {
+  "library_parts": {
+   "_hint": "1 deviceset(s), 1 orderable variant(s); 0 carry an MPN and 0 a distributor PN. 1 warning(s) in `warnings` - these do NOT stop the library opening, but an EE cannot order from it as-is. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [
+    {
+     "description": "USB serial converter, UART, SOIC-16",
+     "name": "CH340G",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "CH340G",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "libraryPath": "CH340G.lbrx",
+   "metadataOk": false,
+   "success": true,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ]
+  },
+  "lint": {
+   "ok": false,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ]
+  },
+  "preflight": {
+   "_metadataHint": "The library will open, but 1 part-metadata warning(s) mean an EE cannot order from it: MPN / MANUFACTURER / a distributor PN (MOUSER_PN, DIGIKEY_PN, LCSC_PN) are what this bridge's own BOM export reads, and variants that share geometry are told apart ONLY by these. See fusion_library_parts for the per-variant breakdown.",
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "9776 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "9776 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <eagle>",
+     "ok": true
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "1 package(s)",
+     "ok": true
+    },
+    {
+     "check": "symbols-present",
+     "detail": "1 symbol(s)",
+     "ok": true
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "1 deviceset(s)",
+     "ok": true
+    },
+    {
+     "check": "connects-resolve",
+     "detail": "16 connect(s), all resolving",
+     "ok": true
+    },
+    {
+     "check": "pads-unique",
+     "detail": "all pad names unique per package",
+     "ok": true
+    }
+   ],
+   "errors": [],
+   "metadataOk": false,
+   "metadataWarnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ],
+   "ok": true,
+   "partTotals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "Demo_Board.lbrx": {
+  "library_parts": {
+   "_hint": "5 deviceset(s), 5 orderable variant(s); 0 carry an MPN and 0 a distributor PN. 21 warning(s) in `warnings` - these do NOT stop the library opening, but an EE cannot order from it as-is. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [
+    {
+     "description": "Microchip LAN7800 SuperSpeed USB 3.1 Gen1 to 10/100/1000 Ethernet Controller, QFN-48",
+     "name": "LAN7800",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "LAN7800",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "QFN-48_7x7mm",
+       "technology": ""
+      }
+     ]
+    },
+    {
+     "description": "USB serial converter, UART, SOIC-16",
+     "name": "CH340G",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "CH340G",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+       "technology": ""
+      }
+     ]
+    },
+    {
+     "description": "",
+     "name": "STM32L431RCT6TR",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "STM32L431RCT6TR",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "LQFP-64_10x10mm_P0.5mm",
+       "technology": ""
+      }
+     ]
+    },
+    {
+     "description": "Four pin crystal, GND on pins 2 and 4",
+     "name": "ABM8-16.000MHZ-B2-T",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "ABM8-16.000MHZ-B2-T",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+       "technology": ""
+      }
+     ]
+    },
+    {
+     "description": "Light emitting diode",
+     "name": "IN-S63BTG",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "IN-S63BTG",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "IN-S63BTG",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "libraryPath": "Demo_Board.lbrx",
+   "metadataOk": false,
+   "success": true,
+   "totals": {
+    "devicesets": 5,
+    "variants": 5,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "LAN7800",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "LAN7800"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    },
+    {
+     "code": "deviceset_no_description",
+     "detail": "No <description>. Fusion's Content Manager shows this to whoever places the part; without it they are picking on a symbol outline alone.",
+     "deviceset": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "STM32L431RCT6TR",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "ABM8-16.000MHZ-B2-T",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "IN-S63BTG",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "IN-S63BTG"
+    },
+    {
+     "code": "symbol_pins_stacked",
+     "detail": "pins 'G' and 'G@2' sit at the same point (0.0, -5.08); one hides the other",
+     "symbol": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '1' and '48' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '12' and '13' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '24' and '25' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '36' and '37' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '7' and '8' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '9' and '10' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '23' and '24' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '25' and '26' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '39' and '40' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '41' and '42' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '55' and '56' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '57' and '58' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Four pin crystal, GND on pins 2 and 4' says the class, not the part (value, package, maker)",
+     "deviceset": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Light emitting diode' says the class, not the part (value, package, maker)",
+     "deviceset": "IN-S63BTG"
+    }
+   ]
+  },
+  "lint": {
+   "ok": false,
+   "totals": {
+    "devicesets": 5,
+    "variants": 5,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "LAN7800",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "LAN7800"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    },
+    {
+     "code": "deviceset_no_description",
+     "detail": "No <description>. Fusion's Content Manager shows this to whoever places the part; without it they are picking on a symbol outline alone.",
+     "deviceset": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "STM32L431RCT6TR",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "ABM8-16.000MHZ-B2-T",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "IN-S63BTG",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "IN-S63BTG"
+    },
+    {
+     "code": "symbol_pins_stacked",
+     "detail": "pins 'G' and 'G@2' sit at the same point (0.0, -5.08); one hides the other",
+     "symbol": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '1' and '48' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '12' and '13' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '24' and '25' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '36' and '37' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '7' and '8' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '9' and '10' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '23' and '24' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '25' and '26' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '39' and '40' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '41' and '42' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '55' and '56' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '57' and '58' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Four pin crystal, GND on pins 2 and 4' says the class, not the part (value, package, maker)",
+     "deviceset": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Light emitting diode' says the class, not the part (value, package, maker)",
+     "deviceset": "IN-S63BTG"
+    }
+   ]
+  },
+  "preflight": {
+   "_metadataHint": "The library will open, but 21 part-metadata warning(s) mean an EE cannot order from it: MPN / MANUFACTURER / a distributor PN (MOUSER_PN, DIGIKEY_PN, LCSC_PN) are what this bridge's own BOM export reads, and variants that share geometry are told apart ONLY by these. See fusion_library_parts for the per-variant breakdown.",
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "47513 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "47513 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <eagle>",
+     "ok": true
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "5 package(s)",
+     "ok": true
+    },
+    {
+     "check": "symbols-present",
+     "detail": "5 symbol(s)",
+     "ok": true
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "5 deviceset(s)",
+     "ok": true
+    },
+    {
+     "check": "connects-resolve",
+     "detail": "135 connect(s), all resolving",
+     "ok": true
+    },
+    {
+     "check": "pads-unique",
+     "detail": "all pad names unique per package",
+     "ok": true
+    }
+   ],
+   "errors": [],
+   "metadataOk": false,
+   "metadataWarnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "LAN7800",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "LAN7800"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    },
+    {
+     "code": "deviceset_no_description",
+     "detail": "No <description>. Fusion's Content Manager shows this to whoever places the part; without it they are picking on a symbol outline alone.",
+     "deviceset": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "STM32L431RCT6TR",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "ABM8-16.000MHZ-B2-T",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "IN-S63BTG",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "IN-S63BTG"
+    },
+    {
+     "code": "symbol_pins_stacked",
+     "detail": "pins 'G' and 'G@2' sit at the same point (0.0, -5.08); one hides the other",
+     "symbol": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '1' and '48' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '12' and '13' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '24' and '25' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '36' and '37' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '7' and '8' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '9' and '10' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '23' and '24' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '25' and '26' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '39' and '40' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '41' and '42' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '55' and '56' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '57' and '58' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Four pin crystal, GND on pins 2 and 4' says the class, not the part (value, package, maker)",
+     "deviceset": "ABM8-16.000MHZ-B2-T"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Light emitting diode' says the class, not the part (value, package, maker)",
+     "deviceset": "IN-S63BTG"
+    }
+   ],
+   "ok": true,
+   "partTotals": {
+    "devicesets": 5,
+    "variants": 5,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "IN-S63BTG.lbrx": {
+  "library_parts": {
+   "_hint": "1 deviceset(s), 1 orderable variant(s); 0 carry an MPN and 0 a distributor PN. 2 warning(s) in `warnings` - these do NOT stop the library opening, but an EE cannot order from it as-is. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [
+    {
+     "description": "Light emitting diode",
+     "name": "IN-S63BTG",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "IN-S63BTG",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "IN-S63BTG",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "libraryPath": "IN-S63BTG.lbrx",
+   "metadataOk": false,
+   "success": true,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "IN-S63BTG",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "IN-S63BTG"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Light emitting diode' says the class, not the part (value, package, maker)",
+     "deviceset": "IN-S63BTG"
+    }
+   ]
+  },
+  "lint": {
+   "ok": false,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "IN-S63BTG",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "IN-S63BTG"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Light emitting diode' says the class, not the part (value, package, maker)",
+     "deviceset": "IN-S63BTG"
+    }
+   ]
+  },
+  "preflight": {
+   "_metadataHint": "The library will open, but 2 part-metadata warning(s) mean an EE cannot order from it: MPN / MANUFACTURER / a distributor PN (MOUSER_PN, DIGIKEY_PN, LCSC_PN) are what this bridge's own BOM export reads, and variants that share geometry are told apart ONLY by these. See fusion_library_parts for the per-variant breakdown.",
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "7259 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "7259 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <eagle>",
+     "ok": true
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "1 package(s)",
+     "ok": true
+    },
+    {
+     "check": "symbols-present",
+     "detail": "1 symbol(s)",
+     "ok": true
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "1 deviceset(s)",
+     "ok": true
+    },
+    {
+     "check": "connects-resolve",
+     "detail": "2 connect(s), all resolving",
+     "ok": true
+    },
+    {
+     "check": "pads-unique",
+     "detail": "all pad names unique per package",
+     "ok": true
+    }
+   ],
+   "errors": [],
+   "metadataOk": false,
+   "metadataWarnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "IN-S63BTG",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "IN-S63BTG"
+    },
+    {
+     "code": "generic_description",
+     "detail": "description 'Light emitting diode' says the class, not the part (value, package, maker)",
+     "deviceset": "IN-S63BTG"
+    }
+   ],
+   "ok": true,
+   "partTotals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "LAN7800.lbrx": {
+  "library_parts": {
+   "_hint": "1 deviceset(s), 1 orderable variant(s); 0 carry an MPN and 0 a distributor PN. 5 warning(s) in `warnings` - these do NOT stop the library opening, but an EE cannot order from it as-is. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [
+    {
+     "description": "Microchip LAN7800 SuperSpeed USB 3.1 Gen1 to 10/100/1000 Ethernet Controller, QFN-48",
+     "name": "LAN7800",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "LAN7800",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "QFN-48_7x7mm",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "libraryPath": "LAN7800.lbrx",
+   "metadataOk": false,
+   "success": true,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "LAN7800",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "LAN7800"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '1' and '48' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '12' and '13' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '24' and '25' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '36' and '37' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    }
+   ]
+  },
+  "lint": {
+   "ok": false,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "LAN7800",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "LAN7800"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '1' and '48' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '12' and '13' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '24' and '25' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '36' and '37' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    }
+   ]
+  },
+  "preflight": {
+   "_metadataHint": "The library will open, but 5 part-metadata warning(s) mean an EE cannot order from it: MPN / MANUFACTURER / a distributor PN (MOUSER_PN, DIGIKEY_PN, LCSC_PN) are what this bridge's own BOM export reads, and variants that share geometry are told apart ONLY by these. See fusion_library_parts for the per-variant breakdown.",
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "18585 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "18585 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <eagle>",
+     "ok": true
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "1 package(s)",
+     "ok": true
+    },
+    {
+     "check": "symbols-present",
+     "detail": "1 symbol(s)",
+     "ok": true
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "1 deviceset(s)",
+     "ok": true
+    },
+    {
+     "check": "connects-resolve",
+     "detail": "49 connect(s), all resolving",
+     "ok": true
+    },
+    {
+     "check": "pads-unique",
+     "detail": "all pad names unique per package",
+     "ok": true
+    }
+   ],
+   "errors": [],
+   "metadataOk": false,
+   "metadataWarnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "LAN7800",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "LAN7800"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '1' and '48' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '12' and '13' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '24' and '25' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '36' and '37' are only 0.11 mm apart",
+     "package": "QFN-48_7x7mm"
+    }
+   ],
+   "ok": true,
+   "partTotals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "STM32L431RCT6TR.lbrx": {
+  "library_parts": {
+   "_hint": "1 deviceset(s), 1 orderable variant(s); 0 carry an MPN and 0 a distributor PN. 10 warning(s) in `warnings` - these do NOT stop the library opening, but an EE cannot order from it as-is. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [
+    {
+     "description": "",
+     "name": "STM32L431RCT6TR",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "STM32L431RCT6TR",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "LQFP-64_10x10mm_P0.5mm",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "libraryPath": "STM32L431RCT6TR.lbrx",
+   "metadataOk": false,
+   "success": true,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "deviceset_no_description",
+     "detail": "No <description>. Fusion's Content Manager shows this to whoever places the part; without it they are picking on a symbol outline alone.",
+     "deviceset": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "STM32L431RCT6TR",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "STM32L431RCT6TR"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '7' and '8' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '9' and '10' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '23' and '24' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '25' and '26' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '39' and '40' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '41' and '42' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '55' and '56' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '57' and '58' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    }
+   ]
+  },
+  "lint": {
+   "ok": false,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "deviceset_no_description",
+     "detail": "No <description>. Fusion's Content Manager shows this to whoever places the part; without it they are picking on a symbol outline alone.",
+     "deviceset": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "STM32L431RCT6TR",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "STM32L431RCT6TR"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '7' and '8' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '9' and '10' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '23' and '24' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '25' and '26' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '39' and '40' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '41' and '42' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '55' and '56' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '57' and '58' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    }
+   ]
+  },
+  "preflight": {
+   "_metadataHint": "The library will open, but 10 part-metadata warning(s) mean an EE cannot order from it: MPN / MANUFACTURER / a distributor PN (MOUSER_PN, DIGIKEY_PN, LCSC_PN) are what this bridge's own BOM export reads, and variants that share geometry are told apart ONLY by these. See fusion_library_parts for the per-variant breakdown.",
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "20255 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "20255 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <eagle>",
+     "ok": true
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "1 package(s)",
+     "ok": true
+    },
+    {
+     "check": "symbols-present",
+     "detail": "1 symbol(s)",
+     "ok": true
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "1 deviceset(s)",
+     "ok": true
+    },
+    {
+     "check": "connects-resolve",
+     "detail": "64 connect(s), all resolving",
+     "ok": true
+    },
+    {
+     "check": "pads-unique",
+     "detail": "all pad names unique per package",
+     "ok": true
+    }
+   ],
+   "errors": [],
+   "metadataOk": false,
+   "metadataWarnings": [
+    {
+     "code": "deviceset_no_description",
+     "detail": "No <description>. Fusion's Content Manager shows this to whoever places the part; without it they are picking on a symbol outline alone.",
+     "deviceset": "STM32L431RCT6TR"
+    },
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "STM32L431RCT6TR",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "STM32L431RCT6TR"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '7' and '8' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '9' and '10' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '23' and '24' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '25' and '26' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '39' and '40' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '41' and '42' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '55' and '56' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "code": "pad_clearance",
+     "detail": "pads '57' and '58' are only 0.20 mm apart",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    }
+   ],
+   "ok": true,
+   "partTotals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "__missing__": {
+  "library_parts": {
+   "error": "[Errno 2] No such file or directory: 'C:/nope/missing.lbr'",
+   "errorCode": "library_unreadable",
+   "libraryPath": "C:/nope/missing.lbrx",
+   "success": false
+  },
+  "no_path": {
+   "acceptedArgs": [
+    "libraryPath",
+    "lbrPath",
+    "filePath",
+    "path"
+   ],
+   "error": "No library path given; the file was never examined.",
+   "errorCode": "no_path_argument",
+   "success": false
+  },
+  "preflight": {
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "[Errno 2] No such file or directory: 'C:/nope/missing.lbr'",
+     "ok": false
+    }
+   ],
+   "errors": [
+    "file-readable: [Errno 2] No such file or directory: 'C:/nope/missing.lbr'"
+   ],
+   "ok": false
+  }
+ },
+ "syn_deadconnect.lbrx": {
+  "library_parts": {
+   "_hint": "1 deviceset(s), 1 orderable variant(s); 0 carry an MPN and 0 a distributor PN. 1 warning(s) in `warnings` - these do NOT stop the library opening, but an EE cannot order from it as-is. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [
+    {
+     "description": "USB serial converter, UART, SOIC-16",
+     "name": "CH340G",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "CH340G",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "libraryPath": "syn_deadconnect.lbrx",
+   "metadataOk": false,
+   "success": true,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ]
+  },
+  "lint": {
+   "ok": false,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ]
+  },
+  "preflight": {
+   "_metadataHint": "The library will open, but 1 part-metadata warning(s) mean an EE cannot order from it: MPN / MANUFACTURER / a distributor PN (MOUSER_PN, DIGIKEY_PN, LCSC_PN) are what this bridge's own BOM export reads, and variants that share geometry are told apart ONLY by these. See fusion_library_parts for the per-variant breakdown.",
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "9781 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "9781 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <eagle>",
+     "ok": true
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "1 package(s)",
+     "ok": true
+    },
+    {
+     "check": "symbols-present",
+     "detail": "1 symbol(s)",
+     "ok": true
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "1 deviceset(s)",
+     "ok": true
+    },
+    {
+     "check": "connects-resolve",
+     "detail": "connects reference missing pins",
+     "ok": false
+    },
+    {
+     "check": "pads-unique",
+     "detail": "all pad names unique per package",
+     "ok": true
+    }
+   ],
+   "errors": [
+    "connects-resolve: connects reference missing pins"
+   ],
+   "metadataOk": false,
+   "metadataWarnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ],
+   "ok": false,
+   "partTotals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "syn_duppad.lbrx": {
+  "library_parts": {
+   "_hint": "1 deviceset(s), 1 orderable variant(s); 0 carry an MPN and 0 a distributor PN. 1 warning(s) in `warnings` - these do NOT stop the library opening, but an EE cannot order from it as-is. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [
+    {
+     "description": "USB serial converter, UART, SOIC-16",
+     "name": "CH340G",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "CH340G",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "libraryPath": "syn_duppad.lbrx",
+   "metadataOk": false,
+   "success": true,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ]
+  },
+  "lint": {
+   "ok": false,
+   "totals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ]
+  },
+  "preflight": {
+   "_metadataHint": "The library will open, but 1 part-metadata warning(s) mean an EE cannot order from it: MPN / MANUFACTURER / a distributor PN (MOUSER_PN, DIGIKEY_PN, LCSC_PN) are what this bridge's own BOM export reads, and variants that share geometry are told apart ONLY by these. See fusion_library_parts for the per-variant breakdown.",
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "9776 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "9776 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <eagle>",
+     "ok": true
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "1 package(s)",
+     "ok": true
+    },
+    {
+     "check": "symbols-present",
+     "detail": "1 symbol(s)",
+     "ok": true
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "1 deviceset(s)",
+     "ok": true
+    },
+    {
+     "check": "connects-resolve",
+     "detail": "connects reference missing pads",
+     "ok": false
+    },
+    {
+     "check": "pads-unique",
+     "detail": "duplicate pad names - Fusion's importer refuses the ENTIRE library over these: SOIC-16_3.9x9.9mm_P1.27mm/1 x2. Rename to e.g. 17, 17@2, 17@3...",
+     "ok": false
+    }
+   ],
+   "errors": [
+    "connects-resolve: connects reference missing pads",
+    "pads-unique: duplicate pad names - Fusion's importer refuses the ENTIRE library over these: SOIC-16_3.9x9.9mm_P1.27mm/1 x2. Rename to e.g. 17, 17@2, 17@3..."
+   ],
+   "metadataOk": false,
+   "metadataWarnings": [
+    {
+     "code": "variant_missing_part_numbers",
+     "detail": "Missing MPN, MANUFACTURER, a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN). This bridge's own BOM export reads these exact attribute names, so the BOM comes out blank for this part.",
+     "deviceset": "CH340G",
+     "missing": [
+      "MPN",
+      "MANUFACTURER",
+      "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+     ],
+     "variant": "CH340G"
+    }
+   ],
+   "ok": false,
+   "partTotals": {
+    "devicesets": 1,
+    "variants": 1,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "syn_noteagle.lbrx": {
+  "library_parts": {
+   "_hint": "0 deviceset(s), 0 orderable variant(s); 0 carry an MPN and 0 a distributor PN. No metadata warnings. The full orderable identity is deviceset + device + technology (e.g. TJA1050 + T + -AUTO), because EAGLE puts package variants on <device> and grade/temperature variants on <technology> - which is how two variants share geometry and remain different parts.",
+   "attributeNames": [
+    "MPN",
+    "MANUFACTURER",
+    "MOUSER_PN",
+    "DIGIKEY_PN",
+    "LCSC_PN"
+   ],
+   "devicesets": [],
+   "libraryPath": "syn_noteagle.lbrx",
+   "metadataOk": true,
+   "success": true,
+   "totals": {
+    "devicesets": 0,
+    "variants": 0,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": []
+  },
+  "lint": {
+   "ok": true,
+   "totals": {
+    "devicesets": 0,
+    "variants": 0,
+    "withDistributor": 0,
+    "withMpn": 0
+   },
+   "warnings": []
+  },
+  "preflight": {
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "348 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "348 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": true
+    },
+    {
+     "check": "xml-parses",
+     "detail": "",
+     "ok": true
+    },
+    {
+     "check": "root-is-eagle",
+     "detail": "root is <html>",
+     "ok": false
+    },
+    {
+     "check": "packages-nonempty",
+     "detail": "EMPTY <packages> - Fusion opens this to a silent 'No Components' library",
+     "ok": false
+    },
+    {
+     "check": "symbols-present",
+     "detail": "0 symbol(s)",
+     "ok": false
+    },
+    {
+     "check": "text-align-valid",
+     "detail": "all <text> align values are EAGLE values",
+     "ok": true
+    },
+    {
+     "check": "devicesets-present",
+     "detail": "no <deviceset> - EDIT <name>.dev will raise Fusion's Create-new prompt",
+     "ok": false
+    },
+    {
+     "check": "pads-unique",
+     "detail": "all pad names unique per package",
+     "ok": true
+    }
+   ],
+   "errors": [
+    "root-is-eagle: root is <html>",
+    "packages-nonempty: EMPTY <packages> - Fusion opens this to a silent 'No Components' library",
+    "symbols-present: 0 symbol(s)",
+    "devicesets-present: no <deviceset> - EDIT <name>.dev will raise Fusion's Create-new prompt"
+   ],
+   "metadataOk": true,
+   "metadataWarnings": [],
+   "ok": false,
+   "partTotals": {
+    "devicesets": 0,
+    "variants": 0,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  }
+ },
+ "syn_truncated.lbrx": {
+  "library_parts": {
+   "error": "unclosed token: line 3, column 0",
+   "errorCode": "library_unreadable",
+   "libraryPath": "syn_truncated.lbrx",
+   "success": false
+  },
+  "lint": {
+   "error": "unclosed token: line 3, column 0",
+   "ok": false,
+   "warnings": []
+  },
+  "preflight": {
+   "checks": [
+    {
+     "check": "file-readable",
+     "detail": "77 bytes",
+     "ok": true
+    },
+    {
+     "check": "size-sane",
+     "detail": "77 bytes - a real EAGLE library is never this small (truncated transfer?)",
+     "ok": false
+    }
+   ],
+   "errors": [
+    "size-sane: 77 bytes - a real EAGLE library is never this small (truncated transfer?)"
+   ],
+   "ok": false
+  }
+ }
+}

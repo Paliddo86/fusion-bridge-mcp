@@ -1,0 +1,22 @@
+{
+ "dev": [
+  "ABM8-16.000MHZ-B2-T"
+ ],
+ "dev_pac": {
+  "ABM8-16.000MHZ-B2-T": [
+   "Crystal_SMD_3225-4Pin_3.2x2.5mm"
+  ]
+ },
+ "dev_sym": {
+  "ABM8-16.000MHZ-B2-T": [
+   "ABM8-16.000MHZ-B2-T"
+  ]
+ },
+ "p3d": [],
+ "pac": [
+  "Crystal_SMD_3225-4Pin_3.2x2.5mm"
+ ],
+ "sym": [
+  "ABM8-16.000MHZ-B2-T"
+ ]
+}

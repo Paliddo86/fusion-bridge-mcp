@@ -1,0 +1,127 @@
+{
+ "date": "2026-10-29_1526",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 14,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 8,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 5,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_footprint_from_land_pattern",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_import_part",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_not_supported",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_models",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_add_models",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_swap_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_build_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_test_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_create_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_copy_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_set_params",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_xcopy_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_read_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 4.3
+}

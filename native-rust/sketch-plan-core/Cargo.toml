@@ -1,0 +1,12 @@
+[package]
+name = "fusion-sketch-plan-core"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Bounded pure sketch geometry preparation over supplied mm coordinates"
+publish = false
+
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip"] }

@@ -1,0 +1,21 @@
+{
+ "allLbrs": [
+  "Demo_Board/Demo_Board.lbr",
+  "Demo_Board/parts/ABM8-16.000MHZ-B2-T.lbr",
+  "Demo_Board/parts/CH340G.lbr",
+  "Demo_Board/parts/IN-S63BTG.lbr",
+  "Demo_Board/parts/LAN7800.lbr",
+  "Demo_Board/parts/STM32L431RCT6TR.lbr"
+ ],
+ "extracted": 13,
+ "lbr": "Demo_Board/Demo_Board.lbr",
+ "models": [
+  "Demo_Board/3dmodels/ABM8-16.000MHZ-B2-T.step",
+  "Demo_Board/3dmodels/CH340G.step",
+  "Demo_Board/3dmodels/IN-S63BTG.step",
+  "Demo_Board/3dmodels/LAN7800.step",
+  "Demo_Board/3dmodels/STM32L431RCT6TR.step"
+ ],
+ "zipslipError": "unsafe zip entry: ../evil.lbr",
+ "zipslipRefused": true
+}

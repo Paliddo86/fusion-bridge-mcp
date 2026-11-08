@@ -1,0 +1,395 @@
+{
+ "date": "2026-08-14_1157",
+ "target": "AdomLapper",
+ "tier": "daily",
+ "pass": 35,
+ "fail": 1,
+ "results": [
+  {
+   "verb": "fusion_readiness",
+   "status": "PASS",
+   "why": "",
+   "sec": 34.5
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1
+  },
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_aps_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_aps_get_browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "PASS",
+   "why": "",
+   "sec": 36.1
+  },
+  {
+   "verb": "fusion_aps_recent",
+   "status": "PASS",
+   "why": "",
+   "sec": 13.0
+  },
+  {
+   "verb": "fusion_aps_browse",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3
+  },
+  {
+   "verb": "fusion_aps_file_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 30.5
+  },
+  {
+   "verb": "fusion_aps_get",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6
+  },
+  {
+   "verb": "fusion_uninstall",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.5
+  },
+  {
+   "verb": "fusion_aps_create_folder",
+   "status": "MANUAL",
+   "why": "needs projectId/parentFolderId of the test workspace"
+  },
+  {
+   "verb": "fusion_aps_upload",
+   "status": "MANUAL",
+   "why": "cloud write; exercised via build flows weekly"
+  },
+  {
+   "verb": "fusion_aps_set_client_id",
+   "status": "MANUAL",
+   "why": "would clobber org auth config"
+  },
+  {
+   "verb": "fusion_aps_set_browser",
+   "status": "MANUAL",
+   "why": ""
+  },
+  {
+   "verb": "fusion_aps_forget_browser",
+   "status": "MANUAL",
+   "why": ""
+  },
+  {
+   "verb": "fusion_aps_signin",
+   "status": "MANUAL",
+   "why": "opens a browser on the user's machine"
+  },
+  {
+   "verb": "fusion_start",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5
+  },
+  {
+   "verb": "fusion_get_preferences",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_set_preference",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_mcp_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_mcp_enable",
+   "status": "MANUAL",
+   "why": "drives the prefs UI, takes foreground"
+  },
+  {
+   "verb": "fusion_prefs_open",
+   "status": "MANUAL",
+   "why": "opens a dialog on the user's screen"
+  },
+  {
+   "verb": "fusion_prefs_close",
+   "status": "MANUAL",
+   "why": ""
+  },
+  {
+   "verb": "fusion_set_auto_update",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_assembly_bom",
+   "status": "FAIL",
+   "why": "expected success, got error=Request timed out code=None; missing field 'parts'; missing field 'collapsedUnits'; missing field 'possibleUnderCollapse'",
+   "sec": 60.0
+  },
+  {
+   "verb": "fusion_dismiss_blocking_dialogs",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.0
+  },
+  {
+   "verb": "fusion_load_design_rules",
+   "status": "MANUAL",
+   "why": "mutates the board's DRC rules"
+  },
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 78.9
+  },
+  {
+   "verb": "fusion_show_schematic",
+   "status": "PASS",
+   "why": "",
+   "sec": 9.6
+  },
+  {
+   "verb": "fusion_show_2d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 9.3
+  },
+  {
+   "verb": "fusion_board_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.4
+  },
+  {
+   "verb": "fusion_execute_text_command",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6
+  },
+  {
+   "verb": "fusion_show_3d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 17.4
+  },
+  {
+   "verb": "fusion_inspect_bodies",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1
+  },
+  {
+   "verb": "fusion_physical_properties",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.4
+  },
+  {
+   "verb": "fusion_get_design_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 5.0
+  },
+  {
+   "verb": "fusion_get_parameters",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8
+  },
+  {
+   "verb": "fusion_document_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.9
+  },
+  {
+   "verb": "fusion_run_modeling_script#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2
+  },
+  {
+   "verb": "fusion_assembly_bom#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2
+  },
+  {
+   "verb": "fusion_run_modeling_script",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6
+  },
+  {
+   "verb": "fusion_electron_select",
+   "status": "MANUAL",
+   "why": "selection state is user-visible"
+  },
+  {
+   "verb": "fusion_open_design",
+   "status": "MANUAL",
+   "why": "local-file open; superseded by cloud flows"
+  },
+  {
+   "verb": "fusion_close_window#noargs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0
+  },
+  {
+   "verb": "fusion_close_document",
+   "status": "MANUAL",
+   "why": ""
+  },
+  {
+   "verb": "fusion_close_all_documents",
+   "status": "MANUAL",
+   "why": "would close the user's own tabs"
+  },
+  {
+   "verb": "fusion_export_fbx",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly"
+  },
+  {
+   "verb": "fusion_export_usdz",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly"
+  },
+  {
+   "verb": "fusion_export_dxf",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly"
+  },
+  {
+   "verb": "fusion_export_dwg",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly"
+  },
+  {
+   "verb": "fusion_export_skp",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly"
+  },
+  {
+   "verb": "fusion_set_design_rules",
+   "status": "MANUAL",
+   "why": "mutates the board's DRC rules"
+  },
+  {
+   "verb": "fusion_web_export",
+   "status": "MANUAL",
+   "why": ""
+  },
+  {
+   "verb": "fusion_attach_3d_package",
+   "status": "MANUAL",
+   "why": "modal Save dialog needs a human eye"
+  },
+  {
+   "verb": "fusion_make_3d_package",
+   "status": "MANUAL",
+   "why": "cloud upload; run in release rehearsals"
+  },
+  {
+   "verb": "fusion_build_library_3d",
+   "status": "MANUAL",
+   "why": "long multi-part build; release rehearsals"
+  },
+  {
+   "verb": "fusion_new_electronics_from_eagle",
+   "status": "MANUAL",
+   "why": "drives native dialogs"
+  },
+  {
+   "verb": "fusion_update_libraries",
+   "status": "MANUAL",
+   "why": ""
+  },
+  {
+   "verb": "fusion_stop",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier"
+  },
+  {
+   "verb": "fusion_kill",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier"
+  },
+  {
+   "verb": "fusion_signin",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier"
+  },
+  {
+   "verb": "fusion_signin_2fa",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier"
+  },
+  {
+   "verb": "fusion_demo",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier"
+  },
+  {
+   "verb": "fusion_install_fusion",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier"
+  },
+  {
+   "verb": "fusion_notify_owner",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier"
+  },
+  {
+   "verb": "fusion_open_by_urn_note",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": ""
+  }
+ ],
+ "durationSec": 323.4
+}

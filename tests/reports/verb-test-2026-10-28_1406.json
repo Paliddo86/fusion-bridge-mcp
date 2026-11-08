@@ -1,0 +1,119 @@
+{
+ "date": "2026-10-28_1406",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 10,
+ "fail": 2,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 7,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_copper_balance",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_fab_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_height_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_placement_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.4,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_gencad",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_thermal_vias",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_via_fence",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_features",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_dxf",
+   "status": "FAIL",
+   "why": "expected success, got error=No outputPath specified code=None",
+   "sec": 1.4,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_place_vias",
+   "status": "FAIL",
+   "why": "expected success, got error=expectDocument must match the active board name exactly code=wrong_document",
+   "sec": 1.2,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 35.5
+}

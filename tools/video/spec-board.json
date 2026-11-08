@@ -1,0 +1,9 @@
+{"fusion":"uf/window-2428056-20261004-201709.mp4","hydrogen":"uf/window-3409738-20261004-201709.mp4","sections":[
+ {"a":8.5,"b":17,"mode":"hyd","label":"The prompt, typed into Codex in Hydrogen","text":"This is the whole prompt, typed into Codex in Hydrogen: make a schematic and a board with every part in my ToF library, then show me each view."},
+ {"a":17,"b":160,"mode":"fus","label":"Codex plans the build through the Fusion bridge","text":"Codex reads the Fusion bridge's commands, finds the three sensors in the library, and plans the build."},
+ {"a":160,"b":232,"mode":"fus","label":"Schematic and board generated, opened with no dialogs","text":"It writes the schematic and the board, and opens them in Fusion without a single dialog."},
+ {"a":232,"b":268,"mode":"fus","label":"The 2D board it wrote","text":"Here's the board it wrote: all three sensors placed and labeled, with the library's name on the silkscreen."},
+ {"a":312,"b":352,"mode":"fus","label":"The schematic","text":"Here's the schematic, each sensor drawn with its full pinout, straight from the library."},
+ {"a":355,"b":392,"mode":"fus","label":"The 2D board layout","text":"And the 2D board layout, the same three parts sitting on their real footprints."},
+ {"a":395,"b":478,"mode":"fus","label":"3D board with each part's real 3D model","text":"Then the 3D board. Every part shows its real 3D model, because the bridge bound one to each footprint when it built the library. Codex orbits the camera so you can see them."},
+ {"a":478,"b":492,"mode":"hyd","label":"Codex reports back","text":"Codex reports back: all three parts in the schematic, the 2D board and the 3D board, in about eight minutes, hands off."}]}

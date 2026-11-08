@@ -1,0 +1,113 @@
+{
+ "date": "2026-10-28_1212",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 12,
+ "fail": 0,
+ "sections": {
+  "gui-driving": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 9,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.6,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_export_gencad",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.5,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_schematic_data",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_part_parameters",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_cross_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_doc_params",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sheet_params",
+   "status": "PASS",
+   "why": "",
+   "sec": 5.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_edit",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_annotate",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_footprint_primitives",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_pdf",
+   "status": "PASS",
+   "why": "",
+   "sec": 19.3,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 63.5
+}

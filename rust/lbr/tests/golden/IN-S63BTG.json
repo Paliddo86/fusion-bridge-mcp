@@ -1,0 +1,22 @@
+{
+ "dev": [
+  "IN-S63BTG"
+ ],
+ "dev_pac": {
+  "IN-S63BTG": [
+   "IN-S63BTG"
+  ]
+ },
+ "dev_sym": {
+  "IN-S63BTG": [
+   "IN-S63BTG"
+  ]
+ },
+ "p3d": [],
+ "pac": [
+  "IN-S63BTG"
+ ],
+ "sym": [
+  "IN-S63BTG"
+ ]
+}

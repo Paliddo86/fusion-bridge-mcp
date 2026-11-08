@@ -1,0 +1,10 @@
+[package]
+name = "fusion-contract-authoring"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+[dependencies]
+serde = "1"
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
+sha2 = "0.10"
+[workspace]

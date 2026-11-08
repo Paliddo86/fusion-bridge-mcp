@@ -1,0 +1,13 @@
+# R19 creator correction
+
+This isolated checkpoint starts from the exact R19 freeze1 product manifest `11549c7596c77c21a05b25dc98d2a8f57ff1b1cb9af41d02c58e3b0a0998607b`. Every source entry is archived under `evidence/baseline-source`. Prior sources, verifier and operation journals remain unchanged.
+
+The first live dimension operation added a driving dimension, then refused before its value setter at ABI stage619. The operation remains unknown because the add had an effect; this correction neither retries nor reconciles it. The requested42mm value was never set in that attempt.
+
+A separate read-only public SDK diagnostic retained the exact native sketch, dimension and model parameter. Two identical captures with three unchanged revision brackets reported `createdBy().objectType()` as `adsk::fusion::Sketch`, with the returned creator valid and equal to the exact owning sketch in both typed and Base comparisons. SketchDimension and SketchLinearDimension casts were null. Observed dimension/parameter/line length agreed near3.60555127546cm; that observation did not qualify the requested operation.
+
+The typed adapter now casts the parameter creator to Sketch and requires the exact retained owner identity at existing stage619. New stages622/623 require validity and no assembly context. This is a specific native-owner check, not an allowance for arbitrary creator types, name matches, or equivalent geometry. Existing exact returned dimension/parameter holds, ordered endpoint membership, direct dimension→parameter binding, component ownership, sole model/global parameter, no user parameters and before/after collection checks remain. Null, wrong-type, foreign, invalid or assembly-proxy creators refuse. SDK errors keep their original stage/code and stay uncertain after the add.
+
+The small portable `af_exact_dimension_creator` helper is the production identity branch. Its instrumented test proves null/wrong-type/foreign/missing-retained identities do not call subsequent validators, invalid/native-context/error outcomes cannot reach a simulated setter, validator exceptions are not converted to success, and only the exact valid native owner reaches that gate. Fake SDK casts in that test do not prove Autodesk cast behavior; the separate actual diagnostic supplies that evidence.
+
+No Rust execution or journal policy changes. Dimension-add and value-set remain distinct once-only stages. The value-attempt latch still precedes the setter, the Book stays faulted on post-add uncertainty, and no rollback/replay permission is added. A fresh independently reviewed/qualified campaign is required.

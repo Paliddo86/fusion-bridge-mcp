@@ -1,0 +1,23 @@
+# R20 fix3: initial component revision witnesses
+
+This isolated correction starts from exact R20-fix2 freeze1: 184 files, SHA256 `63ae9355a32fc07ad77c5ff970a658c43043d4be113c9e68d8a152de9cdaf7d4`. The manifest is `BASELINE-R20-FIX2-PRODUCT-FREEZE1.txt`; all baseline bytes are under `evidence/baseline-source`. Earlier product directories, live receipts and unknown journals remain unchanged.
+
+The fresh fix2 first-component operation acknowledged all seven effect stages, then refused. Its diagnostic proved the first root revision changed and the second root was stable at exactly that first final revision. The first differing remaining field was `/components/0/revision`, changing from `ae345724-3e7d-49ee-94fb-5a44becf8e55` to `8e93ddc2-ed35-45c4-937d-d4d575ec91eb`. Root-owned campaign `r20-fix2-1/24-a-result.json` preserves the raw observation. This evidence does not prove why revisions changed or reconcile that operation.
+
+## Two independent checks
+
+The post-effect capture rule still permits only one initial unsettled bracket and at most three captures. It activates only if the first root bracket differs **solely** in revision. The second bracket must be internally stable, and its root must exactly equal the first final root. Fix3 additionally copies only initial component revision witnesses to their second observed values in the in-memory comparison copy. Component count, retained membership/order, names, attributes, native metadata, resource counts, occurrences, flags and matrices must all compare exactly. A third internally stable complete projection must exactly equal the second, including every accepted root and component revision.
+
+The independently existing `verify_delta` then compares the accepted projection with the original pre-effect plan. It permits only the operation's intended component changes; **an unrelated component revision change still refuses**, even if readback itself stabilized. A full execution regression explicitly demonstrates this two-layer refusal. No revision is removed from the accepted public projection or its digest.
+
+The stable-first path receives no normalization. A component-only change without initial root drift, any later component/root revision change, any SDK failure, mode mismatch, unsupported resource state or nonrevision difference stops unknown. Ordinary reads, preflight and final validation before effects retain their strict rule. Effects remain once-only after durable journal start, and failure preserves the observed stage prefix and faults the authoring book. There is no rollback, effect retry, general data substitution or historical reconciliation.
+
+## Bounded diagnostics
+
+The complete first and subsequent raw projections remain retained through comparison. The trace reserves up to 32 changed-component indices before effects. `initialComponentRevisionChanges` reports every changed slot with complete before/after revision text, SHA256 and original UTF-8 byte length, subject to one **combined 8 KiB** serialized budget for the changed-root diagnostic plus all component revision entries. The budget is checked before capture three. No raw values are truncated to manufacture an accepted result.
+
+If that combined budget is exceeded, the operation refuses unknown and the trace exposes every changed slot with complete hashes/lengths and explicit unavailable raw payload. The safe hash-only representation is selected before constructing/checking the full diagnostic, so formatting failure cannot select an unchecked raw payload. Existing bounded first-difference diagnostics still identify nonrevision/later mismatches without additional SDK reads. Successful evidence stays within the combined 8 KiB plus tested capture-hash overhead; the maximum result-size regression stays under the 256 KiB retained-record limit.
+
+Four added tests cover root-plus-component initial settling with exact effect counts, combined escaped-text overflow, all 32 changed slots with complete omission fingerprints, and unchanged enforcement of unrelated pre-effect component revisions. Existing instability cases now also cover stable-first component drift, later component revision drift and initial name changes. The old diagnostic-only projection-difference regression still proves later revision differences are reported precisely. All raw failed local test logs remain preserved.
+
+Source validation is author-side; independent root source review, actual Windows build/tests and a fresh authorized Fusion campaign are separate gates. Neither later observers nor successful future campaigns turn any old unknown result into success. No host action was performed by this source author.

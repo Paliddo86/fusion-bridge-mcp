@@ -1,0 +1,13 @@
+{
+  "manifest_version": 1,
+  "name": "fusion360",
+  "version": "1.13.84",
+  "url": "https://wiki.adom.inc/download/adom/fusion-bridge/1.13.84/adom-bridge-fusion-v1.13.84.zip",
+  "sha256": "deef89084b1c722c09444fd4f026143d88a0ae354a3599248d629a40b91546b9",
+  "size": 8613366,
+  "verbPrefixes": [
+    "fusion_"
+  ],
+  "healthEndpoint": "/status",
+  "released_at": "2026-11-06T21:25:51Z"
+}

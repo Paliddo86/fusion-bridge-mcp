@@ -1,0 +1,2373 @@
+{
+ "date": "2026-10-30_1432",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 221,
+ "fail": 5,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 53,
+   "FAIL": 0,
+   "MANUAL": 18,
+   "SKIP": 0
+  },
+  "auth-tokens": {
+   "PASS": 2,
+   "FAIL": 1,
+   "MANUAL": 5,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 20,
+   "FAIL": 0,
+   "MANUAL": 25,
+   "SKIP": 0
+  },
+  "aps": {
+   "PASS": 5,
+   "FAIL": 4,
+   "MANUAL": 15,
+   "SKIP": 0
+  },
+  "mcp-server": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 1,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 32,
+   "FAIL": 0,
+   "MANUAL": 10,
+   "SKIP": 0
+  },
+  "python-addin": {
+   "PASS": 6,
+   "FAIL": 0,
+   "MANUAL": 1,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 95,
+   "FAIL": 0,
+   "MANUAL": 44,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 7,
+   "FAIL": 0,
+   "MANUAL": 2,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_readiness",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_prewarm",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_account",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.1,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_claim_seat",
+   "status": "MANUAL",
+   "why": "moves the Autodesk seat between machines; suspends another box's Fusion",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_release_seat",
+   "status": "MANUAL",
+   "why": "closes Fusion on the box to free the seat",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_mech_capabilities",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_mech_operation_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_mechanical",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_aps_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_get_browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "FAIL",
+   "why": "expected success, got error=Not signed in to APS. code=aps_not_signed_in; expected >0 results",
+   "sec": 3.1,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_recent",
+   "status": "FAIL",
+   "why": "expected success, got error=Not signed in to APS. code=aps_not_signed_in; expected >0 results",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_browse",
+   "status": "FAIL",
+   "why": "expected success, got error=Not signed in to APS. code=aps_not_signed_in; missing field 'hubs'",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_file_info",
+   "status": "FAIL",
+   "why": "expected success, got error=Not signed in to APS. code=aps_not_signed_in; missing field 'versionCount'",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_get",
+   "status": "FAIL",
+   "why": "expected success, got error= code=None",
+   "sec": 0.0,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_uninstall",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_seat_takeover",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_aps_create_folder",
+   "status": "MANUAL",
+   "why": "needs projectId/parentFolderId of the test workspace",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_upload",
+   "status": "MANUAL",
+   "why": "cloud write; exercised via build flows weekly",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_set_client_id",
+   "status": "MANUAL",
+   "why": "would clobber org auth config",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_set_browser",
+   "status": "MANUAL",
+   "why": "",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_forget_browser",
+   "status": "MANUAL",
+   "why": "",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_signin",
+   "status": "MANUAL",
+   "why": "opens a browser on the user's machine",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_start",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_get_preferences",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_set_preference",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_mcp_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_enable",
+   "status": "MANUAL",
+   "why": "drives the prefs UI, takes foreground",
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_prefs_open",
+   "status": "MANUAL",
+   "why": "opens a dialog on the user's screen",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_prefs_close",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_set_auto_update",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_assembly_bom",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_dismiss_blocking_dialogs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 7.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_schematic",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.2,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_2d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_board_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_electronics",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_routing_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_layer_stack",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_netlist",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_pour_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_component_data",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_component_pins",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_list_nets",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_net_connections",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_list_designators",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_layers",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_copper_layers",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_layers_in_use",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_read_rules",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_rules_by_kind",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_silk_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_net_classes",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_summary",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_zoom_to",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_select_net",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_set_layer_visibility#hide",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_set_layer_visibility#show",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_outline",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_run_erc",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_check_dialogs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_dialog_log",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_signin_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_license_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_list_commands",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_save",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias: the same verb as its target, which carries the tests",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_run_script",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias: the same verb as its target, which carries the tests",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_run_command",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias: the same verb as its target, which carries the tests",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_document",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias: the same verb as its target, which carries the tests",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_show_3d_chip",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias: the same verb as its target, which carries the tests",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_sch_items",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_pins",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_trace_point",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_page",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_hierarchy",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_sheet_pins",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_connect_pins#dry",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_fix_connectivity",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_render_schematic",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_update_from_library#refuse",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_batch#dry",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.7,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_sch_batch#rollback",
+   "status": "PASS",
+   "why": "",
+   "sec": 17.7,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_sch_text",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_junction",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_delete_wire",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_connect_pins",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_split_wire",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_bus",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_edit_label",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_move_region",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_bus_entry",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_connect_to_bus",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_reset_fields",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_create",
+   "status": "MANUAL",
+   "why": "schematic edit: tested live on a scratch import of BQ25792 (never the cloud design)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_update_board_from_eagle#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_update_board_from_eagle",
+   "status": "MANUAL",
+   "why": "writes a saved design: tested live on fl-sync-test in Default Project / fusion-lane-tests (#125 item 4)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_dxf#board",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.9,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_plan_route#standard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_length_tune",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_route_pair",
+   "status": "MANUAL",
+   "why": "a plan; BQ25792's D pair is routed, so a pair plan meets its own copper",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_render_board_3d",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.6,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_remove_graphics#dry",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_align_parts#dry",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_remove_parts#dry",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_edit_parts#dry",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_generate_body#engine",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_edit_parts",
+   "status": "MANUAL",
+   "why": "edits a design, writes files or closes documents: tested live on scratch imports and fl-sync-test",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_align_parts",
+   "status": "MANUAL",
+   "why": "edits a design, writes files or closes documents: tested live on scratch imports and fl-sync-test",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_remove_graphics",
+   "status": "MANUAL",
+   "why": "edits a design, writes files or closes documents: tested live on scratch imports and fl-sync-test",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_remove_parts",
+   "status": "MANUAL",
+   "why": "edits a design, writes files or closes documents: tested live on scratch imports and fl-sync-test",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_generate_body",
+   "status": "MANUAL",
+   "why": "edits a design, writes files or closes documents: tested live on scratch imports and fl-sync-test",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_library_views",
+   "status": "MANUAL",
+   "why": "edits a design, writes files or closes documents: tested live on scratch imports and fl-sync-test",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_copper_balance",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_return_path",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_impedance",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_current_capacity",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_fab_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_estimate_cost",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_read_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_diff_pairs",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_auto_classes",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_silk_designators",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.4,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_net_lengths",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_assembly_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_report",
+   "status": "PASS",
+   "why": "",
+   "sec": 22.6,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_jlcpcb_order",
+   "status": "PASS",
+   "why": "",
+   "sec": 15.1,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_sch_zoom",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_spice",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_simulate",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_simulate#noise",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_simulate#montecarlo",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_simulate#sweep",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_place_part",
+   "status": "MANUAL",
+   "why": "edits the schematic (and the board with it): tested live on lane-BQ25792-copy with a part placed and deleted again",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_connect",
+   "status": "MANUAL",
+   "why": "edits the schematic (and the board with it): tested live on lane-BQ25792-copy with a part placed and deleted again",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_swap_part",
+   "status": "MANUAL",
+   "why": "edits the schematic (and the board with it): tested live on lane-BQ25792-copy with a part placed and deleted again",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_add_rule",
+   "status": "MANUAL",
+   "why": "edits the board's net classes: tested live on lane-BQ25792-copy and put back",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_height_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_placement_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_find_space",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_check_orientation",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_check_clearance",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_place_decoupling",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plan_fanout",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_odb",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.6,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_ipc356",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_gencad",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_ipc2581",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.7,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_read_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_project_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 13.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic_data",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_part_parameters",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_cross_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic_review",
+   "status": "PASS",
+   "why": "",
+   "sec": 6.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_pin_pad_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.4,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_doc_params",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sheet_params",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_sch_edit",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_annotate",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_thermal_vias",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_via_fence",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_features",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_footprint_primitives",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_pdf",
+   "status": "PASS",
+   "why": "",
+   "sec": 15.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_project_rename",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_project_create",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_project_snapshot",
+   "status": "PASS",
+   "why": "",
+   "sec": 23.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_cross_probe",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_set_layer_count",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_copy_routing",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_import_svg",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_bom#parts",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.6,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_list_text_commands",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_execute_text_command",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_bodies",
+   "status": "PASS",
+   "why": "",
+   "sec": 10.5,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_show_3d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.5,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_inspect_bodies",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_physical_properties",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_design_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.5,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_parameters",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_document_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.2,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_delete_cloud_file#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_delete_cloud_file",
+   "status": "MANUAL",
+   "why": "destructive cloud delete; only against files a rehearsal created",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_create_cloud_folder",
+   "status": "MANUAL",
+   "why": "cloud write into the team hub",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_set_parameter#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_set_parameter",
+   "status": "MANUAL",
+   "why": "mutates the active design's parameters",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_run_modeling_script#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_assembly_bom#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_run_modeling_script",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_select",
+   "status": "MANUAL",
+   "why": "selection state is user-visible",
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_open_design",
+   "status": "MANUAL",
+   "why": "local-file open; superseded by cloud flows",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_board",
+   "status": "MANUAL",
+   "why": "local .brd open; needs a .brd on the box (make_test_project exercises the same newDesignFromLocal path)",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_schematic",
+   "status": "MANUAL",
+   "why": "local .sch open; needs a .sch on the box (make_test_project exercises the same newDesignFromLocal path)",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_import_electronics",
+   "status": "MANUAL",
+   "why": "needs a Fusion-native .fsch/.fbrd/.flbr on the box; creates a NEW unsaved document",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_window#noargs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_document",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_all_documents",
+   "status": "MANUAL",
+   "why": "would close the user's own tabs",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_export_obj",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_fbx",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_usdz",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_dxf",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_dwg",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_skp",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_design_rules",
+   "status": "MANUAL",
+   "why": "mutates the board's DRC rules",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_show_3d_package",
+   "status": "MANUAL",
+   "why": "enters Package3DEnvironment (exit needs Package3DStop + dialog); tour covers it; attach path in release rehearsals",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_bind_library_3d",
+   "status": "MANUAL",
+   "why": "cloud f3d mint per run; release rehearsals (needs signed-in session)",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_attach_3d_package",
+   "status": "MANUAL",
+   "why": "modal Save dialog needs a human eye",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_make_3d_package",
+   "status": "MANUAL",
+   "why": "cloud upload; run in release rehearsals",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_build_library_3d",
+   "status": "MANUAL",
+   "why": "long multi-part build; release rehearsals",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_cleanup_cloud_files#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_cleanup_cloud_files",
+   "status": "MANUAL",
+   "why": "real cleanup takes explicit lineage urns; used by weekly build rehearsals",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_new_electronics_from_eagle",
+   "status": "MANUAL",
+   "why": "drives native dialogs",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_screenshot_fusion",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_demo_progress#unknown",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_stop",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_kill",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_signin",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_signin_2fa",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_demo",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_install_fusion",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_notify_owner",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_open_by_urn_note",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_action_ledger",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_addin_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_alerts",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_log_tail",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_verb_times",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_live_feed",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_prove_result",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_set_driving_badge",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_window_sizing",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_cancel_run",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_preflight_lbr",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_library_parts",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_create_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_footprint_from_land_pattern",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_footprint_from_land_pattern#missing",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_import_part",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_import_part#nothing",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_not_supported",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_not_supported#a365",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_models",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_add_models",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_swap_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_teardrops",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.5,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_panelize",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.5,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_replicate_layout",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_symbol_prims",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_visibility",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_sch_update_from_library",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plate_vias",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_cleanup_libs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_variants",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_variants#edit",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.8,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_silkscreen_prep",
+   "status": "PASS",
+   "why": "",
+   "sec": 7.9,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_diagnostics",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_instances",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_progress",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_foreground",
+   "status": "MANUAL",
+   "why": "brings Fusion in front: manual only, never in an unattended battery",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_foreground#noreason",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_list_installed_libraries",
+   "status": "PASS",
+   "why": "",
+   "sec": 21.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_add_symbol_art",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_lint_library",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_update_footprints_from_library",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_update_footprints_from_library#apply",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_build_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_build_board#missing",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.5,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_test_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_create_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_copy_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_rename_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_remove_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_clone_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_rename_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_remove_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_set_params",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_xcopy_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_read_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_find_symbol",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_edit_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_export_library_part",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_create_library",
+   "status": "MANUAL",
+   "why": "the five-part drill covers it (fusion_install_library_bundle -> prove)",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_install_library_bundle",
+   "status": "MANUAL",
+   "why": "the five-part drill covers it; needs a bundle zip on the box",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_managed_library_create",
+   "status": "MANUAL",
+   "why": "creates a managed library on the hub (cloud write)",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_managed_library_link",
+   "status": "MANUAL",
+   "why": "drives LIBRARY.IO dialogs against the hub",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_managed_library_pull",
+   "status": "MANUAL",
+   "why": "drives LIBRARY.IO dialogs against the hub",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_managed_library_push",
+   "status": "MANUAL",
+   "why": "drives LIBRARY.IO dialogs; cloud write",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_managed_library_unlink",
+   "status": "MANUAL",
+   "why": "drives LIBRARY.IO dialogs against the hub",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_reset_workspace",
+   "status": "MANUAL",
+   "why": "closes the user's documents",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_restart_for_addin",
+   "status": "MANUAL",
+   "why": "restarts Fusion",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_save_to_cloud",
+   "status": "MANUAL",
+   "why": "cloud write; exercised by the drills",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_web_signin",
+   "status": "MANUAL",
+   "why": "opens a browser on the user's machine",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_routing_state#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_route_net#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_routing_drc#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plan_route#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_route_net",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_routing_drc",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plan_route",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_move_parts",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_place_vias",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_apply_pours",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_source",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_ripup_nets",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic_run",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_bom",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_change_pours",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_seed",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic_plan",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_remove_pours",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_run_drc",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_repour",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_apply_silkscreen",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_set_track_width",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_remove_items",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_set_outline",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_shape",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_autoroute",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_apply_fusion_update",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_resolve_seat_dialog",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_interactive",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_narrate",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_view",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_electronics_query",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_schematic#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_launch",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias of an existing verb (the reply carries aliasOf); tested through the verb it names",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_gerber",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias of an existing verb (the reply carries aliasOf); tested through the verb it names",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_dismiss_dialogs",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias of an existing verb (the reply carries aliasOf); tested through the verb it names",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_install",
+   "status": "MANUAL",
+   "why": "EDA Bridge Standard alias of an existing verb (the reply carries aliasOf); tested through the verb it names",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_save_document",
+   "status": "MANUAL",
+   "why": "saves a cloud design in place (a new version): exercised live on a scratch design in a test folder",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_read_sheet_file#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic#missing",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_schematic",
+   "status": "MANUAL",
+   "why": "open a cloud design's schematic / create a blank one: exercised by the weekly tour",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_make_showcase_project#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.5,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_make_showcase_project",
+   "status": "MANUAL",
+   "why": "places a library's parts on a fresh sch+brd; exercised on the Adom_ToF library",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_eagle_import_status#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_eagle_import_status",
+   "status": "MANUAL",
+   "why": "status of a background EAGLE import",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_show_attributes#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_show_attributes",
+   "status": "MANUAL",
+   "why": "opens the device editor for a deviceset and returns its metadata",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 507.2
+}

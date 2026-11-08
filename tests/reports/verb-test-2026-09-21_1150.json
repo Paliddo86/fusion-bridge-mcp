@@ -1,0 +1,916 @@
+{
+ "date": "2026-09-21_1150",
+ "target": "ConfRoomROG",
+ "tier": "daily",
+ "pass": 64,
+ "fail": 1,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 11,
+   "FAIL": 0,
+   "MANUAL": 15,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 17,
+   "FAIL": 0,
+   "MANUAL": 21,
+   "SKIP": 0
+  },
+  "aps": {
+   "PASS": 8,
+   "FAIL": 1,
+   "MANUAL": 13,
+   "SKIP": 0
+  },
+  "auth-tokens": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 3,
+   "SKIP": 0
+  },
+  "mcp-server": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 1,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 15,
+   "FAIL": 0,
+   "MANUAL": 7,
+   "SKIP": 0
+  },
+  "python-addin": {
+   "PASS": 6,
+   "FAIL": 0,
+   "MANUAL": 1,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 0,
+   "FAIL": 0,
+   "MANUAL": 1,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 4,
+   "FAIL": 0,
+   "MANUAL": 4,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_readiness",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_get_browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "FAIL",
+   "why": "expected success, got error=Request timed out code=None; expected >0 results",
+   "sec": 60.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_recent",
+   "status": "PASS",
+   "why": "",
+   "sec": 19.2,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_browse",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_file_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 29.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_get",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.5,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_uninstall",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_seat_takeover",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_aps_create_folder",
+   "status": "MANUAL",
+   "why": "needs projectId/parentFolderId of the test workspace",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_upload",
+   "status": "MANUAL",
+   "why": "cloud write; exercised via build flows weekly",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_set_client_id",
+   "status": "MANUAL",
+   "why": "would clobber org auth config",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_set_browser",
+   "status": "MANUAL",
+   "why": "",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_forget_browser",
+   "status": "MANUAL",
+   "why": "",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_signin",
+   "status": "MANUAL",
+   "why": "opens a browser on the user's machine",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_start",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_get_preferences",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_set_preference",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.4,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_mcp_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_enable",
+   "status": "MANUAL",
+   "why": "drives the prefs UI, takes foreground",
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_prefs_open",
+   "status": "MANUAL",
+   "why": "opens a dialog on the user's screen",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_prefs_close",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_set_auto_update",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_assembly_bom",
+   "status": "PASS",
+   "why": "",
+   "sec": 23.4,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_dismiss_blocking_dialogs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_schematic",
+   "status": "PASS",
+   "why": "",
+   "sec": 8.4,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_2d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 8.4,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_board_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_electronics",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_list_text_commands",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_execute_text_command",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.2,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_show_3d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 9.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_inspect_bodies",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_physical_properties",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_design_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.4,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_parameters",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_document_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_delete_cloud_file#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_delete_cloud_file",
+   "status": "MANUAL",
+   "why": "destructive cloud delete; only against files a rehearsal created",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_create_cloud_folder",
+   "status": "MANUAL",
+   "why": "cloud write into the team hub",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_set_parameter#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_set_parameter",
+   "status": "MANUAL",
+   "why": "mutates the active design's parameters",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_run_modeling_script#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_assembly_bom#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_run_modeling_script",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_select",
+   "status": "MANUAL",
+   "why": "selection state is user-visible",
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_open_design",
+   "status": "MANUAL",
+   "why": "local-file open; superseded by cloud flows",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_board",
+   "status": "MANUAL",
+   "why": "local .brd open; needs a .brd on the box (make_test_project exercises the same newDesignFromLocal path)",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_schematic",
+   "status": "MANUAL",
+   "why": "local .sch open; needs a .sch on the box (make_test_project exercises the same newDesignFromLocal path)",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_import_electronics",
+   "status": "MANUAL",
+   "why": "needs a Fusion-native .fsch/.fbrd/.flbr on the box; creates a NEW unsaved document",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_window#noargs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_document",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_all_documents",
+   "status": "MANUAL",
+   "why": "would close the user's own tabs",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_export_obj",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_fbx",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_usdz",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_dxf",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_dwg",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_skp",
+   "status": "MANUAL",
+   "why": "build/doc-type dependent (OBJ refused on the 2026-08-14 box); verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_design_rules",
+   "status": "MANUAL",
+   "why": "mutates the board's DRC rules",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_show_3d_package",
+   "status": "MANUAL",
+   "why": "enters Package3DEnvironment (exit needs Package3DStop + dialog); tour covers it; attach path in release rehearsals",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_bind_library_3d",
+   "status": "MANUAL",
+   "why": "cloud f3d mint per run; release rehearsals (needs signed-in session)",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_attach_3d_package",
+   "status": "MANUAL",
+   "why": "modal Save dialog needs a human eye",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_make_3d_package",
+   "status": "MANUAL",
+   "why": "cloud upload; run in release rehearsals",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_build_library_3d",
+   "status": "MANUAL",
+   "why": "long multi-part build; release rehearsals",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_cleanup_cloud_files#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_cleanup_cloud_files",
+   "status": "MANUAL",
+   "why": "real cleanup takes explicit lineage urns; used by weekly build rehearsals",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_new_electronics_from_eagle",
+   "status": "MANUAL",
+   "why": "drives native dialogs",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_screenshot_fusion",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_demo_progress#unknown",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_stop",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_kill",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_signin",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_signin_2fa",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_demo",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_install_fusion",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_notify_owner",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_open_by_urn_note",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_action_ledger",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_addin_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_alerts",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_verb_times",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_live_feed",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_prove_result",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_set_driving_badge",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_set_window_sizing",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_cancel_run",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_preflight_lbr",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_library_parts",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_create_library",
+   "status": "MANUAL",
+   "why": "the five-part drill covers it (fusion_install_library_bundle -> prove)",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_install_library_bundle",
+   "status": "MANUAL",
+   "why": "the five-part drill covers it; needs a bundle zip on the box",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_managed_library_create",
+   "status": "MANUAL",
+   "why": "creates a managed library on the hub (cloud write)",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_managed_library_link",
+   "status": "MANUAL",
+   "why": "drives LIBRARY.IO dialogs against the hub",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_managed_library_pull",
+   "status": "MANUAL",
+   "why": "drives LIBRARY.IO dialogs against the hub",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_managed_library_push",
+   "status": "MANUAL",
+   "why": "drives LIBRARY.IO dialogs; cloud write",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_managed_library_unlink",
+   "status": "MANUAL",
+   "why": "drives LIBRARY.IO dialogs against the hub",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_reset_workspace",
+   "status": "MANUAL",
+   "why": "closes the user's documents",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_restart_for_addin",
+   "status": "MANUAL",
+   "why": "restarts Fusion",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_save_to_cloud",
+   "status": "MANUAL",
+   "why": "cloud write; exercised by the drills",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_web_signin",
+   "status": "MANUAL",
+   "why": "opens a browser on the user's machine",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_routing_state#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_route_net#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_routing_drc#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plan_route#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_routing_state",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_route_net",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_routing_drc",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plan_route",
+   "status": "MANUAL",
+   "why": "live routing on a fixture board: demo/routing/run_demo.py is the weekly proof (needs a board open)",
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_apply_fusion_update",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_resolve_seat_dialog",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_interactive",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_narrate",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_view",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_electronics_query",
+   "status": "MANUAL",
+   "why": "lifecycle, seat or presentation verbs: need a human-visible Fusion state; manual tier",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_schematic#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_schematic#missing",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_schematic",
+   "status": "MANUAL",
+   "why": "open a cloud design's schematic / create a blank one: exercised by the weekly tour",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_make_showcase_project#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.5,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_make_showcase_project",
+   "status": "MANUAL",
+   "why": "places a library's parts on a fresh sch+brd; exercised on the Adom_ToF library",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_eagle_import_status#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_eagle_import_status",
+   "status": "MANUAL",
+   "why": "status of a background EAGLE import",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_show_attributes#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_show_attributes",
+   "status": "MANUAL",
+   "why": "opens the device editor for a deviceset and returns its metadata",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 213.8
+}

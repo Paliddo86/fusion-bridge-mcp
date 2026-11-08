@@ -1,0 +1,37 @@
+{
+ "date": "2026-11-02_1514",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 2,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_panel#browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 3.2
+}

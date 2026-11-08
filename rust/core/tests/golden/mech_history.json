@@ -1,0 +1,1418 @@
+{
+ "source": "addin/AdomBridge/commands/mechanical (dev.9 merged onto 1.11.44)",
+ "generator": "tools/gen-mech-goldens.py",
+ "session": "S-GOLDEN-0000",
+ "sourceVersion": "1.12.0-dev.10",
+ "scenarios": [
+  {
+   "name": "success_then_replay",
+   "options": {},
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w1",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w1",
+       "requestDigest": "8dec6cd11139b73e5f0539eb24d9d8f7ba9859c28f47372beed2a3c128de6ac0",
+       "dispatchId": "d-1"
+      },
+      null
+     ]
+    },
+    {
+     "call": "start",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w1",
+       "requestDigest": "8dec6cd11139b73e5f0539eb24d9d8f7ba9859c28f47372beed2a3c128de6ac0",
+       "dispatchId": "d-1"
+      },
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w1",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      {
+       "documentId": "S-GOLDEN-0000:doc",
+       "creationId": "c1",
+       "dataFileId": null
+      }
+     ],
+     "out": null
+    },
+    {
+     "call": "finish",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w1",
+       "requestDigest": "8dec6cd11139b73e5f0539eb24d9d8f7ba9859c28f47372beed2a3c128de6ac0",
+       "dispatchId": "d-1"
+      },
+      {
+       "success": true,
+       "sessionId": "S-GOLDEN-0000",
+       "operation": "parameter_set",
+       "data": {
+        "value": 42
+       },
+       "operationId": "w1"
+      }
+     ],
+     "out": {
+      "success": true,
+      "sessionId": "S-GOLDEN-0000",
+      "operation": "parameter_set",
+      "data": {
+       "value": 42
+      },
+      "operationId": "w1",
+      "durability": {
+       "terminalRecorded": true,
+       "storageVersion": 1,
+       "recordedSessionId": "S-GOLDEN-0000",
+       "phase": "succeeded"
+      }
+     }
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w1"
+      }
+     ],
+     "out": {
+      "success": true,
+      "sessionId": "S-GOLDEN-0000",
+      "currentSessionId": "S-GOLDEN-0000",
+      "operationId": "w1",
+      "state": "succeeded",
+      "phase": "succeeded",
+      "historical": false,
+      "history": {
+       "storageVersion": 1,
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w1",
+       "operation": "parameter_set",
+       "sourceVersion": "1.12.0-dev.10",
+       "requestDigest": "8dec6cd11139b73e5f0539eb24d9d8f7ba9859c28f47372beed2a3c128de6ac0",
+       "requestedTarget": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       },
+       "observedDocument": {
+        "creationId": "c1",
+        "dataFileId": null,
+        "documentId": "S-GOLDEN-0000:doc"
+       },
+       "phase": "succeeded",
+       "createdAt": 1792500000.125,
+       "updatedAt": 1792500000.5,
+       "events": [
+        {
+         "at": 1792500000.125,
+         "phase": "admitted"
+        },
+        {
+         "at": 1792500000.25,
+         "phase": "dispatched"
+        },
+        {
+         "at": 1792500000.375,
+         "phase": "executing"
+        },
+        {
+         "at": 1792500000.5,
+         "phase": "succeeded"
+        }
+       ]
+      },
+      "outcome": "recorded",
+      "nativeExecutionStarted": null,
+      "reconciliationRequired": false,
+      "result": {
+       "data": {
+        "value": 42
+       },
+       "operation": "parameter_set",
+       "operationId": "w1",
+       "sessionId": "S-GOLDEN-0000",
+       "success": true,
+       "durability": {
+        "terminalRecorded": true,
+        "storageVersion": 1,
+        "recordedSessionId": "S-GOLDEN-0000",
+        "phase": "succeeded"
+       }
+      },
+      "observedResult": null,
+      "persistenceFailure": null
+     }
+    },
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w1",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-2"
+     ],
+     "out": [
+      null,
+      {
+       "data": {
+        "value": 42
+       },
+       "operation": "parameter_set",
+       "operationId": "w1",
+       "sessionId": "S-GOLDEN-0000",
+       "success": true,
+       "durability": {
+        "terminalRecorded": true,
+        "storageVersion": 1,
+        "recordedSessionId": "S-GOLDEN-0000",
+        "phase": "succeeded"
+       },
+       "replayed": true
+      }
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "sessionId": "S-GOLDEN-0000",
+     "operationId": "w1",
+     "record": "{\"createdAt\":1792500000.125,\"dispatchId\":\"d-1\",\"events\":[{\"at\":1792500000.125,\"phase\":\"admitted\"},{\"at\":1792500000.25,\"phase\":\"dispatched\"},{\"at\":1792500000.375,\"phase\":\"executing\"},{\"at\":1792500000.5,\"phase\":\"succeeded\"}],\"observedDocument\":{\"creationId\":\"c1\",\"dataFileId\":null,\"documentId\":\"S-GOLDEN-0000:doc\"},\"operation\":\"parameter_set\",\"operationId\":\"w1\",\"phase\":\"succeeded\",\"requestDigest\":\"8dec6cd11139b73e5f0539eb24d9d8f7ba9859c28f47372beed2a3c128de6ac0\",\"requestedTarget\":{\"documentId\":\"S-GOLDEN-0000:doc\",\"revision\":\"r1\"},\"result\":{\"data\":{\"value\":42},\"operation\":\"parameter_set\",\"operationId\":\"w1\",\"sessionId\":\"S-GOLDEN-0000\",\"success\":true},\"sessionId\":\"S-GOLDEN-0000\",\"sourceVersion\":\"1.12.0-dev.10\",\"storageVersion\":1,\"updatedAt\":1792500000.5}",
+     "digest": "c05d3104ecefc2a098add9750e8b13fb87430d84ae80dae6c7c19a65a902b739"
+    }
+   ]
+  },
+  {
+   "name": "handler_failure",
+   "options": {},
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w2",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w2",
+       "requestDigest": "8d6fe78247b5c2d4f7ad4e6aeef08261325207867a2b6bde8ba1b58c9393717e",
+       "dispatchId": "d-1"
+      },
+      null
+     ]
+    },
+    {
+     "call": "start",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w2",
+       "requestDigest": "8d6fe78247b5c2d4f7ad4e6aeef08261325207867a2b6bde8ba1b58c9393717e",
+       "dispatchId": "d-1"
+      },
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w2",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      {
+       "documentId": "S-GOLDEN-0000:doc",
+       "creationId": "c1",
+       "dataFileId": null
+      }
+     ],
+     "out": null
+    },
+    {
+     "call": "finish",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w2",
+       "requestDigest": "8d6fe78247b5c2d4f7ad4e6aeef08261325207867a2b6bde8ba1b58c9393717e",
+       "dispatchId": "d-1"
+      },
+      {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "errorCode": "expression_invalid",
+       "error": "bad",
+       "operationId": "w2"
+      }
+     ],
+     "out": {
+      "success": false,
+      "sessionId": "S-GOLDEN-0000",
+      "errorCode": "expression_invalid",
+      "error": "bad",
+      "operationId": "w2",
+      "durability": {
+       "terminalRecorded": true,
+       "storageVersion": 1,
+       "recordedSessionId": "S-GOLDEN-0000",
+       "phase": "failed"
+      }
+     }
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w2"
+      }
+     ],
+     "out": {
+      "success": true,
+      "sessionId": "S-GOLDEN-0000",
+      "currentSessionId": "S-GOLDEN-0000",
+      "operationId": "w2",
+      "state": "failed",
+      "phase": "failed",
+      "historical": false,
+      "history": {
+       "storageVersion": 1,
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w2",
+       "operation": "parameter_set",
+       "sourceVersion": "1.12.0-dev.10",
+       "requestDigest": "8d6fe78247b5c2d4f7ad4e6aeef08261325207867a2b6bde8ba1b58c9393717e",
+       "requestedTarget": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       },
+       "observedDocument": {
+        "creationId": "c1",
+        "dataFileId": null,
+        "documentId": "S-GOLDEN-0000:doc"
+       },
+       "phase": "failed",
+       "createdAt": 1792500000.125,
+       "updatedAt": 1792500000.5,
+       "events": [
+        {
+         "at": 1792500000.125,
+         "phase": "admitted"
+        },
+        {
+         "at": 1792500000.25,
+         "phase": "dispatched"
+        },
+        {
+         "at": 1792500000.375,
+         "phase": "executing"
+        },
+        {
+         "at": 1792500000.5,
+         "phase": "failed"
+        }
+       ]
+      },
+      "outcome": "recorded",
+      "nativeExecutionStarted": null,
+      "reconciliationRequired": false,
+      "result": {
+       "error": "bad",
+       "errorCode": "expression_invalid",
+       "operationId": "w2",
+       "sessionId": "S-GOLDEN-0000",
+       "success": false,
+       "durability": {
+        "terminalRecorded": true,
+        "storageVersion": 1,
+        "recordedSessionId": "S-GOLDEN-0000",
+        "phase": "failed"
+       }
+      },
+      "observedResult": null,
+      "persistenceFailure": null
+     }
+    }
+   ],
+   "rows": [
+    {
+     "sessionId": "S-GOLDEN-0000",
+     "operationId": "w2",
+     "record": "{\"createdAt\":1792500000.125,\"dispatchId\":\"d-1\",\"events\":[{\"at\":1792500000.125,\"phase\":\"admitted\"},{\"at\":1792500000.25,\"phase\":\"dispatched\"},{\"at\":1792500000.375,\"phase\":\"executing\"},{\"at\":1792500000.5,\"phase\":\"failed\"}],\"observedDocument\":{\"creationId\":\"c1\",\"dataFileId\":null,\"documentId\":\"S-GOLDEN-0000:doc\"},\"operation\":\"parameter_set\",\"operationId\":\"w2\",\"phase\":\"failed\",\"requestDigest\":\"8d6fe78247b5c2d4f7ad4e6aeef08261325207867a2b6bde8ba1b58c9393717e\",\"requestedTarget\":{\"documentId\":\"S-GOLDEN-0000:doc\",\"revision\":\"r1\"},\"result\":{\"error\":\"bad\",\"errorCode\":\"expression_invalid\",\"operationId\":\"w2\",\"sessionId\":\"S-GOLDEN-0000\",\"success\":false},\"sessionId\":\"S-GOLDEN-0000\",\"sourceVersion\":\"1.12.0-dev.10\",\"storageVersion\":1,\"updatedAt\":1792500000.5}",
+     "digest": "e4762989dbfa55e2efa9410efdcf588074f9d56c96bfc364ceb5392dd5fd4f46"
+    }
+   ]
+  },
+  {
+   "name": "conflict_and_pending",
+   "options": {},
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w3",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w3",
+       "requestDigest": "3a9ee86c749e4a71d31a24e8947cb2d0c9f399a6ab449d2270734dfd47bbf3dc",
+       "dispatchId": "d-1"
+      },
+      null
+     ]
+    },
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "43 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w3",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-2"
+     ],
+     "out": [
+      null,
+      {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "errorCode": "operation_conflict",
+       "error": "operationId was already used with different arguments.",
+       "outcome": "not_executed",
+       "nativeExecutionStarted": false,
+       "operationId": "w3",
+       "requestDigest": "d060ecf863467fe800ae5d09762a42edeeffe80c49ced4bae1cc00e1e57b4f6f",
+       "conflict": {
+        "scope": "submitted_request",
+        "existingRequestDigest": "3a9ee86c749e4a71d31a24e8947cb2d0c9f399a6ab449d2270734dfd47bbf3dc"
+       }
+      }
+     ]
+    },
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w3",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-3"
+     ],
+     "out": [
+      null,
+      {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w3",
+       "errorCode": "operation_in_progress",
+       "error": "Operation is admitted; query its recorded status. No duplicate dispatch occurred.",
+       "phase": "dispatched",
+       "outcome": "pending"
+      }
+     ]
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w3"
+      }
+     ],
+     "out": {
+      "success": true,
+      "sessionId": "S-GOLDEN-0000",
+      "currentSessionId": "S-GOLDEN-0000",
+      "operationId": "w3",
+      "state": "running",
+      "phase": "dispatched",
+      "historical": false,
+      "history": {
+       "storageVersion": 1,
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w3",
+       "operation": "parameter_set",
+       "sourceVersion": "1.12.0-dev.10",
+       "requestDigest": "3a9ee86c749e4a71d31a24e8947cb2d0c9f399a6ab449d2270734dfd47bbf3dc",
+       "requestedTarget": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       },
+       "observedDocument": null,
+       "phase": "dispatched",
+       "createdAt": 1792500000.125,
+       "updatedAt": 1792500000.25,
+       "events": [
+        {
+         "at": 1792500000.125,
+         "phase": "admitted"
+        },
+        {
+         "at": 1792500000.25,
+         "phase": "dispatched"
+        }
+       ]
+      },
+      "outcome": "pending",
+      "nativeExecutionStarted": null,
+      "reconciliationRequired": false,
+      "result": null,
+      "observedResult": null,
+      "persistenceFailure": null
+     }
+    }
+   ],
+   "rows": [
+    {
+     "sessionId": "S-GOLDEN-0000",
+     "operationId": "w3",
+     "record": "{\"createdAt\":1792500000.125,\"dispatchId\":\"d-1\",\"events\":[{\"at\":1792500000.125,\"phase\":\"admitted\"},{\"at\":1792500000.25,\"phase\":\"dispatched\"}],\"observedDocument\":null,\"operation\":\"parameter_set\",\"operationId\":\"w3\",\"phase\":\"dispatched\",\"requestDigest\":\"3a9ee86c749e4a71d31a24e8947cb2d0c9f399a6ab449d2270734dfd47bbf3dc\",\"requestedTarget\":{\"documentId\":\"S-GOLDEN-0000:doc\",\"revision\":\"r1\"},\"result\":null,\"sessionId\":\"S-GOLDEN-0000\",\"sourceVersion\":\"1.12.0-dev.10\",\"storageVersion\":1,\"updatedAt\":1792500000.25}",
+     "digest": "099a115537bf5ed226b6d8757a3c6fb82299d963b2523a9c9ec24c2e0215573f"
+    }
+   ]
+  },
+  {
+   "name": "not_executed_wins_claim",
+   "options": {},
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w4",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w4",
+       "requestDigest": "d05a00d300435e7801bf683f32f5e0e95dfe82205acb56823aa2485ca81ce969",
+       "dispatchId": "d-1"
+      },
+      null
+     ]
+    },
+    {
+     "call": "not_executed",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w4",
+       "requestDigest": "d05a00d300435e7801bf683f32f5e0e95dfe82205acb56823aa2485ca81ce969",
+       "dispatchId": "d-1"
+      },
+      {
+       "success": false,
+       "errorCode": "request_expired_before_execution",
+       "error": "expired"
+      }
+     ],
+     "out": {
+      "success": false,
+      "errorCode": "request_expired_before_execution",
+      "error": "expired",
+      "sessionId": "S-GOLDEN-0000",
+      "operationId": "w4",
+      "nativeExecutionStarted": false,
+      "durability": {
+       "terminalRecorded": true,
+       "storageVersion": 1,
+       "recordedSessionId": "S-GOLDEN-0000",
+       "phase": "not_executed"
+      }
+     }
+    },
+    {
+     "call": "start",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w4",
+       "requestDigest": "d05a00d300435e7801bf683f32f5e0e95dfe82205acb56823aa2485ca81ce969",
+       "dispatchId": "d-1"
+      },
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w4",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      {
+       "documentId": "S-GOLDEN-0000:doc",
+       "creationId": "c1",
+       "dataFileId": null
+      }
+     ],
+     "out": {
+      "error": "expired",
+      "errorCode": "request_expired_before_execution",
+      "nativeExecutionStarted": false,
+      "operationId": "w4",
+      "sessionId": "S-GOLDEN-0000",
+      "success": false,
+      "durability": {
+       "terminalRecorded": true,
+       "storageVersion": 1,
+       "recordedSessionId": "S-GOLDEN-0000",
+       "phase": "not_executed"
+      },
+      "replayed": true
+     }
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w4"
+      }
+     ],
+     "out": {
+      "success": true,
+      "sessionId": "S-GOLDEN-0000",
+      "currentSessionId": "S-GOLDEN-0000",
+      "operationId": "w4",
+      "state": "failed",
+      "phase": "not_executed",
+      "historical": false,
+      "history": {
+       "storageVersion": 1,
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w4",
+       "operation": "parameter_set",
+       "sourceVersion": "1.12.0-dev.10",
+       "requestDigest": "d05a00d300435e7801bf683f32f5e0e95dfe82205acb56823aa2485ca81ce969",
+       "requestedTarget": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       },
+       "observedDocument": null,
+       "phase": "not_executed",
+       "createdAt": 1792500000.125,
+       "updatedAt": 1792500000.375,
+       "events": [
+        {
+         "at": 1792500000.125,
+         "phase": "admitted"
+        },
+        {
+         "at": 1792500000.25,
+         "phase": "dispatched"
+        },
+        {
+         "at": 1792500000.375,
+         "phase": "not_executed"
+        }
+       ]
+      },
+      "outcome": "recorded",
+      "nativeExecutionStarted": null,
+      "reconciliationRequired": false,
+      "result": {
+       "error": "expired",
+       "errorCode": "request_expired_before_execution",
+       "nativeExecutionStarted": false,
+       "operationId": "w4",
+       "sessionId": "S-GOLDEN-0000",
+       "success": false,
+       "durability": {
+        "terminalRecorded": true,
+        "storageVersion": 1,
+        "recordedSessionId": "S-GOLDEN-0000",
+        "phase": "not_executed"
+       }
+      },
+      "observedResult": null,
+      "persistenceFailure": null
+     }
+    }
+   ],
+   "rows": [
+    {
+     "sessionId": "S-GOLDEN-0000",
+     "operationId": "w4",
+     "record": "{\"createdAt\":1792500000.125,\"dispatchId\":\"d-1\",\"events\":[{\"at\":1792500000.125,\"phase\":\"admitted\"},{\"at\":1792500000.25,\"phase\":\"dispatched\"},{\"at\":1792500000.375,\"phase\":\"not_executed\"}],\"observedDocument\":null,\"operation\":\"parameter_set\",\"operationId\":\"w4\",\"phase\":\"not_executed\",\"requestDigest\":\"d05a00d300435e7801bf683f32f5e0e95dfe82205acb56823aa2485ca81ce969\",\"requestedTarget\":{\"documentId\":\"S-GOLDEN-0000:doc\",\"revision\":\"r1\"},\"result\":{\"error\":\"expired\",\"errorCode\":\"request_expired_before_execution\",\"nativeExecutionStarted\":false,\"operationId\":\"w4\",\"sessionId\":\"S-GOLDEN-0000\",\"success\":false},\"sessionId\":\"S-GOLDEN-0000\",\"sourceVersion\":\"1.12.0-dev.10\",\"storageVersion\":1,\"updatedAt\":1792500000.375}",
+     "digest": "9426cdf232033264f3afd4e84ed26e219eb5e27de818342c56e99e31723f9d1c"
+    }
+   ]
+  },
+  {
+   "name": "session_and_unknown",
+   "options": {},
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w5",
+       "sessionId": "S-STALE-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      null,
+      {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "errorCode": "session_mismatch",
+       "error": "Old-session operation history is readable, but native execution is never replayed across sessions."
+      }
+     ]
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "S-STALE-0000",
+       "operationId": "w5"
+      }
+     ],
+     "out": {
+      "success": false,
+      "sessionId": "S-STALE-0000",
+      "currentSessionId": "S-GOLDEN-0000",
+      "operationId": "w5",
+      "errorCode": "operation_unknown",
+      "error": "No durable record identifies this operation; no execution inference is made.",
+      "outcome": "unknown"
+     }
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "nope"
+      }
+     ],
+     "out": {
+      "success": false,
+      "sessionId": "S-GOLDEN-0000",
+      "currentSessionId": "S-GOLDEN-0000",
+      "operationId": "nope",
+      "errorCode": "operation_unknown",
+      "error": "No durable record identifies this operation; no execution inference is made.",
+      "outcome": "unknown"
+     }
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "",
+       "operationId": "x"
+      }
+     ],
+     "out": {
+      "success": false,
+      "errorCode": "invalid_input",
+      "error": "Bounded sessionId and operationId strings are required."
+     }
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "operationId": "x"
+      }
+     ],
+     "out": {
+      "success": false,
+      "errorCode": "invalid_input",
+      "error": "Bounded sessionId and operationId strings are required."
+     }
+    },
+    {
+     "call": "not_executed",
+     "args": [
+      {
+       "sessionId": "S-STALE-0000",
+       "operationId": "w5",
+       "requestDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+       "dispatchId": "d"
+      },
+      {
+       "success": false,
+       "error": "x"
+      }
+     ],
+     "out": {
+      "success": false,
+      "sessionId": "S-GOLDEN-0000",
+      "errorCode": "session_mismatch",
+      "error": "A stale dispatch cannot update history from a previous session.",
+      "outcome": "unknown"
+     }
+    },
+    {
+     "call": "not_executed",
+     "args": [
+      null,
+      {
+       "success": false,
+       "error": "passthrough"
+      }
+     ],
+     "out": {
+      "success": false,
+      "error": "passthrough"
+     }
+    }
+   ],
+   "rows": []
+  },
+  {
+   "name": "capacity",
+   "options": {
+    "max_records": 1
+   },
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "c1",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "c1",
+       "requestDigest": "b7ff799c8f78374834063b7a6b545e96281f561b9a2e1dc60316e7fb8bbf13cb",
+       "dispatchId": "d-1"
+      },
+      null
+     ]
+    },
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "c2",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-2"
+     ],
+     "out": [
+      null,
+      {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "errorCode": "operation_capacity",
+       "error": "Durable operation history is full; no records are evicted.",
+       "outcome": "unknown",
+       "nativeExecutionStarted": null,
+       "operationId": "c2",
+       "requestDigest": "5aa11caf97900872def94d5122ba9ae186736bebdcd20c06ec7eac23c51f456b"
+      }
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "sessionId": "S-GOLDEN-0000",
+     "operationId": "c1",
+     "record": "{\"createdAt\":1792500000.125,\"dispatchId\":\"d-1\",\"events\":[{\"at\":1792500000.125,\"phase\":\"admitted\"},{\"at\":1792500000.25,\"phase\":\"dispatched\"}],\"observedDocument\":null,\"operation\":\"parameter_set\",\"operationId\":\"c1\",\"phase\":\"dispatched\",\"requestDigest\":\"b7ff799c8f78374834063b7a6b545e96281f561b9a2e1dc60316e7fb8bbf13cb\",\"requestedTarget\":{\"documentId\":\"S-GOLDEN-0000:doc\",\"revision\":\"r1\"},\"result\":null,\"sessionId\":\"S-GOLDEN-0000\",\"sourceVersion\":\"1.12.0-dev.10\",\"storageVersion\":1,\"updatedAt\":1792500000.25}",
+     "digest": "5cedbbdef657386b4ce64c4a31f43ce9191359f8f7947d0d62cabfa70ecc995c"
+    }
+   ]
+  },
+  {
+   "name": "storage_failure_after_execution",
+   "options": {
+    "fail_on": 3
+   },
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w6",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w6",
+       "requestDigest": "ae5b55ce3f3a20e67107183b74a1cbc987cf34c8181010dfd7e4759864da7fde",
+       "dispatchId": "d-1"
+      },
+      null
+     ]
+    },
+    {
+     "call": "start",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w6",
+       "requestDigest": "ae5b55ce3f3a20e67107183b74a1cbc987cf34c8181010dfd7e4759864da7fde",
+       "dispatchId": "d-1"
+      },
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w6",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      {
+       "documentId": "S-GOLDEN-0000:doc",
+       "creationId": "c1",
+       "dataFileId": null
+      }
+     ],
+     "out": null
+    },
+    {
+     "call": "finish",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w6",
+       "requestDigest": "ae5b55ce3f3a20e67107183b74a1cbc987cf34c8181010dfd7e4759864da7fde",
+       "dispatchId": "d-1"
+      },
+      {
+       "success": true,
+       "sessionId": "S-GOLDEN-0000",
+       "operation": "parameter_set",
+       "data": {
+        "value": 42
+       },
+       "operationId": "w6"
+      }
+     ],
+     "out": {
+      "success": false,
+      "sessionId": "S-GOLDEN-0000",
+      "errorCode": "operation_reconciliation_required",
+      "error": "OSError: injected persistence failure",
+      "outcome": "unknown",
+      "nativeExecutionStarted": true,
+      "operationId": "w6",
+      "requestDigest": "ae5b55ce3f3a20e67107183b74a1cbc987cf34c8181010dfd7e4759864da7fde",
+      "rollbackClaimed": false,
+      "persistenceError": {
+       "code": "operation_storage_failed",
+       "message": "OSError: injected persistence failure"
+      },
+      "observation": {
+       "sha256": "2a0aea9d0c608cdb4e8261ef91e6e578724dff682e97d7fbf8f149245a160b0c",
+       "bytes": 111
+      },
+      "observedResult": {
+       "success": true,
+       "sessionId": "S-GOLDEN-0000",
+       "operation": "parameter_set",
+       "data": {
+        "value": 42
+       },
+       "operationId": "w6"
+      },
+      "reconciliationRequired": true,
+      "durability": {
+       "terminalRecorded": false
+      }
+     }
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w6"
+      }
+     ],
+     "out": {
+      "success": true,
+      "sessionId": "S-GOLDEN-0000",
+      "currentSessionId": "S-GOLDEN-0000",
+      "operationId": "w6",
+      "state": "reconciliation_required",
+      "phase": "executing",
+      "historical": false,
+      "history": {
+       "storageVersion": 1,
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w6",
+       "operation": "parameter_set",
+       "sourceVersion": "1.12.0-dev.10",
+       "requestDigest": "ae5b55ce3f3a20e67107183b74a1cbc987cf34c8181010dfd7e4759864da7fde",
+       "requestedTarget": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       },
+       "observedDocument": {
+        "creationId": "c1",
+        "dataFileId": null,
+        "documentId": "S-GOLDEN-0000:doc"
+       },
+       "phase": "executing",
+       "createdAt": 1792500000.125,
+       "updatedAt": 1792500000.375,
+       "events": [
+        {
+         "at": 1792500000.125,
+         "phase": "admitted"
+        },
+        {
+         "at": 1792500000.25,
+         "phase": "dispatched"
+        },
+        {
+         "at": 1792500000.375,
+         "phase": "executing"
+        }
+       ]
+      },
+      "outcome": "unknown",
+      "nativeExecutionStarted": true,
+      "reconciliationRequired": true,
+      "result": null,
+      "observedResult": {
+       "success": true,
+       "sessionId": "S-GOLDEN-0000",
+       "operation": "parameter_set",
+       "data": {
+        "value": 42
+       },
+       "operationId": "w6"
+      },
+      "persistenceFailure": {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "errorCode": "operation_reconciliation_required",
+       "error": "OSError: injected persistence failure",
+       "outcome": "unknown",
+       "nativeExecutionStarted": true,
+       "operationId": "w6",
+       "requestDigest": "ae5b55ce3f3a20e67107183b74a1cbc987cf34c8181010dfd7e4759864da7fde",
+       "rollbackClaimed": false,
+       "persistenceError": {
+        "code": "operation_storage_failed",
+        "message": "OSError: injected persistence failure"
+       },
+       "observation": {
+        "sha256": "2a0aea9d0c608cdb4e8261ef91e6e578724dff682e97d7fbf8f149245a160b0c",
+        "bytes": 111
+       },
+       "observedResult": {
+        "success": true,
+        "sessionId": "S-GOLDEN-0000",
+        "operation": "parameter_set",
+        "data": {
+         "value": 42
+        },
+        "operationId": "w6"
+       },
+       "reconciliationRequired": true,
+       "durability": {
+        "terminalRecorded": false
+       }
+      }
+     }
+    },
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w6",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-2"
+     ],
+     "out": [
+      null,
+      {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "errorCode": "operation_reconciliation_required",
+       "error": "OSError: injected persistence failure",
+       "outcome": "unknown",
+       "nativeExecutionStarted": true,
+       "operationId": "w6",
+       "requestDigest": "ae5b55ce3f3a20e67107183b74a1cbc987cf34c8181010dfd7e4759864da7fde",
+       "rollbackClaimed": false,
+       "persistenceError": {
+        "code": "operation_storage_failed",
+        "message": "OSError: injected persistence failure"
+       },
+       "observation": {
+        "sha256": "2a0aea9d0c608cdb4e8261ef91e6e578724dff682e97d7fbf8f149245a160b0c",
+        "bytes": 111
+       },
+       "observedResult": {
+        "success": true,
+        "sessionId": "S-GOLDEN-0000",
+        "operation": "parameter_set",
+        "data": {
+         "value": 42
+        },
+        "operationId": "w6"
+       },
+       "reconciliationRequired": true,
+       "durability": {
+        "terminalRecorded": false
+       }
+      }
+     ]
+    }
+   ],
+   "rows": [
+    {
+     "sessionId": "S-GOLDEN-0000",
+     "operationId": "w6",
+     "record": "{\"createdAt\":1792500000.125,\"dispatchId\":\"d-1\",\"events\":[{\"at\":1792500000.125,\"phase\":\"admitted\"},{\"at\":1792500000.25,\"phase\":\"dispatched\"},{\"at\":1792500000.375,\"phase\":\"executing\"}],\"observedDocument\":{\"creationId\":\"c1\",\"dataFileId\":null,\"documentId\":\"S-GOLDEN-0000:doc\"},\"operation\":\"parameter_set\",\"operationId\":\"w6\",\"phase\":\"executing\",\"requestDigest\":\"ae5b55ce3f3a20e67107183b74a1cbc987cf34c8181010dfd7e4759864da7fde\",\"requestedTarget\":{\"documentId\":\"S-GOLDEN-0000:doc\",\"revision\":\"r1\"},\"result\":null,\"sessionId\":\"S-GOLDEN-0000\",\"sourceVersion\":\"1.12.0-dev.10\",\"storageVersion\":1,\"updatedAt\":1792500000.375}",
+     "digest": "5ee6728d3e2a7f8e2a0f1c2e9126180bb6d632a9bd3d1eaa1dff4da53674caef"
+    }
+   ]
+  },
+  {
+   "name": "storage_failure_at_dispatch_claim",
+   "options": {
+    "fail_on": 1
+   },
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w7",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      null,
+      {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "errorCode": "operation_storage_failed",
+       "error": "OSError: injected persistence failure",
+       "outcome": "not_executed",
+       "nativeExecutionStarted": false,
+       "operationId": "w7",
+       "requestDigest": "ca8e93bc94bd210b01367ecb4450d273f9d78d4fd59559d5c4295a36428e8d2d",
+       "reconciliationRequired": true,
+       "durability": {
+        "terminalRecorded": false
+       }
+      }
+     ]
+    },
+    {
+     "call": "status",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w7"
+      }
+     ],
+     "out": {
+      "success": true,
+      "sessionId": "S-GOLDEN-0000",
+      "currentSessionId": "S-GOLDEN-0000",
+      "operationId": "w7",
+      "state": "reconciliation_required",
+      "phase": "admitted",
+      "historical": false,
+      "history": {
+       "storageVersion": 1,
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w7",
+       "operation": "parameter_set",
+       "sourceVersion": "1.12.0-dev.10",
+       "requestDigest": "ca8e93bc94bd210b01367ecb4450d273f9d78d4fd59559d5c4295a36428e8d2d",
+       "requestedTarget": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       },
+       "observedDocument": null,
+       "phase": "admitted",
+       "createdAt": 1792500000.125,
+       "updatedAt": 1792500000.125,
+       "events": [
+        {
+         "at": 1792500000.125,
+         "phase": "admitted"
+        }
+       ]
+      },
+      "outcome": "not_executed",
+      "nativeExecutionStarted": false,
+      "reconciliationRequired": true,
+      "result": null,
+      "observedResult": null,
+      "persistenceFailure": {
+       "success": false,
+       "sessionId": "S-GOLDEN-0000",
+       "errorCode": "operation_storage_failed",
+       "error": "OSError: injected persistence failure",
+       "outcome": "not_executed",
+       "nativeExecutionStarted": false,
+       "operationId": "w7",
+       "requestDigest": "ca8e93bc94bd210b01367ecb4450d273f9d78d4fd59559d5c4295a36428e8d2d",
+       "reconciliationRequired": true,
+       "durability": {
+        "terminalRecorded": false
+       }
+      }
+     }
+    }
+   ],
+   "rows": [
+    {
+     "sessionId": "S-GOLDEN-0000",
+     "operationId": "w7",
+     "record": "{\"createdAt\":1792500000.125,\"dispatchId\":null,\"events\":[{\"at\":1792500000.125,\"phase\":\"admitted\"}],\"observedDocument\":null,\"operation\":\"parameter_set\",\"operationId\":\"w7\",\"phase\":\"admitted\",\"requestDigest\":\"ca8e93bc94bd210b01367ecb4450d273f9d78d4fd59559d5c4295a36428e8d2d\",\"requestedTarget\":{\"documentId\":\"S-GOLDEN-0000:doc\",\"revision\":\"r1\"},\"result\":null,\"sessionId\":\"S-GOLDEN-0000\",\"sourceVersion\":\"1.12.0-dev.10\",\"storageVersion\":1,\"updatedAt\":1792500000.125}",
+     "digest": "5f87594db21462c594c2eb308994ddac1344001db7e391558f781d92d6fa7b32"
+    }
+   ]
+  },
+  {
+   "name": "start_identity_mismatch",
+   "options": {},
+   "steps": [
+    {
+     "call": "admit",
+     "args": [
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w8",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      "d-1"
+     ],
+     "out": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w8",
+       "requestDigest": "d67eeddea972ed93d2af40967028e832574afe0ea4b786da1ede4d0a286d469b",
+       "dispatchId": "d-1"
+      },
+      null
+     ]
+    },
+    {
+     "call": "start",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w8",
+       "requestDigest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+       "dispatchId": "d-1"
+      },
+      {
+       "expression": "42 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w8",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      {
+       "documentId": "S-GOLDEN-0000:doc",
+       "creationId": "c1",
+       "dataFileId": null
+      }
+     ],
+     "out": {
+      "success": false,
+      "sessionId": "S-GOLDEN-0000",
+      "errorCode": "operation_conflict",
+      "error": "Dispatch identity does not match this session and canonical operation."
+     }
+    },
+    {
+     "call": "start",
+     "args": [
+      {
+       "sessionId": "S-GOLDEN-0000",
+       "operationId": "w8",
+       "requestDigest": "d67eeddea972ed93d2af40967028e832574afe0ea4b786da1ede4d0a286d469b",
+       "dispatchId": "d-1"
+      },
+      {
+       "expression": "1 mm",
+       "name": "w",
+       "op": "parameter_set",
+       "operationId": "w8",
+       "sessionId": "S-GOLDEN-0000",
+       "target": {
+        "documentId": "S-GOLDEN-0000:doc",
+        "revision": "r1"
+       }
+      },
+      {
+       "documentId": "S-GOLDEN-0000:doc",
+       "creationId": "c1",
+       "dataFileId": null
+      }
+     ],
+     "out": {
+      "success": false,
+      "sessionId": "S-GOLDEN-0000",
+      "errorCode": "operation_conflict",
+      "error": "Dispatch identity does not match this session and canonical operation."
+     }
+    }
+   ],
+   "rows": [
+    {
+     "sessionId": "S-GOLDEN-0000",
+     "operationId": "w8",
+     "record": "{\"createdAt\":1792500000.125,\"dispatchId\":\"d-1\",\"events\":[{\"at\":1792500000.125,\"phase\":\"admitted\"},{\"at\":1792500000.25,\"phase\":\"dispatched\"}],\"observedDocument\":null,\"operation\":\"parameter_set\",\"operationId\":\"w8\",\"phase\":\"dispatched\",\"requestDigest\":\"d67eeddea972ed93d2af40967028e832574afe0ea4b786da1ede4d0a286d469b\",\"requestedTarget\":{\"documentId\":\"S-GOLDEN-0000:doc\",\"revision\":\"r1\"},\"result\":null,\"sessionId\":\"S-GOLDEN-0000\",\"sourceVersion\":\"1.12.0-dev.10\",\"storageVersion\":1,\"updatedAt\":1792500000.25}",
+     "digest": "2c038b6492a86c37e1d6693d2020f7a39924f4381e639752bbab9bc4e7f922d9"
+    }
+   ]
+  }
+ ]
+}

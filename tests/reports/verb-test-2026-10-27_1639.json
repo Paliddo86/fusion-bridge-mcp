@@ -1,0 +1,84 @@
+{
+ "date": "2026-10-27_1639",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 7,
+ "fail": 0,
+ "sections": {
+  "routing": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 4,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_fab_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_odb",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.0,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_ipc356",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_gencad",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_ipc2581",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_read_footprint",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 9.8
+}

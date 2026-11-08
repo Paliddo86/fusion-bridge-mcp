@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "Adom Industries",
+  "description": {"": "Read-only Rust native SDK migration probe. No Python runtime."},
+  "version": "0.1.0",
+  "supportedOS": "windows",
+  "runOnStartup": false
+}

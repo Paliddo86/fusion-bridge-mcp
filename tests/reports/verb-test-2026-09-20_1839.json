@@ -1,0 +1,51 @@
+{
+ "date": "2026-09-20_1839",
+ "target": "ConfRoomROG",
+ "tier": "daily",
+ "pass": 4,
+ "fail": 0,
+ "sections": {
+  "gui-driving": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "aps": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_get_app_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.4,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "PASS",
+   "why": "",
+   "sec": 30.6,
+   "section": "aps"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 33.2
+}

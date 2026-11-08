@@ -1,0 +1,71 @@
+{
+ "date": "2026-10-29_1233",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 6,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 4,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_read_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_net_lengths",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_assembly_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_spice",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.0,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 9.7
+}

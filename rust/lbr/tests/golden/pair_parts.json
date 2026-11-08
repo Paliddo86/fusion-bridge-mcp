@@ -1,0 +1,373 @@
+{
+ "demo_board": {
+  "expected": {
+   "models": [
+    "bundle/3dmodels/ABM8-16.000MHZ-B2-T.step",
+    "bundle/3dmodels/CH340G.step",
+    "bundle/3dmodels/IN-S63BTG.step",
+    "bundle/3dmodels/LAN7800.step",
+    "bundle/3dmodels/STM32L431RCT6TR.step"
+   ],
+   "modelsUnused": [],
+   "parts": [
+    {
+     "device": "",
+     "deviceset": "LAN7800",
+     "lbrPath": "bundle/Demo_Board.lbrx",
+     "matchedBy": "deviceset",
+     "modelPath": "bundle/3dmodels/LAN7800.step",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "device": "",
+     "deviceset": "CH340G",
+     "lbrPath": "bundle/Demo_Board.lbrx",
+     "matchedBy": "deviceset",
+     "modelPath": "bundle/3dmodels/CH340G.step",
+     "package": "SOIC-16_3.9x9.9mm_P1.27mm"
+    },
+    {
+     "device": "",
+     "deviceset": "STM32L431RCT6TR",
+     "lbrPath": "bundle/Demo_Board.lbrx",
+     "matchedBy": "deviceset",
+     "modelPath": "bundle/3dmodels/STM32L431RCT6TR.step",
+     "package": "LQFP-64_10x10mm_P0.5mm"
+    },
+    {
+     "device": "",
+     "deviceset": "ABM8-16.000MHZ-B2-T",
+     "lbrPath": "bundle/Demo_Board.lbrx",
+     "matchedBy": "deviceset",
+     "modelPath": "bundle/3dmodels/ABM8-16.000MHZ-B2-T.step",
+     "package": "Crystal_SMD_3225-4Pin_3.2x2.5mm"
+    },
+    {
+     "device": "",
+     "deviceset": "IN-S63BTG",
+     "lbrPath": "bundle/Demo_Board.lbrx",
+     "matchedBy": "package",
+     "modelPath": "bundle/3dmodels/IN-S63BTG.step",
+     "package": "IN-S63BTG"
+    }
+   ],
+   "shared": [],
+   "unbound": []
+  },
+  "lbrPath": "bundle/Demo_Board.lbrx",
+  "metadata": {
+   "devicesets": [
+    {
+     "description": "Microchip LAN7800 SuperSpeed USB 3.1 Gen1 to 10/100/1000 Ethernet Controller, QFN-48",
+     "name": "LAN7800",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "LAN7800",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "QFN-48_7x7mm",
+       "technology": ""
+      }
+     ]
+    },
+    {
+     "description": "USB serial converter, UART, SOIC-16",
+     "name": "CH340G",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "CH340G",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "SOIC-16_3.9x9.9mm_P1.27mm",
+       "technology": ""
+      }
+     ]
+    },
+    {
+     "description": "",
+     "name": "STM32L431RCT6TR",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "STM32L431RCT6TR",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "LQFP-64_10x10mm_P0.5mm",
+       "technology": ""
+      }
+     ]
+    },
+    {
+     "description": "Four pin crystal, GND on pins 2 and 4",
+     "name": "ABM8-16.000MHZ-B2-T",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "ABM8-16.000MHZ-B2-T",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+       "technology": ""
+      }
+     ]
+    },
+    {
+     "description": "Light emitting diode",
+     "name": "IN-S63BTG",
+     "variants": [
+      {
+       "attributes": {},
+       "device": "",
+       "fullName": "IN-S63BTG",
+       "missing": [
+        "MPN",
+        "MANUFACTURER",
+        "a distributor PN (MOUSER_PN/DIGIKEY_PN/LCSC_PN)"
+       ],
+       "package": "IN-S63BTG",
+       "technology": ""
+      }
+     ]
+    }
+   ],
+   "ok": true,
+   "totals": {
+    "devicesets": 5,
+    "variants": 5,
+    "withDistributor": 0,
+    "withMpn": 0
+   }
+  },
+  "models": [
+   "bundle/3dmodels/ABM8-16.000MHZ-B2-T.step",
+   "bundle/3dmodels/CH340G.step",
+   "bundle/3dmodels/IN-S63BTG.step",
+   "bundle/3dmodels/LAN7800.step",
+   "bundle/3dmodels/STM32L431RCT6TR.step"
+  ]
+ },
+ "names": {
+  "bad": [
+   "",
+   " lead",
+   "-lead",
+   "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "bad/slash",
+   "tab\there"
+  ],
+  "norm": {
+   "": "",
+   "ABM8-16.000MHZ-B2-T": "abm816000mhzb2t",
+   "Crystal_GND24": "crystalgnd24",
+   "QFN-48_7x7mm": "qfn487x7mm"
+  },
+  "ok": [
+   "Demo Board",
+   "a",
+   "Adom_Managed.Demo-2"
+  ]
+ },
+ "only_one_of_each": {
+  "expected": {
+   "models": [
+    "o/whatever.step"
+   ],
+   "modelsUnused": [],
+   "parts": [
+    {
+     "device": "",
+     "deviceset": "ONLY",
+     "lbrPath": "o/One.lbrx",
+     "matchedBy": "only-one-of-each",
+     "modelPath": "o/whatever.step",
+     "package": "PKG"
+    }
+   ],
+   "shared": [],
+   "unbound": []
+  },
+  "lbrPath": "o/One.lbrx",
+  "metadata": {
+   "devicesets": [
+    {
+     "name": "ONLY",
+     "variants": [
+      {
+       "device": "",
+       "package": "PKG"
+      }
+     ]
+    }
+   ]
+  },
+  "models": [
+   "o/whatever.step"
+  ]
+ },
+ "variants": {
+  "expected": {
+   "models": [
+    "m/QFN-48_7x7mm.step",
+    "m/LAN7800-HV.step",
+    "m/qfn48_7x7mm_sb.stp",
+    "m/abm8-16000mhz-b2-t.step",
+    "m/STM32L431RCT6.step",
+    "m/spare.step"
+   ],
+   "modelsUnused": [
+    "m/spare.step"
+   ],
+   "parts": [
+    {
+     "device": "",
+     "deviceset": "LAN7800",
+     "lbrPath": "m/Syn.lbrx",
+     "matchedBy": "package",
+     "modelPath": "m/QFN-48_7x7mm.step",
+     "package": "QFN-48_7x7mm"
+    },
+    {
+     "device": "-HV",
+     "deviceset": "LAN7800",
+     "lbrPath": "m/Syn.lbrx",
+     "matchedBy": "deviceset+device",
+     "modelPath": "m/LAN7800-HV.step",
+     "package": "QFN-48_7x7mm-HV"
+    },
+    {
+     "device": "-SB",
+     "deviceset": "LAN7800",
+     "lbrPath": "m/Syn.lbrx",
+     "matchedBy": "package-normalised",
+     "modelPath": "m/qfn48_7x7mm_sb.stp",
+     "package": "QFN-48_7x7mm-SB"
+    },
+    {
+     "device": "",
+     "deviceset": "ABM8-16.000MHZ-B2-T",
+     "lbrPath": "m/Syn.lbrx",
+     "matchedBy": "deviceset-normalised",
+     "modelPath": "m/abm8-16000mhz-b2-t.step",
+     "package": "Crystal_GND24"
+    },
+    {
+     "device": "",
+     "deviceset": "STM32L431RCT6TR",
+     "lbrPath": "m/Syn.lbrx",
+     "matchedBy": "deviceset-prefix",
+     "modelPath": "m/STM32L431RCT6.step",
+     "package": "LQFP-64"
+    }
+   ],
+   "shared": [
+    {
+     "deviceset": "LAN7800-CLONE",
+     "package": "QFN-48_7x7mm",
+     "via": "LAN7800"
+    }
+   ],
+   "unbound": [
+    {
+     "device": "",
+     "deviceset": "NOTHING-HERE",
+     "package": "SOT-23",
+     "why": "no STEP in the bundle named like the package 'SOT-23' or the device 'NOTHING-HERE'"
+    },
+    {
+     "device": "",
+     "deviceset": "GATELESS",
+     "package": "GATELESS",
+     "why": "no STEP in the bundle named like the package '' or the device 'GATELESS'"
+    }
+   ]
+  },
+  "lbrPath": "m/Syn.lbrx",
+  "metadata": {
+   "devicesets": [
+    {
+     "name": "LAN7800",
+     "variants": [
+      {
+       "device": "",
+       "package": "QFN-48_7x7mm"
+      },
+      {
+       "device": "-HV",
+       "package": "QFN-48_7x7mm-HV"
+      },
+      {
+       "device": "-SB",
+       "package": "QFN-48_7x7mm-SB"
+      }
+     ]
+    },
+    {
+     "name": "LAN7800-CLONE",
+     "variants": [
+      {
+       "device": "",
+       "package": "QFN-48_7x7mm"
+      }
+     ]
+    },
+    {
+     "name": "ABM8-16.000MHZ-B2-T",
+     "variants": [
+      {
+       "device": "",
+       "package": "Crystal_GND24"
+      }
+     ]
+    },
+    {
+     "name": "STM32L431RCT6TR",
+     "variants": [
+      {
+       "device": "",
+       "package": "LQFP-64"
+      }
+     ]
+    },
+    {
+     "name": "NOTHING-HERE",
+     "variants": [
+      {
+       "device": "",
+       "package": "SOT-23"
+      }
+     ]
+    },
+    {
+     "name": "GATELESS",
+     "variants": []
+    }
+   ]
+  },
+  "models": [
+   "m/QFN-48_7x7mm.step",
+   "m/LAN7800-HV.step",
+   "m/qfn48_7x7mm_sb.stp",
+   "m/abm8-16000mhz-b2-t.step",
+   "m/STM32L431RCT6.step",
+   "m/spare.step"
+  ]
+ }
+}

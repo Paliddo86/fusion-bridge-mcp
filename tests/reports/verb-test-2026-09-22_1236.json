@@ -1,0 +1,58 @@
+{
+ "date": "2026-09-22_1236",
+ "target": "ConfRoomROG",
+ "tier": "daily",
+ "pass": 5,
+ "fail": 0,
+ "sections": {
+  "gui-driving": {
+   "PASS": 3,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "python-addin": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 68.4,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_schematic",
+   "status": "PASS",
+   "why": "",
+   "sec": 21.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_execute_text_command",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.9,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_run_modeling_script",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.8,
+   "section": "python-addin"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 95.3
+}

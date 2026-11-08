@@ -1,0 +1,84 @@
+{
+ "date": "2026-10-29_1622",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 0,
+ "fail": 7,
+ "sections": {
+  "routing": {
+   "PASS": 0,
+   "FAIL": 3,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 0,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "bridge-lifecycle": {
+   "PASS": 0,
+   "FAIL": 2,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 0,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_routing_state",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'Untitled', expected 'lane-BQ25792-copy'. code=wrong_document; model is None, not the standard board model; no pads; copper layers not named F.Cu..B.Cu; no unconnected count",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'Untitled', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'counts'; missing field 'engine'",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_report",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'Untitled', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'path'; missing field 'engine'",
+   "sec": 1.1,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_simulate",
+   "status": "FAIL",
+   "why": "expected success, got error=No open document is named lane-BQ25792-copy code=wrong_document; missing field 'signals'; missing field 'notSimulated'; missing field 'engine'",
+   "sec": 1.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_teardrops",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'Untitled', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'teardrops'; missing field 'skipped'; missing field 'engine'",
+   "sec": 1.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_panelize",
+   "status": "FAIL",
+   "why": "expected success, got error=Active document is 'Untitled', expected 'lane-BQ25792-copy'. code=wrong_document; missing field 'panelMm'; missing field 'copyShift'; missing field 'jlcpcb'; missing field 'engine'",
+   "sec": 3.5,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "FAIL",
+   "why": "foreground is 'Fusion360' after the run",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 9.0
+}

@@ -1,0 +1,68 @@
+name: Validate bridge.json + version bump
+
+# PR-only trigger. We don't run on direct pushes to main because the only
+# pushes today are maintainer ones (already validated locally), and running
+# on every push generates failed-run emails when the org's GH Actions
+# billing isn't current. The real value of this workflow is gating
+# community PRs before they reach main.
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need main + PR head for version-bump check
+
+      - name: Validate bridge.json is parseable JSON
+        run: |
+          python3 -c "import json; d = json.load(open('bridge.json')); print(f'Parsed bridge.json: {d[\"name\"]} v{d[\"version\"]}')"
+
+      - name: Check required fields exist
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          d = json.load(open('bridge.json'))
+          required = ['manifest_version', 'name', 'displayName', 'version', 'spawn', 'verbPrefixes']
+          missing = [k for k in required if k not in d]
+          if missing:
+              print(f'ERROR: bridge.json missing required fields: {missing}')
+              sys.exit(1)
+          spawn = d['spawn']
+          for k in ['kind', 'entrypoint']:
+              if k not in spawn:
+                  print(f'ERROR: bridge.json spawn missing required field: {k}')
+                  sys.exit(1)
+          # v1.8.31+: spawn.port should be 0 (dynamic) or warn
+          if spawn.get('port', 0) != 0:
+              print(f'WARN: spawn.port = {spawn["port"]} — dynamic port (0) is recommended for v1.8.31+. Hardcoded ports collide with sibling apps. See https://wiki.adom.inc/adom/adom-bridge')
+          # Verb prefixes should end in underscore
+          for p in d.get('verbPrefixes', []):
+              if not p.endswith('_'):
+                  print(f'WARN: verbPrefix "{p}" should end in underscore (convention)')
+          print('bridge.json schema check passed')
+          PY
+
+      - name: Verify BRIDGE_VERSION matches bridge.json.version
+        run: |
+          BV=$(cat BRIDGE_VERSION | tr -d '[:space:]')
+          JV=$(python3 -c "import json; print(json.load(open('bridge.json'))['version'])")
+          if [ "$BV" != "$JV" ]; then
+              echo "ERROR: BRIDGE_VERSION ($BV) != bridge.json version ($JV) — bump them together"
+              exit 1
+          fi
+          echo "BRIDGE_VERSION matches bridge.json: $BV"
+
+      - name: Verify version was bumped vs. main
+        run: |
+          MAIN_VER=$(git show origin/main:BRIDGE_VERSION 2>/dev/null | tr -d '[:space:]' || echo "0.0.0")
+          PR_VER=$(cat BRIDGE_VERSION | tr -d '[:space:]')
+          if [ "$MAIN_VER" = "$PR_VER" ]; then
+              echo "ERROR: BRIDGE_VERSION not bumped (still $MAIN_VER). Bump patch/minor/major in BRIDGE_VERSION AND bridge.json."
+              exit 1
+          fi
+          echo "Version bumped: $MAIN_VER → $PR_VER"

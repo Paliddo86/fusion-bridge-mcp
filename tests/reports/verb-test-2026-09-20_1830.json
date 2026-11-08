@@ -1,0 +1,24 @@
+{
+ "date": "2026-09-20_1830",
+ "target": "ConfRoomROG",
+ "tier": "daily",
+ "pass": 1,
+ "fail": 0,
+ "sections": {
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 0.0
+}

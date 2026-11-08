@@ -1,0 +1,77 @@
+{
+ "date": "2026-10-29_1349",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 6,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 3,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_auto_classes",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_jlcpcb_order",
+   "status": "PASS",
+   "why": "",
+   "sec": 15.7,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_sch_zoom",
+   "status": "PASS",
+   "why": "",
+   "sec": 6.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_find_space",
+   "status": "PASS",
+   "why": "",
+   "sec": 15.6,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 40.2
+}

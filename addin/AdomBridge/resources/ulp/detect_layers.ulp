@@ -1,0 +1,81 @@
+// ULP script to detect board layers
+// Usage: run detect_layers.ulp output_file_path
+
+if (argc < 1) {
+    dlgMessageBox("Please provide an output file path!\nUsage: run detect_layers.ulp <output_file>");
+    exit(1);
+}
+
+string output_file = argv[1];
+
+if (board) {
+    board(B) {
+        int copper_layer_count = 0;
+        string layer_info = "";
+        
+        // Simple approach: check for traces/wires on each layer
+        int layer_has_traces[];
+        
+        // Check for traces on each layer
+        B.signals(S) {
+            S.wires(W) {
+                layer_has_traces[W.layer] = 1;
+            }
+        }
+        
+        // Check all layers and determine which are copper layers
+        B.layers(L) {
+            int is_copper = 0;
+            
+            // More robust layer detection based on Eagle's standard layer numbering:
+            // Layer 1: Top copper (always present)
+            // Layer 16: Bottom copper (always present) 
+            // Layers 2-15: Inner copper layers (2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+            // Standard 4-layer uses: 1 (top), 2 (inner1), 15 (inner2), 16 (bottom)
+            // Standard 6-layer uses: 1, 2, 3, 14, 15, 16
+            // Standard 8-layer uses: 1, 2, 3, 4, 13, 14, 15, 16
+            
+            if (L.number == 1 || L.number == 16) {
+                // Top and bottom layers - always copper if they exist
+                is_copper = 1;
+                copper_layer_count++;
+            } else if (L.number >= 2 && L.number <= 15) {
+                // Potential inner copper layers - only count if they have traces
+                if (layer_has_traces[L.number]) {
+                    is_copper = 1;
+                    copper_layer_count++;
+                }
+            }
+            
+            // Add layer info to JSON
+            if (layer_info != "") {
+                layer_info += ",";
+            }
+            
+            string layer_num, is_copper_str, has_traces_str;
+            sprintf(layer_num, "%d", L.number);
+            sprintf(is_copper_str, "%d", is_copper);
+            sprintf(has_traces_str, "%d", layer_has_traces[L.number]);
+            
+            layer_info += "{\"number\":" + layer_num + ",\"name\":\"" + L.name + "\",\"isCopper\":" + is_copper_str + ",\"hasTraces\":" + has_traces_str + "}";
+        }
+        
+        // Write results to file
+        output(output_file) {
+            printf("{\n");
+            printf("  \"copperLayerCount\": %d,\n", copper_layer_count);
+            printf("  \"boardName\": \"%s\",\n", B.name);
+            printf("  \"layers\": [%s]\n", layer_info);
+            printf("}\n");
+        }
+    }
+} else {
+    // No board found - write error info
+    output(output_file) {
+        printf("{\n");
+        printf("  \"error\": \"No board found\",\n");
+        printf("  \"copperLayerCount\": 0,\n");
+        printf("  \"layers\": []\n");
+        printf("}\n");
+    }
+}

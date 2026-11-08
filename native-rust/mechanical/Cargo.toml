@@ -1,0 +1,11 @@
+[package]
+name = "fusion-mechanical-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Rust mechanical request contracts; native CAD operations are not implemented here"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true

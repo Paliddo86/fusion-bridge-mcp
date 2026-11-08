@@ -1,0 +1,33 @@
+[package]
+name = "adom-fusion-bridge"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "The Fusion bridge executable (spawn.kind: exe). Picks the OS crate at build time; everything else is fusion-core."
+
+[[bin]]
+name = "adom-fusion-bridge"
+path = "src/main.rs"
+
+[dependencies]
+roxmltree = "0.20"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+regex = "1"
+sha2 = "0.10"
+getrandom = "0.2"
+base64 = "0.22"
+png = "0.17"
+rusqlite = { version = "0.32", features = ["bundled"] }
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+fusion-core = { path = "../core" }
+fusion-lbr = { path = "../lbr" }
+adom-eda-checks = { path = "../vendor/adom-eda-checks" }
+serde_json.workspace = true
+tiny_http.workspace = true
+ureq.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+fusion-os-win = { path = "../os-win" }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+fusion-os-mac = { path = "../os-mac" }

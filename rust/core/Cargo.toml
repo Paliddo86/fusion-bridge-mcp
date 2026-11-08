@@ -1,0 +1,16 @@
+[package]
+name = "fusion-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "OS-agnostic core of the Adom Bridge Fusion bridge: verb router, chains, .lbr engine glue, APS, run state. MUST NOT depend on any OS crate (tools/check-portable.sh enforces it)."
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+ureq.workspace = true
+sha2 = "0.10"
+
+[dev-dependencies]
+serde_json.workspace = true

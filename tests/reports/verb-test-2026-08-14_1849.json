@@ -1,0 +1,834 @@
+{
+ "date": "2026-08-14_1849",
+ "target": "AdomLapper",
+ "tier": "weekly",
+ "pass": 54,
+ "fail": 30,
+ "sections": {
+  "gui-driving": {
+   "PASS": 14,
+   "FAIL": 7,
+   "MANUAL": 14,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 8,
+   "FAIL": 4,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "python-addin": {
+   "PASS": 3,
+   "FAIL": 4,
+   "MANUAL": 1,
+   "SKIP": 0
+  },
+  "bridge-lifecycle": {
+   "PASS": 11,
+   "FAIL": 5,
+   "MANUAL": 9,
+   "SKIP": 0
+  },
+  "aps": {
+   "PASS": 12,
+   "FAIL": 3,
+   "MANUAL": 4,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 6,
+   "MANUAL": 3,
+   "SKIP": 0
+  },
+  "auth-tokens": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 2,
+   "SKIP": 0
+  },
+  "mcp-server": {
+   "PASS": 3,
+   "FAIL": 1,
+   "MANUAL": 1,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_close_all_documents",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_document",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_document_info",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_execute_text_command",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_export_f3d",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_fbx",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_sat",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_skp",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_design_info",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_parameters",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_list_cloud_files",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_list_cloud_projects",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_open_design",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_update_libraries",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_web_export",
+   "status": "FAIL",
+   "why": "in the test plan but MISSING from describe.py - undescribed verbs are invisible to callers",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_readiness",
+   "status": "PASS",
+   "why": "",
+   "sec": 32.9,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_get_browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "PASS",
+   "why": "",
+   "sec": 55.3,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_recent",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.6,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_browse",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.1,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_file_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 29.7,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_versions",
+   "status": "PASS",
+   "why": "",
+   "sec": 28.9,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_download",
+   "status": "PASS",
+   "why": "",
+   "sec": 34.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_get",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.9,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_uninstall",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.5,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_aps_create_folder",
+   "status": "MANUAL",
+   "why": "needs projectId/parentFolderId of the test workspace",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_upload",
+   "status": "MANUAL",
+   "why": "cloud write; exercised via build flows weekly",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_set_client_id",
+   "status": "MANUAL",
+   "why": "would clobber org auth config",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_set_browser",
+   "status": "MANUAL",
+   "why": "",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_forget_browser",
+   "status": "MANUAL",
+   "why": "",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_signin",
+   "status": "MANUAL",
+   "why": "opens a browser on the user's machine",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_start",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_get_preferences",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_set_preference",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_mcp_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_tools",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_call",
+   "status": "FAIL",
+   "why": "expected success, got error= code=None",
+   "sec": 0.0,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_resources",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_enable",
+   "status": "MANUAL",
+   "why": "drives the prefs UI, takes foreground",
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_prefs_open",
+   "status": "MANUAL",
+   "why": "opens a dialog on the user's screen",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_prefs_close",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_set_auto_update",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_assembly_bom",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_dismiss_blocking_dialogs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_detect_layers",
+   "status": "FAIL",
+   "why": "expected success, got error=Not in Board Layout (current: Design). Open a .brd file first. code=None",
+   "sec": 0.6,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_fetch_optimized_glb",
+   "status": "FAIL",
+   "why": "expected success, got error=No jobId. code=None",
+   "sec": 0.0,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_load_design_rules",
+   "status": "MANUAL",
+   "why": "mutates the board's DRC rules",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 42.4,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_schematic",
+   "status": "PASS",
+   "why": "",
+   "sec": 20.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_2d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 21.2,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_board_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_execute_text_command",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_show_3d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.7,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_inspect_bodies",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_assembly_bom#realboard",
+   "status": "PASS",
+   "why": "",
+   "sec": 21.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_physical_properties",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_design_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.2,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_parameters",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.5,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_document_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.5,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_list_cloud_projects",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_list_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_run_modeling_script#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_assembly_bom#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_run_modeling_script",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_run",
+   "status": "FAIL",
+   "why": "expected success, got error=Not in Electronics editor (current: 3D PCB). Open a schematic or board in Fusion code=None",
+   "sec": 1.2,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_zoom",
+   "status": "FAIL",
+   "why": "expected success, got error=Command error: 3 : Not an Electron document\nTraceback (most recent call last):\n  code=None",
+   "sec": 0.6,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_pan",
+   "status": "FAIL",
+   "why": "expected success, got error=Need x1,y1,x2,y2 (board mm). Get part positions from fusion_board_info. code=None",
+   "sec": 0.6,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_select",
+   "status": "MANUAL",
+   "why": "selection state is user-visible",
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_open_by_urn",
+   "status": "PASS",
+   "why": "",
+   "sec": 9.5,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_aps_open",
+   "status": "PASS",
+   "why": "",
+   "sec": 28.7,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_open_design",
+   "status": "MANUAL",
+   "why": "local-file open; superseded by cloud flows",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_window#noargs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_document",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_all_documents",
+   "status": "MANUAL",
+   "why": "would close the user's own tabs",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_export_step",
+   "status": "PASS",
+   "why": "",
+   "sec": 24.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_stl",
+   "status": "PASS",
+   "why": "",
+   "sec": 5.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_3mf",
+   "status": "PASS",
+   "why": "",
+   "sec": 120.8,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_f3d",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_iges",
+   "status": "PASS",
+   "why": "",
+   "sec": 9.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_obj",
+   "status": "FAIL",
+   "why": "expected success, got error=OBJ export failed or not available in this Fusion 360 build. code=None",
+   "sec": 0.5,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_sat",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.7,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_fbx",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_usdz",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_dxf",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_dwg",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_skp",
+   "status": "MANUAL",
+   "why": "format needs specific doc types; verify quarterly",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_gerbers",
+   "status": "FAIL",
+   "why": "expected success, got error=Manufacturing export failed: 3 : Not an Electron document code=None",
+   "sec": 0.5,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_bom",
+   "status": "FAIL",
+   "why": "expected success, got error=No board open (current workspace: 3D PCB). Open a .brd file first with fusion_op code=None",
+   "sec": 0.5,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_cpl",
+   "status": "FAIL",
+   "why": "expected success, got error=No board open (current workspace: 3D PCB). Open a .brd file first with fusion_op code=None",
+   "sec": 0.5,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_optimized_glb",
+   "status": "PASS",
+   "why": "",
+   "sec": 51.6,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_set_design_rules",
+   "status": "MANUAL",
+   "why": "mutates the board's DRC rules",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_import_step",
+   "status": "FAIL",
+   "why": "fixture staging failed: write_file: runner: [Errno 7] Argument list too long: 'adom-bridge'",
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_web_export",
+   "status": "MANUAL",
+   "why": "",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_open_lbr",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.3,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_capture_library_views",
+   "status": "FAIL",
+   "why": "expected success, got error=packages: [<deviceset name>] (or package: <name>) required. code=None",
+   "sec": 0.5,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_generate_package",
+   "status": "PASS",
+   "why": "",
+   "sec": 6.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_attach_3d_package",
+   "status": "MANUAL",
+   "why": "modal Save dialog needs a human eye",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_make_3d_package",
+   "status": "MANUAL",
+   "why": "cloud upload; run in release rehearsals",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_build_library_3d",
+   "status": "MANUAL",
+   "why": "long multi-part build; release rehearsals",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_cleanup_cloud_files",
+   "status": "FAIL",
+   "why": "expected success, got error=fileIds [lineage urns] required. code=None",
+   "sec": 0.5,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_board_stackup",
+   "status": "FAIL",
+   "why": "expected success, got error=could not export .brd for stackup: No .brd file found inside .fbrd ZIP container code=None",
+   "sec": 1.0,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_new_electronics_from_eagle",
+   "status": "MANUAL",
+   "why": "drives native dialogs",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_update_libraries",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_stop",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_kill",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_signin",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_signin_2fa",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_demo",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_install_fusion",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_notify_owner",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_open_by_urn_note",
+   "status": "MANUAL",
+   "why": "lifecycle/human-wall verbs; manual tier",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 649.9
+}

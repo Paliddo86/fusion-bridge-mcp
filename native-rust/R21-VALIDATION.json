@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-16T19:09:04.992Z",
+  "product": {
+    "sourceManifest": "c2b42e34335a2cc49a1762b3bd140dffe542d544aa7e81721d87449082cbe197",
+    "linuxTests": 508,
+    "windowsTests": 512,
+    "actualFusion": "NOT_RUN"
+  },
+  "placementVerifier": {
+    "sourceManifest": "74ef74635037acc2670116c6c67fa00b4b33099cda8b741dcdbafd6fd0497c77",
+    "linuxTests": 28,
+    "windowsTests": 28
+  },
+  "placementObserver": {
+    "sourceManifest": "e488d07c2b7c1a714f03bda9b54693ad496b4351c64d2eec4f7da8ab3438345b",
+    "linuxTests": 20,
+    "windowsTests": 20,
+    "sdkLink": "PASS",
+    "actualFusion": "NOT_RUN"
+  },
+  "contractAuthoring": {
+    "source": "rust-contract-authoring-r1",
+    "sourceManifest": "7e9afe38589eecedf425a39c27a9dfd8e229556332f1cde362f43af5f88d1d2e",
+    "sourceFiles": 21,
+    "linuxTests": 21,
+    "windowsTests": 21,
+    "status": "Historical reproduction and explicit refreeze implemented and independently reviewed; actual Windows CLI tests passed",
+    "historicalContractBytes": 665236,
+    "historicalBytesEqual": true,
+    "releaseCiIntegrated": false,
+    "macosExclusivePublication": false,
+    "runtimePort": false
+  },
+  "sourceReviews": "CLEAR",
+  "release": false
+}

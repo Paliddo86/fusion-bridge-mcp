@@ -1,0 +1,92 @@
+{
+ "date": "2026-10-28_1226",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 9,
+ "fail": 0,
+ "sections": {
+  "gui-driving": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 6,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_board_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_export_gencad",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.6,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_schematic_data",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.4,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_cross_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.4,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_thermal_vias",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_via_fence",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_features",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_export_pdf",
+   "status": "PASS",
+   "why": "",
+   "sec": 18.1,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 35.1
+}

@@ -1,0 +1,86 @@
+__pycache__/
+*.pyc
+adom-bridge-fusion-v1.5.1.zip
+adom-bridge-fusion-source.tar.gz
+adom-bridge-fusion.bundle
+adom-bridge-fusion-v*.zip
+adom-bridge-fusion-source.tar.gz
+adom-bridge-fusion.bundle
+dashboard/target/
+rust/target/
+rust/target-*/
+
+# Full window-capture originals stay local; the share copy is versioned.
+demo/routing/videos/window-*.mp4
+
+# Preserve raw crossover take and full call log locally; publish compressed evidence.
+demo/routing/crossbar/take-*/window-*.mp4
+demo/routing/crossbar/take-*/calls.json
+
+# Raw board and palette captures remain local; final videos and compact evidence are versioned.
+demo/routing/obstacles/take-*/window-*.mp4
+demo/routing/obstacles/take-*/calls.json
+demo/routing/obstacles/*screenshot*.json
+
+# Demo videos live on the wiki page (adom/fusion-bridge, demo/routing) and adom/codex; GitHub keeps the scripts and evidence only.
+demo/routing/**/*.mp4
+.claude/worktrees/
+rust/target-pr/
+rust/target-pr-dash/
+
+# ---------------------------------------------------------------------------
+# CLONE / DERIVATIVE REPO (Paliddo86/fusion-bridge-mcp) - LOCAL ADDITIONS.
+# ---------------------------------------------------------------------------
+# This clone keeps the SOURCE that is needed to build, deploy and configure the
+# bridge on macOS. Marketing media, demo recordings, screenshots and the visual
+# assets that live on the upstream wiki stay OUT of the GitHub backup: the
+# upstream release page already serves them and they were ~177 MB of the 210 MB
+# checkout. The canonical media host is the wiki, exactly as upstream intends.
+
+# --- demo recordings and their capture artifacts ---
+demo/
+*.webm
+
+# --- root marketing media (hero art, feature stills, demo clips) ---
+# NOTE: video *sources* for the docs live under docs/ and stay versioned.
+/AdomBasicParts-138-library.mp4
+/library-3d-demo.mp4
+/library-3d-montage.mp4
+/library-demo-live.mp4
+/library-demo.mp4
+/library2-3d-montage.mp4
+/arch.png
+/bridges-hero.png
+/fusion-hero.png
+/fusion-hero-new.png
+/hero.png
+/hero-billboard.png
+/hero-billboard-v*.png
+/outcomes.png
+/verbs.png
+/fz-*.png
+/lib-*.png
+/lib2-*.png
+/lib3-*.png
+/prefs-*.png
+/pub-*.png
+/step-colorize-*.png
+
+# --- screenshot gallery (served from the wiki release page) ---
+/screenshots/
+
+# --- example media, not source ---
+examples/**/*.png
+examples/**/*.mp4
+examples/**/*.webm
+
+# --- docs media: keep the markdown, drop the heavy binaries ---
+docs/**/*.mp4
+docs/**/*.webm
+docs/**/*.jpg
+docs/**/*.jpeg
+
+# --- accidental local artifacts ---
+.DS_Store
+*.log
+

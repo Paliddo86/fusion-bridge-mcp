@@ -1,0 +1,37 @@
+{
+ "date": "2026-09-23_1018",
+ "target": "ConfRoomROG",
+ "tier": "daily",
+ "pass": 2,
+ "fail": 0,
+ "sections": {
+  "aps": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_aps_search",
+   "status": "PASS",
+   "why": "",
+   "sec": 28.5,
+   "section": "aps"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 28.7
+}

@@ -1,0 +1,31 @@
+[package]
+name = "fusion-native-addin"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+name = "AdomFusionRustNative"
+crate-type = ["cdylib", "rlib"]
+
+[features]
+native-sdk = []
+native-bindings-check = []
+native-wake-probe = []
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+fusion-native-dispatch = { path = "../dispatch" }
+fusion-mechanical-journal = { path = "../journal" }
+fusion-mechanical-core = { path = "../mechanical" }
+fusion-bom-core = { path = "../bom-core" }
+fusion-sketch-plan-core = { path = "../sketch-plan-core" }
+fusion-artifact-publication = { path = "../artifact-publication" }
+getrandom = "0.2"
+
+[build-dependencies]
+cc = "1"
+
+[dev-dependencies]
+sha2 = "0.10"

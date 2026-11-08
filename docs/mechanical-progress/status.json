@@ -1,0 +1,177 @@
+{
+  "asOf": "2026-10-16T19:09:04.992Z",
+  "candidate": "R21",
+  "sourceManifestSha256": "c2b42e34335a2cc49a1762b3bd140dffe542d544aa7e81721d87449082cbe197",
+  "counts": {
+    "legacyMechanicalOperations": 61,
+    "legacyOperationsWithFiniteNativeImplementation": 18,
+    "legacyOperationsWithoutNativeHandler": 43,
+    "nativeHelperOperations": 9,
+    "nativeExposedOperations": 27,
+    "totalMechanicalSchemas": 70,
+    "fullyQualifiedLegacyParityOperations": 0,
+    "publicReplacementReleases": 0
+  },
+  "latestInstallableVersion": "1.11.39",
+  "nativePublicReplacementReleased": false,
+  "linuxTests": 508,
+  "windowsTests": 512,
+  "implementedSubsets": [
+    {
+      "operation": "assembly_properties",
+      "scope": "High-accuracy physical properties of exact document root local solids; two equal observations and scoped revision, checked kg/mm units; max128bodies/20000faces; no occurrences/configurations/meshes/entity selection. Actual-app finite read protocol/analytic geometry constants passed; independent mass/material density and full assembly qualification pending."
+    },
+    {
+      "operation": "bom",
+      "scope": "Bounded local hybrid assembly; online component metadata required; positive live traversal pending"
+    },
+    {
+      "operation": "bom_export",
+      "scope": "Immutable complete BOM CSV publication; positive live export pending"
+    },
+    {
+      "operation": "component_create",
+      "scope": "Exact owned empty flat root definitions/shared instances with identity placement and local name/purchasing metadata. R20-fix3 finite live protocol, journal and independent SDK checks passed. Online native PN/description, child solids, nesting, transforms and full legacy parity remain pending."
+    },
+    {
+      "operation": "component_metadata",
+      "scope": "Exact owned empty flat root definitions/shared instances with identity placement and local name/purchasing metadata. R20-fix3 finite live protocol, journal and independent SDK checks passed. Online native PN/description, child solids, nesting, transforms and full legacy parity remain pending."
+    },
+    {
+      "operation": "feature_create",
+      "scope": "One new-body numeric one-sided zero-taper extrusion of one published sole profile in empty-body root"
+    },
+    {
+      "operation": "inspect",
+      "scope": "Parameter projection, design summary and timeline health; no complete body/occurrence inspection"
+    },
+    {
+      "operation": "material_list",
+      "scope": "Bounded read-only document/loaded-library material IDs and names, query/limits and two-pass catalog revision; finite actual-app protocol passed in R14/R15. Assignment, physical material properties and independent catalog truth pending."
+    },
+    {
+      "operation": "mcmaster_discover",
+      "scope": "Exact native McMaster command registration and finite design intent only; no execution, applicability, download or import"
+    },
+    {
+      "operation": "new_design",
+      "scope": "Unnamed blank local parametric hybrid design; no box or full legacy initialization"
+    },
+    {
+      "operation": "occurrence_insert",
+      "scope": "Exact owned empty flat root definitions/shared instances with identity placement and local name/purchasing metadata. R20-fix3 finite live protocol, journal and independent SDK checks passed. Online native PN/description, child solids, nesting, transforms and full legacy parity remain pending."
+    },
+    {
+      "operation": "occurrence_update",
+      "scope": "Absolute translation in mm of an exact native-owned empty ungrounded root occurrence with identity orientation, followed by one captured position. No rotations, visibility/grounding edits, nested/external/physical assemblies. Source/Linux/Windows passed; actual Fusion and semantic persistence pending."
+    },
+    {
+      "operation": "parameter_create",
+      "scope": "Single user parameter with exact document guards; no full legacy rollback"
+    },
+    {
+      "operation": "parameter_set",
+      "scope": "Single expression/recompute/readback; no automatic retry or full recovery parity"
+    },
+    {
+      "operation": "sketch_constraint",
+      "scope": "One horizontal or vertical relation on one native-owned isolated unfixed line; exact returned relation and full finite inventory; no arbitrary graph or other constraint kinds."
+    },
+    {
+      "operation": "sketch_create",
+      "scope": "Empty root XY/XZ/YZ default-name sketches only"
+    },
+    {
+      "operation": "sketch_dimension",
+      "scope": "One numeric driving aligned distance dimension on exact published endpoints of an isolated H/V line; no formulas/rename/other dimension types. Corrected creator exact native owning Sketch; fresh H/V campaigns and independent SDK observer passed42mm. XZ/YZ, other dimension types, arbitrary geometry, editing and dimension save/reopen semantic persistence remain unqualified."
+    },
+    {
+      "operation": "sketch_geometry",
+      "scope": "Eight bounded primitives into retained empty origin sketch; no constraint/transaction parity"
+    }
+  ],
+  "missingNativeHandlers": [
+    "cad_import",
+    "configuration_inspect",
+    "construction_axis",
+    "entity_delete",
+    "exploded_preview_create",
+    "exploded_preview_dispose",
+    "exploded_preview_inspect",
+    "exploded_preview_sample",
+    "exploded_preview_show",
+    "exploded_view_plan",
+    "export",
+    "feature_edit",
+    "geometry_query",
+    "health",
+    "inspect_entity",
+    "interference",
+    "joint_create",
+    "joint_delete",
+    "joint_edit",
+    "joint_origin_create",
+    "joint_origin_delete",
+    "joint_origin_edit",
+    "material_assign",
+    "mcmaster_open",
+    "measure",
+    "motion_link_create",
+    "motion_link_delete",
+    "motion_link_edit",
+    "occurrence_delete",
+    "parameter_batch",
+    "plane_create",
+    "regular_joint_create",
+    "regular_joint_edit",
+    "render_scene_inspect",
+    "rigid_group_create",
+    "rigid_group_delete",
+    "rigid_group_edit",
+    "sketch_curve_edit",
+    "sketch_diagnostics",
+    "sketch_edit",
+    "sketch_offset",
+    "sketch_project",
+    "transaction_probe"
+  ],
+  "positioning": {
+    "candidate": "R21",
+    "sourceManifestSha256": "c2b42e34335a2cc49a1762b3bd140dffe542d544aa7e81721d87449082cbe197",
+    "linuxTests": 508,
+    "windowsTests": 512,
+    "releaseDllLinked": true,
+    "status": "Product, verifier and independent observer source review and Linux/Windows tests passed; actual Fusion qualification pending",
+    "actualFusionQualified": false,
+    "publicReplacementReleased": false,
+    "verifierLinuxTests": 28,
+    "verifierWindowsTests": 28,
+    "observerLinuxTests": 20,
+    "observerWindowsTests": 20
+  },
+  "johnIntegration": {
+    "repo": "adom/adom-aiflow-mechanical",
+    "commit": "1195dc3f103cbf01a53ffaa85a414ef98be8fe53",
+    "implemented": false
+  },
+  "workPriority": {
+    "first": "Complete Python-to-Rust conversion of existing runtime and supporting tooling with regression qualification",
+    "then": "Additional feature buildout and AI Flow integration",
+    "newFeatureWorkDeferred": true
+  },
+  "contractAuthoring": {
+    "source": "rust-contract-authoring-r1",
+    "sourceManifest": "7e9afe38589eecedf425a39c27a9dfd8e229556332f1cde362f43af5f88d1d2e",
+    "sourceFiles": 21,
+    "linuxTests": 21,
+    "windowsTests": 21,
+    "status": "Historical reproduction and explicit refreeze implemented and independently reviewed; actual Windows CLI tests passed",
+    "historicalContractBytes": 665236,
+    "historicalBytesEqual": true,
+    "releaseCiIntegrated": false,
+    "macosExclusivePublication": false,
+    "runtimePort": false
+  },
+  "latestCandidateActualFusionQualified": false,
+  "lastActualFusionQualifiedCandidate": "R20-fix3 (finite empty assembly only)"
+}

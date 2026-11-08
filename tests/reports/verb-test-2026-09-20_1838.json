@@ -1,0 +1,106 @@
+{
+ "date": "2026-09-20_1838",
+ "target": "ConfRoomROG",
+ "tier": "daily",
+ "pass": 8,
+ "fail": 3,
+ "sections": {
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 1,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "aps": {
+   "PASS": 5,
+   "FAIL": 2,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "auth-tokens": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_get_app_state",
+   "status": "FAIL",
+   "why": "expected success, got error=Request timed out code=None",
+   "sec": 107.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 59.6,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "FAIL",
+   "why": "deprecated verb did NOT refuse",
+   "sec": 90.1,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 19.8,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_get_browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "FAIL",
+   "why": "expected success, got error=Request timed out code=None; expected >0 results",
+   "sec": 60.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_recent",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.6,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_browse",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_file_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 29.8,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_get",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 385.4
+}

@@ -1,0 +1,22 @@
+{
+ "dev": [
+  "STM32L431RCT6TR"
+ ],
+ "dev_pac": {
+  "STM32L431RCT6TR": [
+   "LQFP-64_10x10mm_P0.5mm"
+  ]
+ },
+ "dev_sym": {
+  "STM32L431RCT6TR": [
+   "STM32L431RCT6TR"
+  ]
+ },
+ "p3d": [],
+ "pac": [
+  "LQFP-64_10x10mm_P0.5mm"
+ ],
+ "sym": [
+  "STM32L431RCT6TR"
+ ]
+}

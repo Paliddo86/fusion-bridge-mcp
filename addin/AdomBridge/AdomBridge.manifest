@@ -1,0 +1,12 @@
+{
+    "autodeskProduct": "Fusion",
+    "type": "addin",
+    "id": "com.adom.bridge",
+    "author": "Adom Industries, Inc.",
+    "description": {
+        "": "Adom Desktop Conduit bridge add-in. Exposes a localhost HTTP API for external automation of Fusion 360."
+    },
+    "version": "1.0.41",
+    "runOnStartup": true,
+    "supportedOS": "windows"
+}

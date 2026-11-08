@@ -1,0 +1,94 @@
+{
+ "fusion": "uf/window-2428056-20261004-205223.mp4",
+ "hydrogen": "uf/window-3409738-20261004-205223.mp4",
+ "sections": [
+  {
+   "a": 2.5,
+   "b": 11,
+   "mode": "hyd",
+   "label": "The prompt, typed into Codex in Hydrogen",
+   "text": "The prompt, typed into Codex in Hydrogen: build a Fusion library from my Demo Board cloud library on the Adom wiki, with the real 3D model bound to every part."
+  },
+  {
+   "a": 11,
+   "b": 80,
+   "mode": "fus",
+   "label": "Codex finds the parts and their STEP models",
+   "text": "Codex finds the six parts in that cloud library, each with a real STEP model, and hands them to the Fusion bridge."
+  },
+  {
+   "mode": "img",
+   "img": "cards/02-why.png",
+   "label": "",
+   "text": "This is the hard part. A STEP file in the cloud won't render; only a Fusion design does. The generator's FINISH button opens dialogs no script can close. And it always loads the first package in the library."
+  },
+  {
+   "mode": "img",
+   "img": "cards/03-wrong-right.png",
+   "label": "",
+   "text": "That third trap puts a chip on another part's footprint, on the left. The fix puts it on its own, on the right."
+  },
+  {
+   "mode": "img",
+   "img": "cards/04-order.png",
+   "label": "",
+   "text": "So the order matters: one library per part, load that footprint, import the STEP, save it as a Fusion design, then write every cloud link into the library in one pass."
+  },
+  {
+   "a": 80,
+   "b": 128,
+   "mode": "fus",
+   "label": "Part 1 of 6: LAN7800",
+   "text": "Part one, the LAN7800. The generator loads its own footprint, the chip goes on top exactly as the maker published it, and it's saved to the cloud as a Fusion design."
+  },
+  {
+   "a": 128,
+   "b": 165,
+   "mode": "fus",
+   "label": "Part 2 of 6: CH340G",
+   "text": "Part two, the CH340G USB serial chip, on its own split library, so it lands on its own footprint."
+  },
+  {
+   "a": 165,
+   "b": 215,
+   "mode": "fus",
+   "label": "Part 3 of 6: STM32L431",
+   "text": "Part three, the STM32 microcontroller, in its 64 pin package."
+  },
+  {
+   "a": 215,
+   "b": 255,
+   "mode": "fus",
+   "label": "Part 4 of 6: 16 MHz crystal",
+   "text": "Part four, a 16 megahertz crystal, on its four pad footprint."
+  },
+  {
+   "a": 255,
+   "b": 295,
+   "mode": "fus",
+   "label": "Part 5 of 6: LED",
+   "text": "Part five, a tiny LED, its body sitting right on its pads."
+  },
+  {
+   "a": 295,
+   "b": 345,
+   "mode": "fus",
+   "label": "Part 6 of 6: 10 uF capacitor",
+   "text": "And part six, a ten microfarad capacitor."
+  },
+  {
+   "a": 345,
+   "b": 640,
+   "mode": "fus",
+   "label": "One library, every 3D link written in one pass, saved",
+   "text": "Then every cloud link goes into one library in a single pass, and Codex checks every binding and saves the library to Fusion's Library Manager."
+  },
+  {
+   "a": 640,
+   "b": 656,
+   "mode": "hyd",
+   "label": "Codex reports back",
+   "text": "Codex reports back: six parts, every one with its real 3D model, saved to the Library Manager, in about ten minutes."
+  }
+ ]
+}

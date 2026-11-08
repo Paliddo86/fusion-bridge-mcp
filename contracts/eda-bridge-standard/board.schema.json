@@ -1,0 +1,418 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wiki.adom.inc/adom/eda-bridge-standard/schema/board.schema.json",
+  "title": "Board model (routing_state)",
+  "description": "One PCB as every bridge's <prefix>_routing_state returns it. Millimetres, absolute board coordinates in the standard frame: the tool's origin and x axis, y up (a y-down tool such as KiCad negates y), angles counterclockwise as seen. Copper layers carry KiCad's names whatever the tool: F.Cu, In1.Cu..In30.Cu, B.Cu, and *.Cu for a pad on every copper layer. Reference: altium-bridge 0.2.75; settled points: docs/board-model.md.",
+  "type": "object",
+  "required": [
+    "units",
+    "revision",
+    "nets",
+    "tracks",
+    "arcs",
+    "vias",
+    "pads",
+    "components",
+    "polygons",
+    "outline",
+    "outlineEdges",
+    "unconnected"
+  ],
+  "$defs": {
+    "xy": {
+      "type": "object",
+      "required": [
+        "x",
+        "y"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      }
+    },
+    "pt": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "[x, y] mm"
+    },
+    "layer": {
+      "type": "string",
+      "description": "F.Cu | In<n>.Cu | B.Cu | *.Cu for copper; a non-copper layer is the tool's own name or id (L57 on Altium is Mechanical 1)"
+    },
+    "net": {
+      "type": "string",
+      "description": "the net's name; empty for no net (a hatched pour's pieces, free copper)"
+    }
+  },
+  "properties": {
+    "units": {
+      "const": "mm"
+    },
+    "file": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the board file's path"
+    },
+    "boardId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "identifies the board; the file path where there is one"
+    },
+    "revision": {
+      "type": "string",
+      "description": "a hash of copper, parts and outline: it changes when they change and only then. Edit verbs take it back as expectedRevision and refuse with stale_board when the board moved on. Independent of item order is better (KiCad's is); stable for an unchanged board is required"
+    },
+    "counts": {
+      "type": "object",
+      "description": "tracks, arcs, vias, pads, components, polygons, nets"
+    },
+    "unconnected": {
+      "type": "integer",
+      "description": "connections still to make, computed from the copper itself: per net, pads, tracks, vias and poured copper joined where they touch on a shared layer, and every group beyond the first is one connection. A group that is only poured copper (an island, or a pour that reaches no pad) is not counted: it goes in isolatedCopper. A stray track or via is counted. The tool's own count may ride along under its own key (altiumRatsnest, fusionAirwires)"
+    },
+    "splitNets": {
+      "type": "array",
+      "description": "nets whose copper is in more than one piece"
+    },
+    "isolatedCopper": {
+      "type": "array",
+      "description": "poured copper that touches nothing else of its net: listed, not counted in unconnected (KiCad's DRC calls it isolated copper, a warning)",
+      "items": {
+        "type": "object",
+        "required": [
+          "net",
+          "layer"
+        ],
+        "properties": {
+          "net": {
+            "$ref": "#/$defs/net"
+          },
+          "layer": {
+            "$ref": "#/$defs/layer"
+          },
+          "at": {
+            "$ref": "#/$defs/xy",
+            "description": "a point on or in it"
+          },
+          "areaMm2": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "nets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "width",
+          "layer",
+          "net"
+        ],
+        "properties": {
+          "start": {
+            "$ref": "#/$defs/xy"
+          },
+          "end": {
+            "$ref": "#/$defs/xy"
+          },
+          "width": {
+            "type": "number"
+          },
+          "layer": {
+            "$ref": "#/$defs/layer"
+          },
+          "layerId": {
+            "description": "the tool's own layer id (optional)"
+          },
+          "net": {
+            "$ref": "#/$defs/net"
+          }
+        }
+      }
+    },
+    "arcs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "center",
+          "radius",
+          "startAngle",
+          "endAngle",
+          "width",
+          "layer",
+          "net"
+        ],
+        "properties": {
+          "center": {
+            "$ref": "#/$defs/xy"
+          },
+          "radius": {
+            "type": "number"
+          },
+          "startAngle": {
+            "type": "number",
+            "description": "degrees, counterclockwise from +x"
+          },
+          "endAngle": {
+            "type": "number"
+          },
+          "width": {
+            "type": "number"
+          },
+          "layer": {
+            "$ref": "#/$defs/layer"
+          },
+          "net": {
+            "$ref": "#/$defs/net"
+          }
+        }
+      }
+    },
+    "vias": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "position",
+          "size",
+          "drill",
+          "layers",
+          "net"
+        ],
+        "properties": {
+          "position": {
+            "$ref": "#/$defs/xy"
+          },
+          "size": {
+            "type": "number",
+            "description": "diameter mm"
+          },
+          "drill": {
+            "type": "number"
+          },
+          "layers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/layer"
+            },
+            "description": "[from, to]"
+          },
+          "net": {
+            "$ref": "#/$defs/net"
+          }
+        }
+      }
+    },
+    "pads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref",
+          "name",
+          "x",
+          "y",
+          "sizeX",
+          "sizeY",
+          "rotation",
+          "layer",
+          "drill",
+          "net"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "description": "the part's designator; empty for a free pad (a mounting hole, a fiducial)"
+          },
+          "name": {
+            "type": "string",
+            "description": "the pad's number/name"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "sizeX": {
+            "type": "number"
+          },
+          "sizeY": {
+            "type": "number"
+          },
+          "rotation": {
+            "type": "number",
+            "description": "degrees, counterclockwise as seen"
+          },
+          "layer": {
+            "$ref": "#/$defs/layer"
+          },
+          "drill": {
+            "type": "number",
+            "description": "0 for SMD"
+          },
+          "net": {
+            "$ref": "#/$defs/net"
+          },
+          "shape": {
+            "type": "string",
+            "description": "round (a circle when sizeX = sizeY, otherwise a stadium: semicircle ends on the long axis) | circle | rect | roundrect | octagonal | rotated-rect | other. A tool's oval or obround is round. A custom-shape pad (copper drawn as regions) is its bounding rectangle: rect, rotation 0, with its real outline in copperPoints when the bridge has it"
+          },
+          "customShape": {
+            "type": "boolean",
+            "description": "the pad's copper is a drawn shape, not a primitive"
+          },
+          "copperPoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/pt"
+            },
+            "description": "a custom pad's real copper outline, absolute mm. Checks use it when present and the bounding rectangle otherwise. One drawn polygon can join several pads (a power FET's drain)"
+          }
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref",
+          "x",
+          "y",
+          "rotation",
+          "side"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "rotation": {
+            "type": "number"
+          },
+          "side": {
+            "enum": [
+              "top",
+              "bottom"
+            ]
+          },
+          "pattern": {
+            "type": "string",
+            "description": "the footprint's name"
+          },
+          "has3d": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "polygons": {
+      "type": "array",
+      "description": "pours as drawn (their boundary). What was actually poured is the pours model (pour_state)",
+      "items": {
+        "type": "object",
+        "required": [
+          "net",
+          "layer",
+          "points"
+        ],
+        "properties": {
+          "net": {
+            "$ref": "#/$defs/net"
+          },
+          "layer": {
+            "$ref": "#/$defs/layer"
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/pt"
+            }
+          },
+          "kind": {
+            "enum": [
+              "zone",
+              "graphic"
+            ],
+            "description": "zone (a pour; the default when absent) or graphic (a filled copper shape drawn on the layer)"
+          }
+        }
+      }
+    },
+    "outline": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pt"
+      },
+      "description": "the board outline's vertices in order"
+    },
+    "outlineEdges": {
+      "type": "array",
+      "description": "the outline as edges: line, or arc (center, radius, angle1, angle2 in degrees). Sample arcs finely (every 2 degrees) before measuring against them",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "start"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "line",
+              "arc"
+            ]
+          },
+          "start": {
+            "$ref": "#/$defs/pt"
+          },
+          "end": {
+            "$ref": "#/$defs/pt"
+          },
+          "center": {
+            "$ref": "#/$defs/pt"
+          },
+          "radius": {
+            "type": "number"
+          },
+          "angle1": {
+            "type": "number"
+          },
+          "angle2": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

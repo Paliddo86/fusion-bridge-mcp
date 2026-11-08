@@ -1,0 +1,118 @@
+{
+ "date": "2026-10-30_1827",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 11,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 4,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 3,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "python-addin": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_readiness",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_board_summary",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_schematic_review",
+   "status": "PASS",
+   "why": "",
+   "sec": 5.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_document_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_addin_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_panel#browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_bom",
+   "status": "PASS",
+   "why": "",
+   "sec": 9.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 26.1
+}

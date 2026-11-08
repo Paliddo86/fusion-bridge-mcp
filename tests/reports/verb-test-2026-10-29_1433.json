@@ -1,0 +1,147 @@
+{
+ "date": "2026-10-29_1433",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 14,
+ "fail": 2,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 11,
+   "FAIL": 2,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_length_tune",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_copper_balance",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_return_path",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_impedance",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_current_capacity",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_fab_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_estimate_cost",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_assembly_check",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_review_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 6.1,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_board_report",
+   "status": "PASS",
+   "why": "",
+   "sec": 25.5,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_check_clearance",
+   "status": "PASS",
+   "why": "",
+   "sec": 12.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plan_fanout",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.7,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_route_net",
+   "status": "FAIL",
+   "why": "expected success, got error=expectDocument must match the active board name exactly code=wrong_document",
+   "sec": 1.2,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_plan_route",
+   "status": "FAIL",
+   "why": "expected success, got error=expectDocument must match the active board name exactly code=wrong_document",
+   "sec": 1.2,
+   "section": "routing"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 65.7
+}

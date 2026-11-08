@@ -1,0 +1,33 @@
+[
+  {
+    "path": "/home/adom/project/research/fusion-roadmap-build-2026-10-02/exploded-preview-preparation/runtime-dev9-build-r1/source/describe.py",
+    "archived": "evidence/baseline/describe.py",
+    "sha256": "d03c128566455226bca6b7535a2690577f39c2ac851cc71982f7afae8e1fcc35"
+  },
+  {
+    "path": "/home/adom/project/research/fusion-roadmap-build-2026-10-02/exploded-preview-preparation/runtime-dev9-build-r1/source/contracts/describe.json",
+    "archived": "evidence/baseline/describe.json",
+    "sha256": "70f3e2d8f2d4ffb6603c8a62478f149593f6ca19aa9a910dc26a02b607d0b7ba"
+  },
+  {
+    "path": "/home/adom/project/research/fusion-roadmap-build-2026-10-02/exploded-preview-preparation/runtime-dev9-build-r1/source/addin/AdomBridge/commands/mechanical/schema.json",
+    "archived": "evidence/baseline/mechanical-schema.json",
+    "sha256": "6f704e05de031fa8ef329dc7be0b02d3a2b167eeb2fbc44ec6c2d933af4f7b48"
+  },
+  {
+    "path": "/home/adom/project/research/fusion-roadmap-build-2026-10-02/exploded-preview-preparation/runtime-dev9-build-r1/source/bridge.json",
+    "archived": "evidence/baseline/bridge.json",
+    "sha256": "6c7d4e063ab4078d610f22d80e0d39b8dac55959f398558a2ff00257174fe11a"
+  },
+  {
+    "path": "/home/adom/project/research/fusion-roadmap-build-2026-10-02/exploded-preview-preparation/runtime-dev9-build-r1/source/rust/core/src/contract.rs",
+    "archived": "evidence/baseline/legacy-contract.rs",
+    "sha256": "69ca49c4469c323887efecb10333b51ad9f6813fc450422c155f9983238acd26"
+  },
+  {
+    "path": "/home/adom/project/research/fusion-roadmap-build-2026-10-02/exploded-preview-preparation/publication-oct7/published-readback/tools/freeze-contract.py",
+    "archived": "evidence/baseline/freeze-contract.py",
+    "sha256": "82f51090a79c57adf2f41c27229a860acdc75598aa4ead16893126cd7c848886",
+    "scope": "Separate published source; dev9 snapshot contains no tools/freeze-contract.py"
+  }
+]

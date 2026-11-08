@@ -1,0 +1,11 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "addin",
+  "author": "Adom Industries",
+  "description": {
+    "": "Experimental Rust native Fusion service: exact owned flat root components, shared occurrences and staged metadata, with bounded absolute occurrence translation and separately guarded captured positions. Preserves prior finite dimension, geometry, BOM, material/physical and McMaster contracts. No rotations, grounding edits, arbitrary adoption, rollback or full legacy parity."
+  },
+  "version": "0.16.0-dev",
+  "supportedOS": "windows",
+  "runOnStartup": false
+}

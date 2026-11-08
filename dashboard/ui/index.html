@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fusion Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+:root{
+  --bg:#0d1117;--surface:#161b22;--elevated:#1c2128;--overlay:#21262d;--border:#30363d;
+  --text:#e6edf3;--text-body:#c9d1d9;--text-2:#8b949e;
+  --accent:#00b8b1;--accent-hover:#00d4cb;--green:#3fb950;--red:#f85149;--yellow:#d29922;--blue:#64abff;
+  /* dock-dashboard token stub aliases - the fleet recipes use these names */
+  --surface2:#1c232c;--line:#262d36;--muted:#8b949e;--teal:#00b8b1;
+  --led-green:#3fb950;--led-amber:#d29922;--led-red:#f85149;
+  --sans:'Familjen Grotesk',system-ui,sans-serif;--body:'Satoshi',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+/* The house scrollbar (adom-ui-design > scrollbars): thin, transparent track, translucent
+   pill that only asserts itself on hover. Never the OS default. */
+*{scrollbar-width:thin;scrollbar-color:rgba(139,148,158,.38) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(139,148,158,.32);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,184,177,.55);background-clip:padding-box}
+::-webkit-scrollbar-corner{background:transparent}
+@font-face{font-family:'Familjen Grotesk';src:url('https://adom.inc/fonts/FamiljenGrotesk-SemiBold.woff2') format('woff2');font-weight:600}
+@font-face{font-family:'Satoshi';src:url('https://adom.inc/fonts/Satoshi-Regular.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Satoshi';src:url('https://adom.inc/fonts/Satoshi-Medium.woff2') format('woff2');font-weight:500}
+body{background:var(--bg);color:var(--text-body);font:15px/1.5 'Satoshi',sans-serif;min-height:100vh}
+header{height:44px;display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--surface);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:8px;font-family:'Familjen Grotesk',sans-serif;font-weight:600;color:var(--accent);white-space:nowrap}
+.brand svg{width:16px;height:16px;stroke:var(--text)}
+.brand .mark{width:16px;height:16px;display:block;color:var(--text)}
+.vsep{width:1px;height:20px;background:var(--border)}
+.subject{font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta{font:12px 'JetBrains Mono',monospace;color:var(--text-2)}
+.actions{margin-left:auto;display:flex;gap:8px}
+/* dash-header: version lives in the brand hover popover, NEVER the bar */
+.brand{position:relative}
+.brand-pop{display:none;position:absolute;top:34px;left:0;z-index:9000;background:var(--overlay);border:1px solid var(--border);border-radius:10px;padding:10px 14px;min-width:230px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.brand:hover .brand-pop{display:block;animation:bpin .18s ease}
+@keyframes bpin{from{opacity:0;transform:translateY(-3px)}to{opacity:1}}
+.bp-row{display:flex;justify-content:space-between;gap:16px;font:12px var(--mono);color:var(--text-2);padding:2px 0}
+.bp-row b{color:var(--text);font-weight:500}
+.bp-row a{color:var(--accent);text-decoration:none}
+.tchip{display:inline-flex;align-items:center;gap:7px;background:var(--elevated);border:1px solid var(--border);border-radius:999px;padding:3px 11px;font:12px var(--mono);color:var(--text-body)}
+.tled{width:8px;height:8px;border-radius:50%;background:var(--text-2)}
+.tled.on{background:var(--led-green)}
+.tled.bad{background:var(--led-red)}
+.iconbtn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:1px solid transparent;border-radius:8px;color:var(--text-body);cursor:pointer}
+.iconbtn{transition:background .15s ease,border-color .15s ease,transform .06s ease}
+.iconbtn:hover{background:var(--elevated);border-color:var(--border)}
+.iconbtn:active{transform:scale(.9);background:var(--overlay)}
+/* GUTTER ALIGNMENT (fleet rule via project-manager, 2026-08-25): 16px is the PAGE's
+   gutter, not just the panel's. The module gives the panel no max-width and caps only its
+   inner TABLE at 720px, so a capped+centred main would sit at 16px inside the dock pane
+   (where main never reaches its cap) but drift to (vw-1080)/2+16 on a wide monitor, with
+   the panel still at 16 - a visible step at the seam that selfCheck cannot see, because
+   selfCheck only measures the panel. Page and panel now share one inset at every width. */
+main{margin:0 auto;padding:20px 16px 60px}
+/* the panel is a SIBLING of main, so it needs the same 16px gutter on its own mount: with
+   none, its card sat flush to the pane edges (selfCheck: 0px left, 0px right; issue #57). */
+#newbie{padding:0 16px}
+h2{font-family:'Familjen Grotesk',sans-serif;font-size:17px;color:var(--text);margin:26px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
+/* status-leds contract: ONE compact pill row, prose on tap, never by default */
+.leds{display:flex;flex-wrap:wrap;gap:8px}
+.led-pill{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:12.5px;cursor:pointer;color:var(--text-body);transition:border-color .15s ease}
+.led-pill:hover{border-color:var(--accent)}
+.led-pill.sel{border-color:var(--accent)}
+.led-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--text-2);flex:none}
+.led-pill[data-state=ok] .dot{background:var(--led-green)}
+.led-pill[data-state=busy] .dot{background:var(--led-amber)}
+.led-pill[data-state=bad] .dot{background:var(--led-red)}
+.led-pill[data-state=starting] .dot{background:var(--led-amber);animation:ledpulse 1.1s ease-in-out infinite}
+.led-pill .st{color:var(--muted)}
+.led-detail{margin-top:10px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.55;color:var(--text-body)}
+.led-detail .who{font:12px var(--mono);color:var(--muted);margin-top:6px}
+.led-row{display:flex;align-items:center;gap:10px}
+.led{width:12px;height:12px;border-radius:999px;background:var(--text-2);flex:none;transition:background .15s ease}
+.led.on{background:var(--green);box-shadow:0 0 8px rgba(63,185,80,.5)}
+.led.off{background:var(--red)}
+.led.warn{background:var(--yellow)}
+.led.starting{background:var(--yellow);animation:ledpulse 1.1s ease-in-out infinite}
+/* MEASURED progress (page issue #32): a real bar with a real ETA - never "a couple of
+   minutes". Width is driven by the bridge's progress.percent, which is monotonic. */
+#launchbar{display:none;margin:10px 0 2px;padding:10px 12px;border:1px solid var(--line);
+  border-radius:10px;background:var(--panel)}
+#launchbar.show{display:block}
+#launchbar .lbtop{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-size:13px;margin-bottom:7px}
+#launchbar .lbeta{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:12px;
+  white-space:nowrap}
+#launchbar .lbtrack{height:6px;border-radius:3px;background:#20262e;overflow:hidden}
+#launchbar .lbfill{height:100%;width:0;border-radius:3px;background:var(--accent);
+  transition:width .5s ease}
+#launchbar .lbnote{margin-top:6px;font-size:11px;color:var(--text-2)}
+@keyframes ledpulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(210,153,34,.55)}50%{opacity:.55;box-shadow:0 0 10px 3px rgba(210,153,34,.35)}}
+.led-label{font-weight:500;color:var(--text)}
+.led-who{margin-left:auto;font:12px/1.2 'JetBrains Mono',monospace;color:var(--text-2);background:var(--elevated,#1c2128);border:1px solid var(--border);border-radius:9px;padding:2px 8px;max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.led-sub{font-size:12.5px;color:var(--text-2);margin-top:6px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border-radius:8px;border:1px solid var(--border);background:var(--elevated);color:var(--text);font:500 14px 'Satoshi',sans-serif;cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .06s ease}
+.btn:hover{background:var(--overlay);border-color:#4b5563}
+.btn:active{transform:translateY(1px) scale(.98);background:var(--surface)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#05221f}
+.btn.primary:hover{background:var(--accent-hover)}
+.btn.primary:active{background:#009d97;border-color:#009d97;transform:translateY(1px) scale(.98)}
+.btn:focus-visible,.iconbtn:focus-visible,.tpill:focus-visible,.toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.prompt{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;transition:border-color .15s ease}
+.prompt:hover{border-color:#4b5563}
+input:focus-visible{outline:none;border-color:var(--accent) !important}
+.prompt code{font:13px 'JetBrains Mono',monospace;color:var(--text-body);flex:1;white-space:normal}
+.copy{flex:none}
+.bar{height:8px;background:var(--elevated);border:1px solid var(--border);border-radius:999px;overflow:hidden;margin-top:10px;display:none}
+.bar>div{height:100%;width:0;background:var(--accent);transition:width .5s ease}
+.barlabel{font-size:12.5px;color:var(--text-2);margin-top:6px}
+#toasts{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;flex-direction:column-reverse;gap:8px;z-index:99999}
+.toast{background:var(--overlay);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.toast.ok{border-left-color:var(--green)}.toast.err{border-left-color:var(--red)}
+dialog{margin:auto;background:var(--overlay);color:var(--text-body);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:520px;width:92vw}
+/* Backdrop law (settings-layout): dim 20-30%, NEVER blur - settings often change the very
+   thing behind the modal (theme, density, the live LEDs), so the app must stay legible. */
+dialog::backdrop{background:rgba(0,0,0,.25)}
+/* The dialog is focused programmatically on open (so it scrolls to the top instead of jumping
+   to the first input). Chrome then paints its DEFAULT focus ring in currentColor - a light
+   2px halo that reads as a white border around the modal (John spotted it, 2026-08-18). The
+   container is not a control, so it takes no ring; its CHILDREN keep their teal focus-visible
+   rings for keyboard users. */
+dialog:focus,dialog:focus-visible{outline:none}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+/* House toggle (settings-layout): 32x18 track, WHITE thumb in BOTH states, teal-on/neutral-off,
+   knob stretches under the press. Never a native checkbox (its blue is not an Adom colour). */
+.toggle{width:32px;height:18px;border-radius:999px;background:var(--overlay);border:1px solid var(--border);position:relative;cursor:pointer;flex:none;transition:background .15s ease,border-color .15s ease}
+.toggle:hover{border-color:var(--accent)}
+.toggle:active::after{width:16px}
+.toggle.is-on:active::after{left:10px}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:999px;background:#fff;transition:transform .18s ease,width .12s ease,left .18s ease}
+.toggle.is-on{background:var(--accent);border-color:var(--accent)}
+.toggle.is-on::after{left:16px;background:#fff}
+/* Row default hint + breadcrumb-teal last part of a row name (settings-layout) */
+.default-hint{font-size:11px;color:var(--text-2);margin-top:2px}
+.ctlrow .lbl b,.ctlrow .lbl .last{color:#8fd3d4;font-weight:600}
+/* Choice cards: mutually-exclusive VISUAL alternatives, one real screenshot each */
+.choice-set{border:none;margin:.2rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem}
+.choice{flex:1 1 150px;display:flex;flex-direction:column;gap:.3rem;padding:.55rem;cursor:pointer;background:var(--surface);border:1px solid var(--border);border-radius:8px;transition:border-color .15s ease,background .15s ease,transform .06s ease}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice .shot{display:block;width:100%;height:auto;border-radius:4px;border:1px solid var(--border);background:var(--elevated)}
+.choice .shot-pending{display:flex;align-items:center;justify-content:center;height:52px;border-radius:4px;border:1px dashed var(--border);background:var(--elevated);color:var(--text-2);font-size:10.5px;text-align:center;padding:0 6px}
+.choice .cname{font-family:'Familjen Grotesk',sans-serif;font-size:12.5px;font-weight:600;color:var(--text)}
+.choice .cdesc{font-size:11px;color:var(--text-2);line-height:1.45}
+.choice:hover{border-color:var(--accent);background:var(--elevated)}
+.choice:active{transform:translateY(1px) scale(.995)}
+.choice.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.choice:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+/* House scrollbar for the settings body (never the fat OS bar) */
+.dlgbody::-webkit-scrollbar{width:10px}
+.dlgbody::-webkit-scrollbar-thumb{background:rgba(139,148,158,.32);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+.dlgbody::-webkit-scrollbar-thumb:hover{background:rgba(0,184,177,.55);background-clip:padding-box}
+/* Two-click Restore defaults footer */
+.settings-footer{margin-top:1.2rem;padding:1rem 18px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:.5rem}
+.restore-btn{width:fit-content;display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .85rem;background:transparent;border:1px solid var(--border);border-radius:.375rem;color:var(--text-body);font-family:'Familjen Grotesk',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease}
+.restore-btn:hover{background:var(--elevated)}
+.restore-btn.armed{color:var(--red);border-color:rgba(248,81,73,.5);background:rgba(248,81,73,.08)}
+@media (max-width:720px){.meta{display:none}.grid{grid-template-columns:1fr 1fr}}
+/* Touch targets: the responsive-ui contract is 44x44 minimum on touch. Applied for coarse
+   pointers AND at phone width - pointer:coarse cannot be emulated in the ralph harness, so a
+   coarse-only rule is untestable and would ship unverified (ralph, 2026-08-18). Desktop keeps
+   its compact 32-36px controls above 600px. */
+@media (hover:none),(pointer:coarse),(max-width:600px){
+  .btn{min-height:44px;padding:0 16px}
+  .iconbtn{width:44px;height:44px}
+  .tpill{min-height:44px;padding:10px 16px}
+  .xbtn{width:44px;height:44px}
+  .toggle{width:52px;height:30px}
+  .toggle::after{width:24px;height:24px}
+  .toggle.is-on::after{left:25px}
+  .copy{min-height:44px}
+}
+@media (max-width:480px){.grid{grid-template-columns:1fr}.brand span{display:none}.subject{display:none}.vsep{display:none}header{gap:8px}}
+#tt{position:fixed;z-index:99999;background:var(--overlay);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12.5px;color:var(--text-body);max-width:260px;pointer-events:none;opacity:0;transform:translateY(3px);transition:opacity .18s ease,transform .18s ease;text-transform:none}
+#tt.show{opacity:1;transform:none}
+#appinfo{position:fixed;z-index:99998;background:var(--overlay);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--text-body);box-shadow:0 8px 24px rgba(0,0,0,.4);display:none;pointer-events:auto;min-width:220px}
+#appinfo.show{display:block}
+#appinfo a{color:var(--accent)}
+.brand{cursor:default}
+#targets{display:flex;gap:8px;margin:0 0 14px}
+.tpill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-body);cursor:pointer;font:500 13.5px 'Satoshi',sans-serif;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .06s ease}
+.tpill:hover{border-color:#4b5563;background:var(--elevated);color:var(--text)}
+.tpill:active{transform:translateY(1px) scale(.97)}
+.tpill.active{border-color:var(--accent);color:var(--text);background:var(--elevated)}
+.tdot{width:8px;height:8px;border-radius:999px;background:var(--text-2)}
+.tdot.on{background:var(--green)}
+.seatnote{font-size:12.5px;color:var(--text-2);margin:-6px 0 12px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.scard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;transition:border-color .15s ease}
+.scard:hover{border-color:#4b5563}
+.scard .btn{width:100%;justify-content:center}
+.sstate{font-size:12.5px;color:var(--text-2);margin-top:8px}
+.sstate.ok{color:var(--green)}.sstate.err{color:var(--red)}
+.sshot{margin-top:8px;width:100%;border-radius:8px;border:1px solid var(--border);display:none;cursor:zoom-in}
+.sshot.show{display:block}
+dialog.settings{max-width:560px;overflow:hidden;padding:0}
+.dlghead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 10px}
+.dlghead h2{margin:0;font-size:17px}
+.dlgbody{max-height:70vh;overflow:auto;padding:0 18px 18px;scrollbar-gutter:stable}
+/* Track inset >= the dialog's 12px radius (scrollbars sub-skill: the rounded-corner
+   slice John caught on THIS modal). The overflow:hidden dialog + inner scroller is the
+   structural fix; the margin is belt and suspenders for the top/bottom curve. */
+.dlgbody::-webkit-scrollbar-track{margin:12px 0}
+.xbtn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:none;border:1px solid transparent;border-radius:8px;color:var(--text-2);cursor:pointer;font-size:18px;line-height:1;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .06s ease}
+.xbtn:hover{background:var(--elevated);border-color:var(--border);color:var(--text)}
+.xbtn:active{transform:scale(.9);background:var(--surface)}
+.xbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.segmented{display:flex;gap:6px;flex-wrap:wrap}
+.seg{background:var(--panel);border:1px solid var(--line);color:var(--text-2);border-radius:8px;
+  padding:7px 12px;font-size:12px;cursor:pointer;min-height:34px;transition:background .15s,border-color .15s,color .15s}
+.seg:hover{border-color:var(--accent);color:var(--text)}
+.seg:active{transform:translateY(1px)}
+.seg:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg.on{background:color-mix(in srgb, var(--accent) 22%, transparent);border-color:var(--accent);color:var(--text)}
+@media (max-width:600px){.seg{min-height:44px;padding:10px 14px}}
+.settings-card{background:var(--elevated);border:1px solid var(--border);border-left:3px solid color-mix(in srgb, var(--accent) 45%, transparent);border-radius:10px;padding:.9rem 1.1rem 1rem;margin-bottom:1rem}
+.card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:10px;font-family:'Familjen Grotesk',sans-serif}
+.card-status{font-size:11px;color:var(--text-2);font-weight:400}
+.card-status.ok{color:var(--green)}
+.card-desc{font-size:12px;line-height:1.55;color:var(--text-2);margin-top:.5rem}
+.card-desc code{font-size:11px;background:rgba(110,118,129,.2);padding:1px 4px;border-radius:4px}
+.divider{height:1px;background:var(--border);margin:.55rem 0}
+.ctlrow{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:.5rem 0}
+.ctlrow .lbl{font-size:12.5px;color:var(--text)}
+.setfoot{font-size:11.5px;color:var(--text-2);margin-top:.2rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand" id="brandZone">
+    <svg class="mark" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 L20 7.5 L12 12 L4 7.5 Z"/><path d="M4 7.5 V16.5 L12 21 L20 16.5 V7.5"/><path d="M12 12 V21"/></svg>
+    Fusion Dashboard <span style="color:var(--text-2)">&middot; the Fusion 360 bridge</span>
+    <div class="brand-pop" id="brandPop">
+      <div class="bp-row"><span>dashboard</span><b id="bpDash">-</b></div>
+      <div class="bp-row"><span>bridge</span><b id="bpBridge">-</b></div>
+      <div class="bp-row"><span>add-in</span><b id="bpAddin">-</b></div>
+      <div class="bp-row"><a href="https://wiki.adom.inc/adom/fusion-bridge" target="_blank" rel="noopener">wiki.adom.inc/adom/fusion-bridge</a></div>
+    </div>
+  </div>
+  <div class="vsep"></div>
+  <div class="subject" id="subject"><span class="tchip" id="tchip"><span class="tled" id="tled"></span><span id="tname">connecting...</span></span></div>
+  <div class="meta" id="meta"></div>
+  <div class="actions">
+    <button class="iconbtn" id="btnRecall" data-tip="Bring back the getting-started helpers for this session" aria-label="Show help"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.7 2.2c-.8.5-1.2 1-1.2 1.8v.5"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg></button>
+    <button class="iconbtn" id="btnSettings" data-tip="Settings: toggle bridge defaults like silent Fusion auto-update (sticky per user)" aria-label="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.51 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.26.6.86 1 1.51 1H21a2 2 0 1 1 0 4h-.09c-.65 0-1.25.4-1.51 1z"/></svg></button>
+    <button class="iconbtn" id="btnRefresh" data-tip="Re-read every facet's status from the bridge right now (also auto-refreshes every 15s)" aria-label="Refresh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg></button>
+  </div>
+</header>
+<!-- SAY IT (dock-bar `say` contract, John 2026-08-23): teach the ASK before the status.
+     "for fusion I might say 'open the step in fusion'... those should all be taught first
+     and foremost in those dashboards, possibly even at the top of it." -->
+<!-- SHARED newbie panel (adom-ui-design 2.0.0). The module owns the card, columns,
+     table, both icons, clipboard + send paths, toasts, tooltips, X and ? toggle.
+     We own only: our phrases, our noun, and what the demo button does. -->
+<!-- ⛔ A SIBLING OF the MAIN element, NEVER INSIDE IT (page issue #55, 2026-08-27).
+     It used to sit inside MAIN, which has `padding:20px 16px`, so the panel was inset
+     16px on each side instead of the full-width band the contract calls for. The rule in
+     the skill is "a SIBLING of your app body, never inside your app's grid (or it stays a
+     column however wide you style it)", and the assertion it gives is
+     appBody.top === panel.bottom - which only holds when the panel is out here. -->
+<div id="newbie"></div>
+
+<main>
+  <h2>Status</h2>
+  <div id="targets"></div>
+  <div class="seatnote" id="seatnote" style="display:none">One Autodesk seat, many boxes: start Fusion wherever suits the moment - the seat follows automatically and the other box's Fusion suspends resumably.</div>
+  <div class="leds" id="ledGrid"></div>
+  <div class="led-detail" id="ledDetail" style="display:none"></div>
+  <div class="btnrow">
+    <button class="btn primary" id="btnSetup" data-tip="Check every facet and get whatever is not ready READY for you - nothing here is a manual chore">Setup</button>
+    <button class="btn" id="btnStart" data-tip="Launch Fusion on the selected box, in the background - your focus is never taken">Start Fusion</button>
+    <button class="btn" id="btnStop" data-tip="Close Fusion gracefully on the selected box (documents are closed cleanly first)">Close Fusion</button>
+  </div>
+
+  <h2>Demos</h2>
+  <div class="card">
+    <div class="led-label">Guided tour</div>
+    <div class="led-sub">Walks every surface on a sample part: library, symbol, footprint, 3D chip, a generated solo board in 2D and 3D. Runs entirely in the background. Start it from <b>Play the demo</b> at the top of the page - the shared panel owns that button, so there is exactly one of it.</div>
+    <div class="barlabel" id="tourCaption" style="display:none;margin-top:8px;color:var(--text);font-size:13px;line-height:1.5"></div>
+    <div class="bar" id="tourBar"><div></div></div>
+    <div class="barlabel" id="tourLabel"></div>
+    <!-- dash-demo contract: the player toolbar - fixed bottom-center, visible only while
+         the demo runs. prev / play-pause / next | mute | step x/y | exit. -->
+    <div id="tourTransport" style="display:none">
+      <button class="tt" id="ttPrev" data-tip="Replay the previous view">&#9198;</button>
+      <button class="tt" id="ttPause" data-tip="Pause at the next step boundary">&#9208;</button>
+      <button class="tt" id="ttNext" data-tip="Skip the upcoming step">&#9197;</button>
+      <span class="tt-sep"></span>
+      <button class="tt" id="ttMute" data-tip="Mute or unmute the narration">&#128266;</button>
+      <span class="tt-sep"></span>
+      <span class="tt-step" id="ttStep">step -/-</span>
+      <span class="tt-sep"></span>
+      <button class="tt tt-exit" id="ttExit" data-tip="End the demo and clean up its documents">&#10005; exit</button>
+    </div>
+    <div class="sgrid" id="tourGallery" style="margin-top:12px"></div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="led-label">Import a wiki part into Fusion</div>
+    <div class="led-sub">Pulls an adom basic part page from the wiki and opens its library in Fusion's Library Manager.</div>
+    <div class="btnrow">
+      <input id="partPage" value="aravk/in-s42ata" style="flex:1;min-width:180px;background:var(--elevated);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px 10px;font:13px 'JetBrains Mono',monospace">
+      <button class="btn" id="btnImportPart" data-tip="Clone this wiki part page, send its library to the box, and open it in Fusion's Library Manager">Import part</button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="led-label">Open a wiki molecule in Fusion</div>
+    <div class="led-sub">Coming next: pulls a molecule page and opens its model in Fusion. Ask your AI: "open the molecule from wiki page owner/slug in Fusion".</div>
+  </div>
+
+
+  <h2>Surfaces: every content type, one real part</h2>
+  <div class="seatnote" id="surfnote">Loading the demo part...</div>
+  <div class="sgrid" id="surfaces"></div>
+
+  <h2>Ask your AI</h2>
+  <div id="prompts"></div>
+</main>
+
+
+<dialog id="dlgSettings" class="settings" tabindex="-1" aria-label="Fusion Dashboard Settings">
+  <div class="dlghead">
+    <h2>Fusion Dashboard Settings</h2>
+    <button class="xbtn" id="btnXSettings" aria-label="Close settings" data-tip="Close settings (Escape, or click outside)">&#10005;</button>
+  </div>
+  <div class="dlgbody" id="settingsBody">
+
+  <div class="settings-card">
+    <div class="card-title">Opening the Dashboard <span class="card-status" id="stAutoGreen">reading...</span></div>
+    <div class="card-desc">Opening this page can mean two different things, and this switch decides which. With it ON, the Dashboard treats your visit as an intent to work: it launches Fusion on the selected box if it is closed, drives the Autodesk sign-in as far as code can (stopping at your password and telling you), turns on Autodesk's <code>MCP</code> server, and signs in to APS cloud search when a client id is already configured. Every step runs in the BACKGROUND and narrates itself as a toast; nothing steals your focus. With it OFF, the Dashboard only reports status and acts on nothing until you press a button.</div>
+    <div class="divider"></div>
+    <div class="ctlrow"><span class="lbl">Get everything ready when I open the Dashboard</span>
+      <div class="toggle" id="tglAutoGreen" role="switch" aria-checked="true"></div></div>
+    <div class="default-hint">Default: On</div>
+  </div>
+
+  <div class="settings-card">
+    <div class="card-title">Fusion upkeep <span class="card-status" id="stUpkeep"></span></div>
+    <div class="card-desc">Two chores the bridge does for you on the machine itself. <b>Auto-update</b> clicks Fusion's own "Update Now" nag in the background whenever Autodesk shows it, so you always run the latest build and never see the prompt. <b>Seat take-over</b> answers Autodesk's "Active Sessions Exceeded" dialog when your one seat is busy on another machine: it clicks through both dialogs in the background, taking the seat here while the other machine's Fusion suspends RESUMABLY, and toasts you once so you know. Both are checked by a background sweep every 20 seconds, and both choices are sticky per user.</div>
+    <div class="divider"></div>
+    <div class="ctlrow"><span class="lbl">Silently install Fusion updates</span>
+      <div class="toggle" id="tglAutoUpdate" role="switch" aria-checked="true"></div></div>
+    <div class="default-hint">Default: On</div>
+    <div class="divider"></div>
+    <div class="ctlrow"><span class="lbl">Take over the Autodesk seat when it is busy elsewhere</span>
+      <div class="toggle" id="tglSeatTakeover" role="switch" aria-checked="true"></div></div>
+    <div class="default-hint">Default: On</div>
+  </div>
+
+  <div class="settings-card">
+    <div class="card-title">Taskbar identity <span class="card-status" id="stBadge"></span></div>
+    <div class="card-desc">While Adom is driving Fusion, its Windows taskbar button wears a small Adom mark in the corner, so a glance at the taskbar tells you why Fusion is busy. The badge is painted cross-process through Adom Bridge's <code>desktop_taskbar</code> verb, appears on the first driving verb, and sheds itself after five minutes with no driving activity (status polls do not count, or it would never clear). Turning this off removes the badge immediately and permanently.</div>
+    <div class="divider"></div>
+    <div class="ctlrow"><span class="lbl">Show the "Adom is driving" badge on Fusion's taskbar button</span>
+      <div class="toggle" id="tglBadge" role="switch" aria-checked="true"></div></div>
+    <div class="default-hint">Default: On</div>
+  </div>
+
+  <div class="settings-card">
+    <div class="card-title">Activity indicator <span class="card-status" id="stActivity"></span></div>
+    <div class="card-desc">How Fusion's taskbar button signals that Adom is running a verb. <b>Progress bar</b> paints a real bar paced by how long <i>this machine</i> has actually taken for that verb, and clears the moment it finishes or fails - so you can tell "nearly done" from "just started" at a glance. <b>Flash</b> is the older attention flash: it says something is happening, and nothing more. A verb with no measured history yet runs the bar indeterminate rather than inventing a percentage. Run times are recorded per verb to <code>verb-times.jsonl</code>; <code>fusion_verb_times</code> reports p50/p90 per verb.</div>
+    <div class="divider"></div>
+    <fieldset class="choice-set" id="segActivity" role="radiogroup" aria-label="Activity indicator">
+      <label class="choice" data-mode="progress"><input type="radio" name="activity" value="progress">
+        <span class="shot-pending">screenshot pending<br>real capture of the taskbar bar</span>
+        <span class="cname">Progress bar</span>
+        <span class="cdesc">Fills over the verb's usual duration, so you can tell "nearly done" from "just started".</span></label>
+      <label class="choice" data-mode="flash"><input type="radio" name="activity" value="flash">
+        <span class="shot-pending">screenshot pending<br>real capture of the orange flash</span>
+        <span class="cname">Orange flash</span>
+        <span class="cdesc">Highlights the button until you look. Says something happened, not how long is left.</span></label>
+      <label class="choice" data-mode="both"><input type="radio" name="activity" value="both">
+        <span class="shot-pending">screenshot pending</span>
+        <span class="cname">Both</span>
+        <span class="cdesc">The bar plus the flash - the attention grab and the progress at once.</span></label>
+      <label class="choice" data-mode="none"><input type="radio" name="activity" value="none">
+        <span class="shot-pending">screenshot pending<br>the plain button, no highlight</span>
+        <span class="cname">Off</span>
+        <span class="cdesc">The taskbar button never changes while a verb runs.</span></label>
+    </fieldset>
+    <div class="default-hint">Default: Progress bar</div>
+  </div>
+
+  <div class="settings-card">
+    <div class="card-title">Surfaces demo <span class="card-status" id="stPart"></span></div>
+    <div class="card-desc">The Surfaces section walks one real adom basic part through every content type. It defaults to a DIFFERENT part than the Adom Bridge web-control demo uses, so clicking through proves the flow generalizes to a new component rather than re-proving one file. Change the wiki page below to demo any basic part that publishes a <code>.lbr</code> (and ideally a <code>.step</code> for the real 3D body).</div>
+    <div class="divider"></div>
+    <div class="ctlrow"><span class="lbl">Wiki part page</span>
+      <input id="inpPart" style="flex:0 1 260px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:7px 10px;font:12.5px 'JetBrains Mono',monospace"></div>
+    <div class="default-hint">Default: aravk/in-s63btg</div>
+  </div>
+
+  </div><!-- /dlgbody -->
+  <div class="settings-footer">
+    <button class="restore-btn" id="btnRestoreDefaults" type="button" data-tip="Reset every setting on this page to its default">Restore defaults</button>
+    <div class="setfoot">Settings are stored on this machine: the Dashboard's own choices in <code>~/.adom/fusion-dashboard/settings.json</code>, the Fusion upkeep and badge choices as sticky bridge settings on the target box.</div>
+    <div class="btnrow" style="justify-content:flex-end;margin-top:.2rem"><button class="btn" id="btnCloseSettings" data-tip="Close settings - Escape and clicking outside do the same">Close</button></div>
+  </div>
+</dialog>
+
+<dialog id="dlgSetup">
+  <h2 style="margin-top:0">First-time setup</h2>
+  <div id="setupBody" class="led-sub" style="font-size:14px"></div>
+  <div class="btnrow" style="justify-content:flex-end">
+    <button class="btn" id="btnSetupNext" data-tip="Run the next remaining setup step for you, in the background">Run next step</button>
+    <button class="btn" id="btnCloseSetup" data-tip="Close this setup summary">Close</button>
+  </div>
+</dialog>
+
+<div id="toasts"></div>
+<div id="tt" role="tooltip"></div>
+<div id="appinfo"></div>
+<script>
+const $=s=>document.querySelector(s);
+const consoleBuf=[];
+["log","warn","error"].forEach(k=>{const o=console[k].bind(console);console[k]=(...a)=>{consoleBuf.push(k+": "+a.join(" "));if(consoleBuf.length>300)consoleBuf.shift();o(...a);};});
+window.onerror=(m)=>{consoleBuf.push("onerror: "+m);};
+function toast(msg,kind){const t=document.createElement('div');t.className='toast '+(kind||'');t.textContent=msg;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),kind==='err'?9000:4000);}
+async function api(path,opts){const r=await fetch(path,opts);return r.json();}
+async function act(action,args){return api('api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,target:curTarget||undefined,args:args||{}})});}
+
+let lastStatus=null;
+let curTarget=localStorage.getItem('fdTarget')||'';
+
+// ── FLOATY TOUR REMOTE (?remote=<demoId>): the whole page collapses to a compact
+// transport + live caption panel, sized for the little pup window the tour opens.
+const REMOTE_ID=new URLSearchParams(location.search).get('remote');
+if(REMOTE_ID){
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.title='Fusion Tour Remote';
+    document.querySelector('main').innerHTML=
+      '<div style="padding:6px 2px">'+
+      '<div style="font-family:\'Familjen Grotesk\',sans-serif;font-weight:600;color:var(--accent);font-size:15px;margin-bottom:10px">Fusion Tour</div>'+
+      '<div class="bar" id="rBar" style="display:block"><div></div></div>'+
+      '<div class="barlabel" id="rLabel" style="margin-top:6px"></div>'+
+      '<div id="rCaption" style="margin-top:10px;font-size:13px;line-height:1.5;color:var(--text)"></div>'+
+      '<div class="btnrow" style="margin-top:14px">'+
+      '<button class="btn" id="rPrev" data-tip="Replay previous view">&#9198;</button>'+
+      '<button class="btn" id="rPause" data-tip="Pause / resume">&#9208;</button>'+
+      '<button class="btn" id="rNext" data-tip="Skip upcoming step">&#9197;</button>'+
+      '</div><div class="btnrow" style="margin-top:8px">'+
+      '<button class="btn" id="rExit" style="border-color:rgba(248,81,73,.5);color:var(--red)" data-tip="End the tour">&#9209; Exit tour</button>'+
+      '</div></div>';
+    let rp=false, rBusy=false, rExited=false;
+    const rctl=async(a)=>{if(rBusy||rExited)return;rBusy=true;try{
+      let ok=await act('tour_control',{demoId:REMOTE_ID,action:a}).catch(()=>null);
+      if(!ok)await act('tour_control',{demoId:REMOTE_ID,action:a});
+      if(a==='exit')rExited=true;
+      if(a==='pause'){rp=true;$('#rPause').innerHTML='&#9654;';}
+      if(a==='resume'){rp=false;$('#rPause').innerHTML='&#9208;';}
+    }catch(e){}finally{rBusy=false;}};
+    $('#rPause').onclick=()=>rctl(rp?'resume':'pause');
+    $('#rNext').onclick=()=>rctl('next');
+    $('#rPrev').onclick=()=>rctl('prev');
+    $('#rExit').onclick=()=>rctl('exit');
+    let busy=false;
+    const rt=async()=>{
+      if(busy)return; busy=true;
+      try{
+        const p=await act('tour_progress',{demoId:REMOTE_ID,imagesAs:'paths',sinceShot:9999});const q=p.data||p;
+        $('#rBar>div').style.width=(q.percent||0)+'%';
+        $('#rLabel').textContent=(q.percent||0)+'%  '+(q.stepLabel||'');
+        if(q.stepCaption)$('#rCaption').textContent=q.stepCaption;
+        if(q.done){$('#rLabel').textContent=q.failed?('stopped: '+(q.error||'')):'Tour complete';busy=false;return;}
+      }catch(e){}
+      busy=false;setTimeout(rt,2000);
+    };
+    rt();
+  });
+}
+
+// SAY IT strip (dock-bar `say` contract): keep this list in lockstep with dockbar.json's
+// `say` array - the dock interstitial and this strip must teach the same phrases.
+// AI-thread posture (2026-08-24 ruling, say-strip contract): NEW threads are trusted -
+// Send to AI goes through POST /api/say-send (ai-threads/new + run-prompt submit:true).
+// RESUMING/typing into EXISTING threads stays parked: /api/say-try still answers
+// {parked:true} and the census staging path stays retired until the platform all-clear.
+const SAY_PHRASES=[
+  'open the step in fusion',
+  'export this board to fusion',
+  'build the parts library in fusion',
+  'sign me into fusion',
+  'search my fusion cloud files for the amp board',
+  'export the fusion design as STEP',
+];
+function copyText(t){
+  // clipboard API needs a secure context AND a focused document: an unfocused window
+  // HANGS navigator.clipboard.writeText ("document is not focused") - so check focus
+  // SYNCHRONOUSLY and take the in-gesture execCommand path immediately (an execCommand
+  // fallback after an async rejection is outside the user gesture and fails too).
+  // Focused path still races an ~800ms timeout into the legacy fallback.
+  // (parts-search 1.1.2 recipe, dock-bar fleet contract.)
+  if(!(document.hasFocus&&document.hasFocus()))return Promise.resolve(copyTextLegacy(t));
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    return Promise.race([
+      navigator.clipboard.writeText(t),
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('clipboard timeout')),800))
+    ]).catch(()=>copyTextLegacy(t));
+  }
+  return Promise.resolve(copyTextLegacy(t));
+}
+function copyTextLegacy(t){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}ta.remove();}
+
+
+// Scaffolding state - the X, the header ? toggle, and the open/closed memory - is OWNED BY
+// THE MODULE now; it is handed our #btnRecall as toggleButton. We deliberately keep no
+// parallel copy, because two implementations of "is the panel open" is precisely the drift
+// the shared module exists to end.
+
+let targetsCache=[];
+function statusUrl(){return 'api/status'+(curTarget?('?target='+encodeURIComponent(curTarget)):'');}
+async function loadTargets(){
+  try{
+    const d=await api('api/targets');
+    targetsCache=d.targets||[];
+    const el=$('#targets');el.innerHTML='';
+    if(targetsCache.length>1){$('#seatnote').style.display='';}
+    if(!curTarget&&targetsCache.length){curTarget=(targetsCache.find(t=>t.running)||targetsCache[0]).name;localStorage.setItem('fdTarget',curTarget);}
+    for(const t of targetsCache){
+      const b=document.createElement('button');b.className='tpill'+(t.name===curTarget?' active':'');
+      b.setAttribute('data-tip',(t.running?'Fusion is running here':'Fusion is closed here')+(t.lastReadyAt?(' - last ready '+t.lastReadyAt):''));
+      b.innerHTML='<span class="tdot'+(t.running?' on':'')+'"></span>'+t.name;
+      b.onclick=()=>{curTarget=t.name;localStorage.setItem('fdTarget',curTarget);loadTargets();refresh();toast('switched to '+t.name)};
+      el.appendChild(b);
+    }
+  }catch(e){}
+}
+const LED_ORDER=['fusionRunning','addinReady','signedIn','aps','mcp','datahub','update'];
+const LED_LABELS={fusionRunning:'Fusion running',addinReady:'Bridge add-in',signedIn:'Autodesk sign-in',
+                  aps:'APS cloud search',mcp:'Fusion MCP server',datahub:'Data Hub API',update:'Fusion up to date'};
+function renderSkeleton(){
+  const g=$('#ledGrid');if(g.children.length)return;      // never wipe real data
+  g.innerHTML=LED_ORDER.map(k=>`<button class="led-pill"><span class="dot"></span>${LED_LABELS[k]} <span class="st">checking</span></button>`).join('');
+}
+let ledSel=null;
+function renderLeds(st){
+  // status-leds contract: pills only at rest, prose on tap, red carries its next step,
+  // stale busy escalates to "stuck?" (server sets state:'stale' past 15 min).
+  const g=$('#ledGrid');g.innerHTML='';
+  const leds=st.leds||{};
+  const keys=LED_ORDER.filter(k=>leds[k]).concat(Object.keys(leds).filter(k=>!LED_ORDER.includes(k)));
+  const stateOf=l=>l.state==='starting'?'starting':(l.state==='stale'?'busy':(l.pending||l.state==='dormant'||l.state==='busy')?'busy':(l.on?'ok':'bad'));
+  const wordOf=l=>l.state==='stale'?'stuck?':(l.state==='starting'?'starting':(l.state==='dormant'?'dormant':(l.state==='busy'||l.pending?'busy':(l.on?'':'needs setup'))));
+  for(const key of keys){
+    const l=leds[key];
+    const p=document.createElement('button');p.className='led-pill'+(ledSel===key?' sel':'');
+    p.dataset.state=stateOf(l);
+    const w=wordOf(l);
+    p.innerHTML=`<span class="dot"></span>${l.label}${w?` <span class="st">${w}</span>`:''}`;
+    p.onclick=()=>{
+      const d=$('#ledDetail');
+      if(ledSel===key){ledSel=null;d.style.display='none';p.classList.remove('sel');return;}
+      ledSel=key;
+      document.querySelectorAll('.led-pill').forEach(x=>x.classList.remove('sel'));p.classList.add('sel');
+      d.style.display='';
+      d.innerHTML=`<b>${l.label}</b>${l.version?` <span class="who">${l.version}</span>`:''}<div style="margin-top:6px">${l._hint||''}</div>${l.who?`<div class="who">signed in as ${l.who}</div>`:''}`;
+    };
+    g.appendChild(p);
+    if(ledSel===key){const d=$('#ledDetail');d.style.display='';
+      d.innerHTML=`<b>${l.label}</b>${l.version?` <span class="who">${l.version}</span>`:''}<div style="margin-top:6px">${l._hint||''}</div>${l.who?`<div class="who">signed in as ${l.who}</div>`:''}`;}
+  }
+  // dash-header: target chip with connection LED; versions feed the popover, never the bar
+  $('#tname').textContent=st.target?('target: '+st.target):'no bridge target';
+  const tl=$('#tled');tl.className='tled '+(st.answered===false?'bad':(leds.fusionRunning?'on':''));
+  if(st.bridgeVersion)window.__lastBridgeVer=st.bridgeVersion;
+  $('#bpDash').textContent=st.dashboardVersion||'-';
+  $('#bpBridge').textContent=st.bridgeVersion||window.__lastBridgeVer||'-';
+  $('#bpAddin').textContent=(leds.addinReady&&leds.addinReady.version)||'-';
+  $('#meta').textContent=st.stale?'(busy - last verified state)':'';
+}
+async function refresh(){try{lastStatus=await api(statusUrl());renderLeds(lastStatus);}catch(e){toast('status failed: '+e,'err');}}
+$('#btnRefresh').onclick=()=>{toast('refreshing status');refresh();};
+$('#btnStart').onclick=async()=>{toast('starting Fusion in the background');await act('start');setTimeout(refresh,4000);};
+$('#btnStop').onclick=async()=>{toast('closing Fusion');await act('stop');setTimeout(refresh,4000);};
+
+// Tour with a REAL progress bar (the harness contract: percent / stepLabel / done).
+async function startFusionDemo(){
+  toast('starting the guided tour (background)');
+  const s=await act('tour');const d=s.data||s;const id=d.demoId;
+  if(!id){toast('tour failed to start: '+(d.error||'unknown'),'err');return;}
+  $('#tourBar').style.display='block';
+  const gal=$('#tourGallery');gal.innerHTML='';
+  const tt=$('#tourTransport');tt.style.display='flex';
+  tourSetMuted(tourMuted());   // paint the mute button from the persisted state
+  $('#ttMute').onclick=()=>tourSetMuted(!tourMuted());
+  let ttPaused=false, ctlBusy=false, ctlExited=false;
+  // one control in flight at a time, nothing after Exit (issue #121: repeated Back/Exit clicks
+  // queued a replay loop); the bridge debounces too
+  const ctl=async(action)=>{if(ctlBusy||ctlExited)return;ctlBusy=true;try{
+    let r=await act('tour_control',{demoId:id,action}).catch(()=>null);
+    if(!r)r=await act('tour_control',{demoId:id,action});   // one silent retry - a slow relay hop must not eat a pause click
+    const x=r.data||r;
+    if(x.success===false){toast(x.error||'control refused','err');return;}
+    if(action==='pause'){ttPaused=true;$('#ttPause').innerHTML='&#9654;';if(tourAudioEl)tourAudioEl.pause();toast('pausing at the next step boundary');}
+    if(action==='resume'){ttPaused=false;$('#ttPause').innerHTML='&#9208;';if(tourAudioEl&&!tourMuted())tourAudioEl.play().catch(()=>{});toast('resuming');}
+    if(action==='next')toast('skipping the upcoming step');
+    if(action==='prev')toast('replaying the previous view');
+    if(action==='exit'){ctlExited=true;if(tourAudioEl)tourAudioEl.pause();tourAudioQueue=[];toast('exiting the demo (documents will be cleaned up)');}
+  }catch(e){toast('control failed: '+e,'err');}finally{ctlBusy=false;}};
+  $('#ttPause').onclick=()=>ctl(ttPaused?'resume':'pause');
+  $('#ttNext').onclick=()=>ctl('next');
+  $('#ttPrev').onclick=()=>ctl('prev');
+  $('#ttExit').onclick=()=>ctl('exit');
+  let since=0, shown=0, lastCaption='', polling=false;
+  const addShot=(label,b64)=>{
+    const c=document.createElement('div');c.className='scard';
+    c.innerHTML='<div class="sstate ok" style="margin:0 0 6px">'+(label||'step')+'</div>'+
+      '<img class="sshot show" alt="'+(label||'')+'" src="'+imgSrc(b64)+'">';
+    c.querySelector('img').onclick=e=>window.open(e.target.src,'_blank');
+    gal.appendChild(c);shown++;
+  };
+  const tick=async()=>{
+    // SELF-SCHEDULING, never overlapping (John caught 41 duplicate views at 35%,
+    // 2026-08-24): setInterval stacked concurrent polls whenever a relay round-trip ran
+    // past 2.5s, and every overlapping poll carried the same stale sinceShot cursor, so
+    // each one re-appended the whole backlog. One poll in flight at a time, the cursor
+    // advances before the next is scheduled, and the windowed shots array is the ONLY
+    // delivery channel (stepShot's server-side cursor is per-tour, not per-viewer, so
+    // two open pages would steal frames from each other).
+    if(polling)return; polling=true;
+    let q={};
+    try{const p=await act('tour_progress',{demoId:id,imagesAs:'base64',sinceShot:since});q=p.data||p;}
+    catch(e){polling=false;setTimeout(tick,4000);return;}
+    polling=false;
+    $('#tourBar>div').style.width=(q.percent||0)+'%';
+    $('#tourLabel').textContent=(q.percent||0)+'% '+(q.stepLabel||'')+(shown?('  -  '+shown+' views captured'):'');
+    if(q.stepCaption&&q.stepCaption!==lastCaption){
+      lastCaption=q.stepCaption;
+      const cap=$('#tourCaption');cap.style.display='block';cap.textContent=q.stepCaption;
+      tourSpeak(q.stepCaption,q.step);
+    }
+    const stepsAll=(d.steps||[]).map(x=>x.step);
+    const si=stepsAll.indexOf(q.step);
+    if(si>=0)$('#ttStep').textContent='step '+(si+1)+'/'+stepsAll.length;
+    (q.shots||[]).forEach(s=>{if(s.image)addShot(s.label||s.title,s.image);});
+    if(typeof q.shotCount==='number')since=q.shotCount; else since+= (q.shots||[]).length;
+    if(q.done){
+      $('#tourTransport').style.display='none';
+      if(tourAudioEl)tourAudioEl.pause();tourAudioQueue=[];
+      $('#tourLabel').textContent=(q.failed?'tour stopped: '+(q.error||''):'tour complete')+'  -  '+shown+' views captured';
+      toast(q.failed?('tour failed: '+(q.error||'')):'tour complete: '+shown+' views captured',q.failed?'err':'ok');
+      return;
+    }
+    setTimeout(tick,2500);
+  };
+  tick();
+};
+// ── dash-demo audio: pre-created per-step mp3s (embedded in this binary at release
+// time), played by DEFAULT with a persisted mute (localStorage). Caption-text tts via
+// /api/tts remains only as the fallback for a step with no shipped clip.
+let tourAudioQueue=[], tourAudioPlaying=false, tourAudioEl=null;
+function tourMuted(){try{return localStorage.getItem('adom-tour-muted')==='1'}catch(e){return false}}
+function tourSetMuted(m){try{localStorage.setItem('adom-tour-muted',m?'1':'0')}catch(e){}
+  const b=$('#ttMute');if(b){b.innerHTML=m?'&#128263;':'&#128266;';b.classList.toggle('muted',m);}
+  if(m&&tourAudioEl){tourAudioEl.pause();tourAudioQueue=[];tourAudioPlaying=false;}}
+function tourSpeak(caption,stepKey){
+  if(tourMuted())return;
+  tourAudioQueue.push({caption,stepKey});
+  if(!tourAudioPlaying)tourAudioNext();
+}
+async function tourAudioNext(){
+  const item=tourAudioQueue.shift();
+  if(!item){tourAudioPlaying=false;return;}
+  tourAudioPlaying=true;
+  const srcs=[];
+  if(item.stepKey)srcs.push('demo/audio/'+encodeURIComponent(item.stepKey)+'.mp3');
+  if(item.caption)srcs.push('api/tts?text='+encodeURIComponent(item.caption));
+  const tryPlay=async(i)=>{
+    if(i>=srcs.length){tourAudioNext();return;}
+    try{
+      const a=new Audio(srcs[i]);tourAudioEl=a;
+      a.onended=()=>tourAudioNext();
+      a.onerror=()=>tryPlay(i+1);
+      await a.play();
+    }catch(e){tryPlay(i+1);}
+  };
+  tryPlay(0);
+}
+
+$('#btnImportPart').onclick=async()=>{
+  const page=$('#partPage').value.trim();
+  toast('importing '+page+' from the wiki into Fusion');
+  const r=await act('import_basic_part',{page});const d=r.data||r;
+  if(d.error){toast('import failed: '+d.error,'err');}else{toast('library opened in Fusion (background)','ok');}
+};
+
+// Settings
+$('#btnSettings').onclick=async()=>{
+  const s=(lastStatus&&lastStatus.settings)||{};
+  await loadDashSettings();
+  const set=(sel,on)=>{const t=$(sel);t.classList.toggle('is-on',on);t.setAttribute('aria-checked',String(on));};
+  const ag=dashSettings.autoGreenOnLaunch!==false;
+
+  set('#tglAutoGreen',ag);
+  $('#stAutoGreen').textContent=ag?'active - drives every facet to green on open':'status only';
+  $('#stAutoGreen').className='card-status'+(ag?' ok':'');
+  const au=s.autoUpdateFusion!==false, sk=s.autoTakeOverSeat!==false;
+  set('#tglAutoUpdate',au);set('#tglSeatTakeover',sk);
+  $('#stUpkeep').textContent=(au?'updates on':'updates off')+' | '+(sk?'seat take-over on':'seat take-over off');
+  $('#stUpkeep').className='card-status'+((au&&sk)?' ok':'');
+  const bd=s.showDrivingBadge!==false;
+  set('#tglBadge',bd);
+  $('#stBadge').textContent=bd?'badge on while driving':'badge off';
+  $('#stBadge').className='card-status'+(bd?' ok':'');
+  const am=(s.activityIndicator||'progress');
+  const paintActivity=mode=>{
+    document.querySelectorAll('#segActivity .choice').forEach(c=>{
+      const on=c.getAttribute('data-mode')===mode;
+      c.classList.toggle('sel',on);
+      const r=c.querySelector('input');if(r)r.checked=on;
+    });
+    $('#stActivity').textContent=mode==='none'?'no taskbar signal':(mode+' while a verb runs');
+    $('#stActivity').className='card-status'+(mode!=='none'?' ok':'');
+  };
+  document.querySelectorAll('#segActivity .choice').forEach(c=>{
+    c.onclick=async()=>{
+      const mode=c.getAttribute('data-mode');
+      paintActivity(mode);
+      try{ await act('set_activity_indicator',{mode}); toast('activity indicator: '+mode); }
+      catch(e){ toast('could not set indicator: '+e,'err'); }
+    };
+  });
+  paintActivity(am);
+  $('#inpPart').value=dashSettings.demoPart||'aravk/in-s63btg';
+  $('#stPart').textContent=(dashSettings.demoPart||'').split('/').pop().toUpperCase();
+  const dlg=$('#dlgSettings');
+  dlg.showModal();
+  // showModal() autofocuses the first focusable child; ours is the wiki-part INPUT in the last
+  // card, so the modal opened scrolled to the bottom. Focus the dialog itself and pin to top.
+  dlg.focus();
+  const body=$('#settingsBody');body.scrollTop=0;
+  requestAnimationFrame(()=>{body.scrollTop=0;});
+};
+$('#btnCloseSettings').onclick=()=>$('#dlgSettings').close();
+$('#btnXSettings').onclick=()=>$('#dlgSettings').close();
+// Two-click, auto-disarming Restore defaults (settings-layout): a destructive reset never fires on
+// a single click. First click arms (red, "Confirm reset"), second click restores, and it disarms
+// itself after 4s so a stray earlier click can't lie in wait.
+(()=>{
+  const btn=$('#btnRestoreDefaults');let armed=false,t=null;
+  const disarm=()=>{armed=false;btn.classList.remove('armed');btn.textContent='Restore defaults';if(t){clearTimeout(t);t=null;}};
+  btn.onclick=async()=>{
+    if(!armed){armed=true;btn.classList.add('armed');btn.textContent='Confirm reset';t=setTimeout(disarm,4000);return;}
+    disarm();
+    const DEF={autoGreenOnLaunch:true,autoUpdateFusion:true,autoTakeOverSeat:true,showDrivingBadge:true,activityIndicator:'progress',demoPart:'aravk/in-s63btg'};
+    try{
+      await saveDashSettings({autoGreenOnLaunch:DEF.autoGreenOnLaunch,demoPart:DEF.demoPart});
+      await act('set_auto_update',{enabled:DEF.autoUpdateFusion});
+      await act('set_seat_takeover',{enabled:DEF.autoTakeOverSeat});
+      await act('set_driving_badge',{enabled:DEF.showDrivingBadge});
+      await act('set_activity_indicator',{mode:DEF.activityIndicator});
+      toast('Settings restored to defaults','ok');
+      renderSurfaces();
+      $('#btnSettings').onclick();  // repaint the panel from the restored state
+    }catch(e){ toast('could not restore defaults: '+e,'err'); }
+  };
+})();
+// Click-OUTSIDE closes. A <dialog>'s backdrop is part of the dialog element, so a click that
+// lands on the dialog itself (not on its children) is a backdrop click - but only trust it when
+// the pointer is actually outside the dialog's box, or a click on the dialog's own padding
+// would close it too (John, 2026-08-18: "click outside the settings dialog and it expires").
+$('#dlgSettings').addEventListener('click',e=>{
+  const d=$('#dlgSettings');if(e.target!==d)return;
+  const r=d.getBoundingClientRect();
+  const inside=e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom;
+  if(!inside)d.close();
+});
+function wireToggle(sel,actionName,label){$(sel).onclick=async(e)=>{
+  const t=e.currentTarget;const now=!t.classList.contains('is-on');
+  t.classList.toggle('is-on',now);t.setAttribute('aria-checked',String(now));
+  await act(actionName,{enabled:now});
+  toast(label+' '+(now?'on':'off')+' (sticky)','ok');
+};}
+wireToggle('#tglAutoUpdate','set_auto_update','auto-update');
+wireToggle('#tglSeatTakeover','set_seat_takeover','seat take-over');
+wireToggle('#tglBadge','set_driving_badge','driving badge');
+$('#inpPart').onchange=async(e)=>{const v=e.target.value.trim();if(!v)return;await saveDashSettings({demoPart:v});renderSurfaces();toast('Surfaces demo part set to '+v,'ok');};
+$('#tglAutoGreen').onclick=async(e)=>{
+  const t=e.currentTarget;const now=!t.classList.contains('is-on');
+  t.classList.toggle('is-on',now);t.setAttribute('aria-checked',String(now));
+  await saveDashSettings({autoGreenOnLaunch:now});
+  toast(now?'I will get everything ready whenever you open the Dashboard':'Status only - I will not act on open','ok');
+  if(now)kickAutoGreen();
+};
+
+// Setup: walk the not-green facets in order, one action per click.
+const SETUP_ORDER=[
+  {led:'fusionRunning',action:'start',label:'Start Fusion (background)'},
+  {led:'signedIn',action:'signin',label:'Drive the Autodesk sign-in (you only type your password)'},
+  {led:'aps',action:'aps_signin',label:'Set up APS cloud search'},
+  {led:'mcp',action:'mcp_enable',label:'Enable the Fusion MCP server'},
+];
+function setupPending(){if(!lastStatus)return[];return SETUP_ORDER.filter(s=>{const l=lastStatus.leds[s.led];return l&&!l.on&&l.state!=='dormant';});}
+function renderSetup(){
+  const p=setupPending();
+  const dormant=lastStatus&&Object.values(lastStatus.leds).some(l=>l.state==='dormant');
+  $('#setupBody').innerHTML=p.length?('Remaining steps:<br>'+p.map((s,i)=>`${i+1}. ${s.label}`).join('<br>')):(dormant?'Everything is configured - Fusion just is not running on '+(curTarget||'this box')+'. Start Fusion (or start it on another box; the Autodesk seat follows automatically).':'Everything is configured. You are ready to go.');
+  $('#btnSetupNext').style.display=p.length?'':'none';
+}
+$('#btnSetup').onclick=async()=>{await refresh();renderSetup();$('#dlgSetup').showModal();kickAutoGreen(true);};
+$('#btnCloseSetup').onclick=()=>$('#dlgSetup').close();
+$('#btnSetupNext').onclick=async()=>{
+  const p=setupPending();if(!p.length)return;
+  toast('running: '+p[0].label);
+  await act(p[0].action, p[0].action==='signin'?{}:{});
+  setTimeout(async()=>{await refresh();renderSetup();},5000);
+};
+
+// ── Dashboard-own settings (container-side) + AUTO-GREEN on open ──
+let dashSettings={autoGreenOnLaunch:true,demoPart:'aravk/in-s63btg'};
+async function loadDashSettings(){
+  try{const d=await api('settings');dashSettings=d.settings||dashSettings;}catch(_){}
+  return dashSettings;
+}
+async function saveDashSettings(patch){
+  dashSettings=Object.assign({},dashSettings,patch);
+  try{await api('settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});}catch(_){}
+}
+async function kickAutoGreen(force){
+  try{
+    const r=await api('api/auto-green'+(curTarget?('?target='+encodeURIComponent(curTarget)):''),
+      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({force:!!force})});
+    if(r.started===false&&force!==true){console.log('auto-green off by setting');}
+  }catch(_){}
+}
+
+// ── Surfaces demo: eight content types on a DIFFERENT part than web control uses ──
+const SURFACES=[['symbol','Symbol'],['footprint','Footprint'],['package3d','3D package'],['library','Library'],
+                ['schematic','Schematic'],['board2d','2D board'],['board3d','3D board'],['project','Project']];
+function renderSurfaces(){
+  const part=(dashSettings.demoPart||'aravk/in-s63btg');
+  const name=part.split('/').pop().toUpperCase();
+  $('#surfnote').textContent='The same part on every surface: '+name+' from wiki.adom.inc/'+part
+    +'. The first click stages it (clone the page, send the .lbr + .step, bind the real 3D, generate a solo project); after that each button just switches surfaces. All background - rendered here with fusion_state.';
+  const g=$('#surfaces');g.innerHTML='';
+  for(const [key,label] of SURFACES){
+    const c=document.createElement('div');c.className='scard';
+    c.innerHTML='<button class="btn" data-surface="'+key+'" data-tip="Open the '+label.toLowerCase()+
+      ' surface for '+name+' in the background, then render it here">'+label+'</button>'+
+      '<div class="sstate" id="ss-'+key+'">not run yet</div>'+
+      '<img class="sshot" id="si-'+key+'" alt="'+label+'">';
+    g.appendChild(c);
+  }
+  g.querySelectorAll('button[data-surface]').forEach(b=>{
+    b.onclick=async()=>{
+      const key=b.getAttribute('data-surface');
+      const st=$('#ss-'+key);st.className='sstate';st.textContent='opening\u2026';
+      try{
+        const r=await api('api/surface',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({surface:key,target:curTarget||undefined})});
+        if(r.ok){st.className='sstate ok';st.textContent='shown on '+(r.deviceset||'the part');
+          if(r.image){const im=$('#si-'+key);im.src=imgSrc(r.image);im.classList.add('show');
+            im.onclick=()=>window.open(im.src,'_blank');}
+          toast(r.label+' surface opened','ok');
+        }else{st.className='sstate err';st.textContent=(r.error||'failed');toast((r.label||key)+': '+(r.error||'failed'),'err');}
+      }catch(e){st.className='sstate err';st.textContent=String(e);}
+    };
+  });
+}
+
+// Copy-paste AI prompts (teach the user to drive the bridge through their AI).
+const PROMPTS=[
+  'run the fusion demo tour and show me the gallery',
+  'import the basic part aravk/in-s42ata from the wiki and open it in Fusion',
+  'show me the symbol, footprint and 3D chip for the part I just imported',
+  'make a solo test project for this part and show me the 3D board',
+  'is Fusion signed in and is APS cloud search working? fix whatever is not',
+  'search my Fusion cloud files for BQ25792',
+  'export gerbers, BOM and CPL for the open board to a temp folder',
+  'keep Fusion updated automatically and never show me the update nag',
+];
+$('#prompts').innerHTML=PROMPTS.map(p=>`<div class="prompt"><code>${p}</code><button class="btn copy" data-tip="Copy this prompt so you can paste it to your AI" onclick="navigator.clipboard.writeText('${p.replace(/'/g,"\\'")}');toast('copied','ok')">Copy</button></div>`).join('');
+
+// ── Live channel (SSE): state pushes, AI toasts, CLI click directives ──
+const CLICK_TARGETS={setup:'#btnSetup',start:'#btnStart',stop:'#btnStop','import-part':'#btnImportPart',settings:'#btnSettings',refresh:'#btnRefresh'};
+// `ui click tour` used to press #btnTour; the shared panel owns that button now, so drive
+// the demo directly. The CLI contract is unchanged for callers.
+const CLICK_FNS={tour:()=>startFusionDemo()};
+let sseUp=false;
+function connectSSE(){
+  const es=new EventSource('events');
+  es.addEventListener('hello',()=>{sseUp=true;console.log('sse connected');});
+  es.addEventListener('state',e=>{try{const st=JSON.parse(e.data);if(!curTarget||st.target===curTarget){lastStatus=st;renderLeds(st);}}catch(_){}});
+  // The bridge's measured progress block, rendered verbatim - no local guessing.
+  es.addEventListener('progress',e=>{try{
+    const p=JSON.parse(e.data);
+    if(curTarget && p.target && p.target!==curTarget) return;
+    const box=$('#launchbar');box.classList.add('show');
+    $('#lbLabel').textContent=p.stepLabel||'Fusion is starting';
+    const pct=Math.max(0,Math.min(100,p.percent||0));
+    $('#lbFill').style.width=pct+'%';
+    $('#lbEta').textContent=(p.etaSec!=null?('~'+p.etaSec+'s left'):'')+'  '+pct+'%';
+    $('#lbNote').textContent=(p.startKind?(p.startKind+' start'):'')+
+      (p.confidence?(' \u00b7 '+p.confidence+(p.confidence==='measured'?' from this machine\u2019s own history':'')):'')+
+      (p.elapsedSec!=null?(' \u00b7 '+p.elapsedSec+'s elapsed'):'');
+    clearTimeout(window.__lbHide);
+    window.__lbHide=setTimeout(()=>box.classList.remove('show'),25000);
+    if(pct>=100) setTimeout(()=>box.classList.remove('show'),1500);
+  }catch(_){}});
+  es.addEventListener('toast',e=>{try{const t=JSON.parse(e.data);toast(t.message,t.kind==='info'?'':t.kind);}catch(_){}});
+  es.addEventListener('click',e=>{try{
+    const {target}=JSON.parse(e.data);const sel=CLICK_TARGETS[target];
+    if(sel&&$(sel)){$(sel).click();}
+    else if(CLICK_FNS[target]){CLICK_FNS[target]();}
+    else{toast('unknown click target: '+target,'err');}
+  }catch(_){}});
+  es.onerror=()=>{sseUp=false;es.close();setTimeout(connectSSE,3000);};
+}
+connectSSE();
+// Drivability handle: an AI (or the ralph loop) can read the page's real state without
+// scraping the DOM. `let` bindings are not window properties, so expose them explicitly.
+window.__dash={get sseUp(){return sseUp},get status(){return lastStatus},get target(){return curTarget},
+               get settings(){return dashSettings},get errors(){return consoleBuf.slice(-10)}};
+
+// ── Tooltips: body-appended, fixed, clamped to the viewport on BOTH axes ──
+const tt=$('#tt');let ttTimer=null;
+document.addEventListener('mouseover',e=>{
+  const el=e.target.closest('[data-tip]');
+  if(!el){clearTimeout(ttTimer);tt.classList.remove('show');return;}
+  clearTimeout(ttTimer);
+  ttTimer=setTimeout(()=>{
+    tt.textContent=el.getAttribute('data-tip');
+    tt.style.left='0px';tt.style.top='0px';tt.classList.add('show');
+    const r=el.getBoundingClientRect(),M=8,w=tt.offsetWidth,h=tt.offsetHeight;
+    let x=r.left+r.width/2-w/2, y=r.bottom+10;
+    if(y+h>innerHeight-M) y=r.top-h-10;                       // flip above
+    x=Math.max(M,Math.min(x,innerWidth-w-M));                  // clamp X
+    y=Math.max(M,Math.min(y,innerHeight-h-M));                 // clamp Y
+    tt.style.left=x+'px';tt.style.top=y+'px';
+  },600);
+});
+document.addEventListener('mouseout',e=>{if(e.target.closest('[data-tip]')){clearTimeout(ttTimer);tt.classList.remove('show');}});
+
+// ── Brand hover popover: app identity lives here, not in the header row ──
+// The bridge captures PNG, but the ab relay may transcode to WebP in transit (verified
+// live 2026-08-19: frames arrived with a RIFF header while we were labelling them PNG).
+// Browsers sniff and render either way, so this was invisible, but a data: URL that lies
+// about its type is the kind of thing that breaks the day something stops sniffing.
+function imgSrc(b64){
+  var t='image/png';
+  try{
+    var head=atob(b64.slice(0,16));
+    if(head.slice(0,4)==='RIFF') t='image/webp';
+    else if(head.charCodeAt(0)===0xFF && head.charCodeAt(1)===0xD8) t='image/jpeg';
+  }catch(_){}
+  return 'data:'+t+';base64,'+b64;
+}
+const ai=$('#appinfo');const brand=document.querySelector('.brand');
+let aiShow=null,aiHide=null;
+function fillAppInfo(){
+  const v=lastStatus?lastStatus.dashboardVersion:'';const bv=lastStatus?(lastStatus.bridgeVersion||'?'):'?';
+  ai.innerHTML='<b style="color:var(--text)">Fusion Dashboard</b><br>dashboard v'+(v||'?')+' · bridge v'+bv+
+    '<br>engine: fusion-dashboard (Rust) + adom-bridge<br>author: adom<br>'+
+    '<a href="https://wiki.adom.inc/adom/fusion-bridge" target="_blank" rel="noopener">wiki.adom.inc/adom/fusion-bridge</a>';
+}
+brand.addEventListener('mouseenter',()=>{clearTimeout(aiHide);aiShow=setTimeout(()=>{
+  fillAppInfo();ai.classList.add('show');
+  const r=brand.getBoundingClientRect(),M=8;
+  let x=Math.max(M,Math.min(r.left,innerWidth-ai.offsetWidth-M));
+  ai.style.left=x+'px';ai.style.top=Math.min(r.bottom+8,innerHeight-ai.offsetHeight-M)+'px';
+},600);});
+brand.addEventListener('mouseleave',()=>{clearTimeout(aiShow);aiHide=setTimeout(()=>ai.classList.remove('show'),220);});
+ai.addEventListener('mouseenter',()=>clearTimeout(aiHide));
+ai.addEventListener('mouseleave',()=>{aiHide=setTimeout(()=>ai.classList.remove('show'),220);});
+
+renderSkeleton();
+loadDashSettings().then(()=>{renderSurfaces();return loadTargets();}).then(()=>{refresh();kickAutoGreen();});
+setInterval(refresh,15000);setInterval(loadTargets,60000);
+</script>
+</body>
+</html>
+<script src="newbie-panel.js"></script>
+<script>
+  // OUR WHOLE SURFACE: the phrases, the trigger noun, and what the demo button does.
+  // Everything visual - card, columns, table, icons, clipboard, send path, toasts,
+  // tooltips, X, ? toggle - belongs to the module, on purpose.
+  AdomNewbiePanel.mount({
+    mount: '#newbie',
+    app: 'fusion',
+    appName: 'Fusion Dashboard',
+    slug: 'fusion-bridge',          // dock:<wiki page slug>, never the dock card id
+    toggleButton: '#btnRecall',
+    demo: { label: 'Play the demo', meta: 'the whole bridge, about 10 minutes',
+            onPlay: function () { startFusionDemo(); } },
+    phrases: SAY_PHRASES
+  });
+</script>

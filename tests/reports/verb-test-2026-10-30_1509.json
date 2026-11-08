@@ -1,0 +1,99 @@
+{
+ "date": "2026-10-30_1509",
+ "target": "DESKTOP-BAR6S0F",
+ "tier": "daily",
+ "pass": 10,
+ "fail": 0,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 8,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "routing": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 1,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_board_summary",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.8,
+   "section": "routing"
+  },
+  {
+   "verb": "fusion_panel",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_tool_update",
+   "status": "PASS",
+   "why": "",
+   "sec": 27.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_read_schematic",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_list_library",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_pos",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.9,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_pos#gerber",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_window_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 42.8
+}

@@ -1,0 +1,7 @@
+37564934b5c3ec1fe0cfce11fedd2eaf1e1ecefd9a5dff692051fb2d67509a7d  sketch-plan-core/Cargo.toml
+d03d751118ccb0698b6d924467f09e619b930d6e1cbc4ec90f515e104495b85a  sketch-plan-core/PORT-MAPPING.md
+cf664371de11f85630623156a3c74cd5b0098697e69d6dba9d991efb0618c403  sketch-plan-core/README.md
+e4b8c3bce1c5c4be0fa6b75635a1a659e52446397dd50ee69c20dd221ea776a6  sketch-plan-core/SOURCE-CHECKSUMS.sha256
+caa6bc758706e09d999b4e92a0a06902b968173d552d500990a92ed4a62ef710  sketch-plan-core/src/lib.rs
+6cc56f5423d9c5d7d2580ce2b8911c169a1634c329cda98ca8709ec35b214432  sketch-plan-core/src/model.rs
+d10731185caff5e52bd8abfc1c7909e899480d244fc8afcd701a9efd51e942f2  sketch-plan-core/tests/geometry.rs

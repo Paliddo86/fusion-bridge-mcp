@@ -1,0 +1,547 @@
+{
+ "date": "2026-08-14_2028",
+ "target": "AdomLapper",
+ "tier": "weekly",
+ "pass": 51,
+ "fail": 7,
+ "sections": {
+  "bridge-lifecycle": {
+   "PASS": 4,
+   "FAIL": 5,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "gui-driving": {
+   "PASS": 13,
+   "FAIL": 0,
+   "MANUAL": 5,
+   "SKIP": 0
+  },
+  "aps": {
+   "PASS": 10,
+   "FAIL": 2,
+   "MANUAL": 4,
+   "SKIP": 0
+  },
+  "auth-tokens": {
+   "PASS": 2,
+   "FAIL": 0,
+   "MANUAL": 2,
+   "SKIP": 0
+  },
+  "mcp-server": {
+   "PASS": 4,
+   "FAIL": 0,
+   "MANUAL": 1,
+   "SKIP": 0
+  },
+  "cad-3d-bom": {
+   "PASS": 8,
+   "FAIL": 0,
+   "MANUAL": 0,
+   "SKIP": 0
+  },
+  "exports": {
+   "PASS": 4,
+   "FAIL": 0,
+   "MANUAL": 1,
+   "SKIP": 0
+  },
+  "python-addin": {
+   "PASS": 6,
+   "FAIL": 0,
+   "MANUAL": 1,
+   "SKIP": 0
+  }
+ },
+ "results": [
+  {
+   "verb": "fusion_readiness",
+   "status": "PASS",
+   "why": "",
+   "sec": 5.3,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_describe",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_get_app_state",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_search_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_walk_cloud_tree",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.3,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.5,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_get_browser",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_search",
+   "status": "FAIL",
+   "why": "expected success, got error=Request timed out code=None; expected >0 results",
+   "sec": 60.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_recent",
+   "status": "PASS",
+   "why": "",
+   "sec": 17.9,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_browse",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.5,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_file_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 40.2,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_versions",
+   "status": "PASS",
+   "why": "",
+   "sec": 39.1,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_download",
+   "status": "PASS",
+   "why": "",
+   "sec": 45.3,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_get",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.7,
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_uninstall",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_aps_create_folder",
+   "status": "MANUAL",
+   "why": "needs projectId/parentFolderId of the test workspace",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_upload",
+   "status": "MANUAL",
+   "why": "cloud write; exercised via build flows weekly",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_set_client_id",
+   "status": "MANUAL",
+   "why": "would clobber org auth config",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_aps_set_browser",
+   "status": "MANUAL",
+   "why": "",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_forget_browser",
+   "status": "MANUAL",
+   "why": "",
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_aps_signin",
+   "status": "MANUAL",
+   "why": "opens a browser on the user's machine",
+   "section": "auth-tokens"
+  },
+  {
+   "verb": "fusion_start",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_get_preferences",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_set_preference",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_mcp_status",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.2,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_tools",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_resources",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_mcp_enable",
+   "status": "MANUAL",
+   "why": "drives the prefs UI, takes foreground",
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_prefs_open",
+   "status": "MANUAL",
+   "why": "opens a dialog on the user's screen",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_prefs_close",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_set_auto_update",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_assembly_bom",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_dismiss_blocking_dialogs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.9,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_load_design_rules",
+   "status": "MANUAL",
+   "why": "mutates the board's DRC rules",
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_open_cloud_file",
+   "status": "PASS",
+   "why": "",
+   "sec": 14.4,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_schematic",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.1,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_show_2d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 11.5,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_board_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.3,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_execute_text_command",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.5,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_run",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.7,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_zoom",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.2,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_pan",
+   "status": "PASS",
+   "why": "",
+   "sec": 3.5,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_detect_layers",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.8,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_export_gerbers",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_bom",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.0,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_export_cpl",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.2,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_board_stackup",
+   "status": "PASS",
+   "why": "",
+   "sec": 8.9,
+   "section": "exports"
+  },
+  {
+   "verb": "fusion_show_3d_board",
+   "status": "PASS",
+   "why": "",
+   "sec": 4.6,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_inspect_bodies",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_mcp_call",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "mcp-server"
+  },
+  {
+   "verb": "fusion_assembly_bom#realboard",
+   "status": "PASS",
+   "why": "",
+   "sec": 20.8,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_physical_properties",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.7,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_design_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.8,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_get_parameters",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_document_info",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.6,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_list_cloud_projects",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.1,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_list_cloud_files",
+   "status": "PASS",
+   "why": "",
+   "sec": 2.6,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_run_modeling_script#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_assembly_bom#guard",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.1,
+   "section": "cad-3d-bom"
+  },
+  {
+   "verb": "fusion_run_modeling_script",
+   "status": "PASS",
+   "why": "",
+   "sec": 1.3,
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_electron_select",
+   "status": "MANUAL",
+   "why": "selection state is user-visible",
+   "section": "python-addin"
+  },
+  {
+   "verb": "fusion_open_by_urn",
+   "status": "FAIL",
+   "why": "fixture staging failed: no URN in aps_search results",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_aps_open",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None",
+   "sec": 0.0,
+   "section": "aps"
+  },
+  {
+   "verb": "fusion_open_design",
+   "status": "MANUAL",
+   "why": "local-file open; superseded by cloud flows",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_window#noargs",
+   "status": "PASS",
+   "why": "",
+   "sec": 0.0,
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_document",
+   "status": "MANUAL",
+   "why": "",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_close_all_documents",
+   "status": "MANUAL",
+   "why": "would close the user's own tabs",
+   "section": "gui-driving"
+  },
+  {
+   "verb": "fusion_export_step",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_stl",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_3mf",
+   "status": "FAIL",
+   "why": "expected success, got error=target_not_found code=None",
+   "sec": 0.0,
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "fusion_export_f3d",
+   "status": "FAIL",
+   "why": "relay lost the target (run aborted; not a verb failure)",
+   "section": "bridge-lifecycle"
+  },
+  {
+   "verb": "focus_invariance",
+   "status": "PASS",
+   "why": "",
+   "section": "gui-driving"
+  }
+ ],
+ "durationSec": 382.8
+}

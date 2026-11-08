@@ -821,6 +821,88 @@ _TOOLS = [
         ],
     },
     {
+        "name": "fusion_find_symbol",
+        "verb": "fusion_find_symbol",
+        "title": "Find a part across libraries",
+        "summary": "Find components (or footprints with kind='footprint') by part of their name "
+                   "across .lbr files. Offline - does NOT need Fusion. Exact match first, else the "
+                   "shortest name that contains the query. Every match reports the `library` path "
+                   "to pass straight to fusion_sch_place_part. ALWAYS run this before placing a "
+                   "part: guessing a symbol name costs a failed call. If nothing matches, ask the "
+                   "user for a library path or offer to create the footprint "
+                   "(see the fusion-part-sourcing skill).",
+        "params": [
+            ("query", "query", "str", True, "Part of a name, e.g. 'LED', '5MM', 'R-0603'."),
+            ("kind", "kind", "str", False, "'symbol' (default, components) or 'footprint' (packages)."),
+            ("libraries", "libraries", "list[str]", False, "Explicit .lbr paths to search."),
+            ("folder", "folder", "str", False, "A folder to scan for .lbr files."),
+        ],
+    },
+    {
+        "name": "fusion_list_library",
+        "verb": "fusion_list_library",
+        "title": "List what a library holds",
+        "summary": "Names in an EAGLE .lbr, offline (no Fusion needed): kind 'sch' (the components, "
+                   "default) or 'pcb' (the footprints). Use it to see the exact deviceset and "
+                   "package names a library offers before calling fusion_sch_place_part.",
+        "params": [
+            ("library_path", "libraryPath", "str", True, "The .lbr on this machine."),
+            ("kind", "kind", "str", False, "'sch' (components, default) or 'pcb' (footprints)."),
+            ("limit", "limit", "int", False, "Max names to return (default 500)."),
+        ],
+    },
+    {
+        "name": "fusion_create_footprint",
+        "verb": "fusion_create_footprint",
+        "title": "Create a footprint",
+        "summary": "Create a footprint (an EAGLE package) from a pad list in a .lbr, OFFLINE - "
+                   "works even while Fusion is busy. Pads are "
+                   "'des,x_mil,y_mil,w_mil,h_mil,rect|round,hole_mil;...' (hole 0 = SMD), with a "
+                   "documentation outline and >NAME/>VALUE. THIS is how to build a missing "
+                   "through-hole part instead of substituting an SMD one: see the "
+                   "fusion-part-sourcing skill for the standard THT pads (LED 5mm, axial "
+                   "resistor, 2.54 header).",
+        "params": [
+            ("library_path", "libraryPath", "str", True, "The .lbr (created if missing)."),
+            ("name", "name", "str", True, "Footprint (package) name, e.g. 'LED-5MM-THT'."),
+            ("pads", "pads", "str", True, "Pad list: 'num,x,y,w,h,rect|round,hole;...' in mil."),
+            ("description", "description", "str", False, "Human description shown in the library."),
+            ("dry_run", "dryRun", "bool", False, "Validate and report without writing."),
+        ],
+    },
+    {
+        "name": "fusion_create_symbol",
+        "verb": "fusion_create_symbol",
+        "title": "Create a schematic symbol",
+        "summary": "Create a component (an EAGLE deviceset) in a .lbr, OFFLINE. Pins are "
+                   "'des,name,left|right|top|bottom,offset_mil;...'. Pin numbers MUST match the "
+                   "footprint's pad numbers or the part places but never routes. Pair it with "
+                   "fusion_create_footprint to make a missing part placeable.",
+        "params": [
+            ("library_path", "libraryPath", "str", True, "The .lbr (created if missing)."),
+            ("name", "name", "str", True, "Deviceset name, e.g. 'LED-5MM'."),
+            ("pins", "pins", "str", True, "'num,name,side,offset_mil;...' - number must match a pad."),
+            ("designator", "designator", "str", False, "Reference prefix, e.g. 'D' or 'R'."),
+            ("body_width_mil", "bodyWidthMil", "int", False, "Body rectangle width (default 800)."),
+            ("body_height_mil", "bodyHeightMil", "int", False, "Body rectangle height (default 600)."),
+            ("description", "description", "str", False, "Human description."),
+        ],
+    },
+    {
+        "name": "fusion_lint_library",
+        "verb": "fusion_lint_library",
+        "title": "Check a library before using it",
+        "summary": "Is this library fit to ship? Reads a .lbr OFFLINE and judges each footprint's "
+                   "pads (none, zero-size, unnumbered, duplicate numbers), courtyard (tKeepout), "
+                   "silkscreen, 3D package and description, plus each component's pins against "
+                   "its footprint. Run it after fusion_create_footprint/create_symbol and before "
+                   "placing a hand-made part.",
+        "params": [
+            ("library_path", "libraryPath", "str", True, "The .lbr on this machine."),
+            ("names", "names", "list[str]", False, "Footprint or component names (default: all)."),
+        ],
+    },
+    {
         "name": "fusion_describe",
         "verb": "fusion_describe",
         "title": "List the bridge verbs",
@@ -920,6 +1002,131 @@ def describe_fusion_call(field):
                 "or omit it for a verb that takes none.")], default=None),
     ])
     return fusion_call
+
+
+def source_part(field):
+    """`fusion_source_part`: resolve a component or ASK, never invent one.
+
+    This is the verb the model should reach for before placing anything. It searches
+    every reachable library offline and returns one of three answers:
+
+      found    -> the exact `library` and `symbol` to hand to fusion_sch_place_part
+      ambiguous-> the candidates, so the caller picks instead of guessing
+      missing  -> an explicit request to the user: give me a library path, or let me
+                  create the footprint and symbol (see fusion-part-sourcing)
+
+    Why this exists: `place_part` needs a library path AND a symbol name, and a
+    model that guesses either one produces a failed call plus a confusing error.
+    A missing part is a QUESTION for a human, not an error to work around - and
+    silently substituting an SMD part for a through-hole one is worse than failing,
+    because the board gets made with the wrong component.
+    """
+
+    def fusion_source_part(
+        query: str,
+        kind: str = "symbol",
+        libraries: Optional[list[str]] = None,
+        folder: Optional[str] = None,
+        purpose: Optional[str] = None,
+    ) -> str:
+        args: dict = {"query": query, "kind": kind or "symbol"}
+        if libraries:
+            args["libraries"] = libraries
+        if folder:
+            args["folder"] = folder
+        result = _bridge_command("fusion_find_symbol", args)
+
+        if not isinstance(result, dict):
+            return _as_text(result)
+        if result.get("success") is False:
+            # The search itself failed (bad path, unreadable library): pass the bridge's
+            # own error through with the asking hint attached, so the caller still knows
+            # the next move is to ask, not to retry.
+            result.setdefault("options", _ask_options(query, purpose))
+            return _as_text(result)
+
+        matches = result.get("matches") or []
+        best = result.get("best")
+        if best:
+            return _as_text({
+                "success": True,
+                "status": "found",
+                "query": query,
+                "library": best.get("library"),
+                "symbol": best.get("name"),
+                "exact": bool(best.get("exact")),
+                "searched": result.get("searched"),
+                "otherMatches": [m.get("name") for m in matches[:10]],
+                "_hint": (
+                    "Pass these straight to fusion_sch_place_part: library=%r, symbol=%r. "
+                    "Pick `footprint` from fusion_list_library {libraryPath, kind:'pcb'} if the "
+                    "deviceset offers more than one package."
+                    % (best.get("library"), best.get("name"))
+                ),
+            })
+
+        # Nothing matched: this is the branch the whole verb exists for.
+        return _as_text({
+            "success": False,
+            "errorCode": "part_not_found",
+            "status": "missing",
+            "query": query,
+            "kind": kind or "symbol",
+            "searched": result.get("searched"),
+            "closest": [m.get("name") for m in matches[:8]],
+            "error": (
+                "No %s matched %r in the libraries searched. Nothing was placed and nothing "
+                "was invented." % ((kind or "symbol"), query)
+            ),
+            "options": _ask_options(query, purpose),
+            "_hint": (
+                "ASK THE USER with these two options; do not substitute a different part and "
+                "do not retry with a made-up symbol name. If they allow creation, read "
+                "skill://fusion-part-sourcing for the standard through-hole pads and call "
+                "fusion_create_footprint + fusion_create_symbol (both work offline)."
+            ),
+        })
+
+    fusion_source_part.__signature__ = inspect.Signature([
+        inspect.Parameter(
+            "query", inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[str, field(
+                "What you need, by name fragment: 'LED', '5MM', 'R-0603', 'USB-C'. "
+                "Searched across every reachable library, offline.")]),
+        inspect.Parameter(
+            "kind", inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[Optional[str], field(
+                "'symbol' (default: schematic components) or 'footprint' (PCB packages).")],
+            default="symbol"),
+        inspect.Parameter(
+            "libraries", inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[Optional[list[str]], field(
+                "Extra .lbr paths to search first, before the bundled ones.")],
+            default=None),
+        inspect.Parameter(
+            "folder", inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[Optional[str], field(
+                "A folder to scan for .lbr files.")],
+            default=None),
+        inspect.Parameter(
+            "purpose", inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[Optional[str], field(
+                "What it is for, echoed back in the ask so the question reads naturally "
+                "('green 5mm status LED').")],
+            default=None),
+    ])
+    fusion_source_part.__name__ = "fusion_source_part"
+    return fusion_source_part
+
+
+def _ask_options(query: str, purpose: Optional[str]) -> list[str]:
+    """The two exits offered whenever a part cannot be found."""
+    what = ("%s (%s)" % (query, purpose)) if purpose else query
+    return [
+        "Give me the path of a .lbr that has %s - I will use it directly." % what,
+        "Or let me create it: I write the footprint and the symbol into a library you name "
+        "(fusion_create_footprint + fusion_create_symbol, both work offline), then place it.",
+    ]
 
 
 # --------------------------------------------------------------------------------------
@@ -1081,6 +1288,22 @@ def build_server(name="fusion-bridge", skills_dir=SKILLS_DIR):
         name="fusion_call",
         title="Call any bridge verb",
         description=_FUSION_CALL_DESCRIPTION,
+        structured_output=False,
+    )
+    # Resolve-or-ask: the verb to reach for BEFORE placing a part. It never invents a
+    # symbol and never silently substitutes one part for another.
+    server.add_tool(
+        source_part(field),
+        name="fusion_source_part",
+        title="Find a part, or ask for a library",
+        description=(
+            "Resolve a component before placing it: searches every reachable .lbr offline and "
+            "returns the exact library + symbol for fusion_sch_place_part. If nothing matches it "
+            "does NOT invent one - it returns errorCode 'part_not_found' with two options for the "
+            "user: pass a library path, or let the bridge create the footprint and symbol. Read "
+            "skill://fusion-part-sourcing for the standard through-hole pads (LED 5mm, axial "
+            "resistor, 2.54 header) when creating a missing part."
+        ),
         structured_output=False,
     )
 

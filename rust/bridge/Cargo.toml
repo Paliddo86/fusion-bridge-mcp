@@ -31,3 +31,7 @@ fusion-os-win = { path = "../os-win" }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 fusion-os-mac = { path = "../os-mac" }
+# `kill(2)` for the graded force-kill escalation in lifecycle.rs. Confined to macOS so the
+# Windows and Linux builds take no new dependency: Windows uses `taskkill`, and Linux has no
+# host implementation at all.
+libc = "0.2"

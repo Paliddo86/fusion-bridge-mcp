@@ -17,6 +17,34 @@ fn invalid(message: &str) -> JournalError { JournalError::new("operation_storage
 fn failed(e: impl std::fmt::Display) -> JournalError { JournalError::new("operation_storage_failed", format!("sqlite3.Error: {e}")) }
 fn io_failed(e: std::io::Error) -> JournalError { JournalError::new("operation_storage_failed", format!("OSError: {e}")) }
 
+/// Is this component one of macOS's own root-level symlinks into `/private`?
+///
+/// `/var -> private/var`, `/tmp -> private/tmp`, `/etc -> private/etc` are shipped that way by
+/// the OS, so a path check that refuses every symlink refuses almost every real path on a Mac.
+/// Two conditions keep the exemption tight:
+///   * the component is exactly `/var`, `/tmp` or `/etc` (a direct child of `/`);
+///   * what it resolves to actually lands under `/private` — so a replacement link pointing
+///     into a user's home does NOT get a free pass.
+#[cfg(target_os = "macos")]
+fn is_macos_system_symlink(path: &Path) -> bool {
+    let name = path.file_name().and_then(|n| n.to_str()).unwrap_or_default();
+    if !matches!(name, "var" | "tmp" | "etc") {
+        return false;
+    }
+    // one component only: the parent must be the filesystem root
+    if path.parent() != Some(Path::new("/")) {
+        return false;
+    }
+    let target = format!("/private/{name}");
+    match std::fs::symlink_metadata(&target) {
+        Ok(m) => m.is_dir(),
+        Err(_) => false,
+    }
+}
+
+#[cfg(not(target_os = "macos"))]
+fn is_macos_system_symlink(_path: &Path) -> bool { false }
+
 pub fn hex32() -> String {
     let mut b = [0u8; 16];
     let _ = getrandom::getrandom(&mut b);
@@ -56,7 +84,20 @@ impl SqliteTable {
         chain.reverse();
         for item in chain {
             let Ok(info) = std::fs::symlink_metadata(item) else { continue };
-            if !info.is_dir() || info.file_type().is_symlink() { return Err(invalid("Operation storage cannot traverse links, junctions or non-directories.")); }
+            if !info.is_dir() || info.file_type().is_symlink() {
+                // macOS FIRMWARE symlinks. `/var`, `/tmp` and `/etc` are symlinks into
+                // `/private` by OS design, so EVERY ordinary path on a Mac traverses one:
+                // `std::env::temp_dir()` is `/var/folders/...`, and the four mech journal
+                // tests failed here with "cannot traverse links" before this exemption.
+                //
+                // Scoped deliberately narrowly: only these three names, only at the ROOT
+                // (one component), and only when the link resolves inside /private. A symlink
+                // the user creates anywhere deeper still fails, so the guarantee this check
+                // exists for — an app-owned path cannot be redirected elsewhere — holds.
+                if !is_macos_system_symlink(item) {
+                    return Err(invalid("Operation storage cannot traverse links, junctions or non-directories."));
+                }
+            }
         }
         if create {
             std::fs::create_dir_all(&self.dir).map_err(io_failed)?;
@@ -170,4 +211,42 @@ impl Tx for SqliteTx {
         self.conn.execute("INSERT OR REPLACE INTO operations VALUES (?1,?2,?3,?4)", params![row.0, row.1, row.2, row.3]).map(|_| ()).map_err(failed)
     }
     fn commit(self: Box<Self>) -> Result<(), JournalError> { self.conn.execute_batch("COMMIT").map_err(failed) }
+}
+
+#[cfg(test)]
+mod path_check_tests {
+    use super::*;
+
+    #[test]
+    fn macos_firmware_symlinks_are_exempt_only_at_the_root_and_only_into_private() {
+        // `/var`, `/tmp`, `/etc` are shipped as symlinks into `/private` by macOS. The temp dir
+        // is under `/var/folders/...`, so refusing every symlink refused every ordinary path on
+        // a Mac — that is what failed the four mech journal tests.
+        for name in ["var", "tmp", "etc"] {
+            let p = PathBuf::from("/").join(name);
+            #[cfg(target_os = "macos")]
+            assert!(is_macos_system_symlink(&p), "{} must be exempt on macOS", p.display());
+            #[cfg(not(target_os = "macos"))]
+            assert!(!is_macos_system_symlink(&p), "no exemption off macOS");
+        }
+    }
+
+    #[test]
+    fn a_user_symlink_is_still_refused() {
+        // The exemption must not become a hole: any link the exemption does not name is refused,
+        // and the same names are refused when they are NOT the root-level component.
+        for p in ["/Users/x/var", "/home/x/tmp", "/private/etc", "/var/folders/81/x"] {
+            assert!(!is_macos_system_symlink(Path::new(p)), "{p} must not be exempt");
+        }
+    }
+
+    #[test]
+    fn the_temp_dir_passes_the_path_check() {
+        // The regression this fixes, end to end: a directory under std::env::temp_dir() must
+        // survive check_paths(), which is what every mech journal test does.
+        let dir = std::env::temp_dir().join(format!("mech-pathcheck-{}", hex32()));
+        let t = SqliteTable::new(dir.clone());
+        t.check_paths(true).expect("temp dir must be an acceptable journal path");
+        let _ = std::fs::remove_dir_all(&dir);
+    }
 }

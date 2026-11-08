@@ -78,6 +78,46 @@ fn force_kill_fusion(ctx: &Ctx) -> u32 {
             if std::process::Command::new("taskkill").args(["/F", "/T", "/PID", &pid.to_string()]).creation_flags(0x0800_0000).output().map(|o| o.status.success()).unwrap_or(false) { killed += 1; }
         }
     }
+    // macOS: there is no `taskkill` and, on a Mac, no `ab` either — `Loopback::from_env()` above
+    // yields nothing, so WITHOUT this block force-kill simply does nothing and a wedged Fusion
+    // survives. That is the exact hole closed in the Python shell (`handlers/close_fusion.py`)
+    // after a main thread parked in Fusion's crash-recovery dialog had to be killed by hand.
+    //
+    // Graded, bounded, and every step confirms with the host poll:
+    //   a) `osascript ... quit` — Fusion's own graceful path, honours its save prompts
+    //   b) SIGTERM
+    //   c) SIGKILL
+    // Measured on that wedge: osascript returns -1712 (AppleEvent timeout) because the main
+    // thread is not in its message loop, SIGTERM is ignored for the same reason, and only
+    // SIGKILL lands. Waiting between steps is what makes the escalation meaningful.
+    #[cfg(target_os = "macos")]
+    {
+        let still_running = || !ctx.host.fusion_processes().is_empty();
+        if still_running() {
+            let _ = std::process::Command::new("osascript")
+                .args(["-e", "tell application \"Autodesk Fusion\" to quit"])
+                .stdin(std::process::Stdio::null())
+                .stdout(std::process::Stdio::null())
+                .stderr(std::process::Stdio::null())
+                .status();
+            let deadline = Instant::now() + Duration::from_secs(15);
+            while Instant::now() < deadline && still_running() {
+                std::thread::sleep(Duration::from_millis(500));
+            }
+        }
+        for sig in [libc::SIGTERM, libc::SIGKILL] {
+            if !still_running() { break; }
+            for p in ctx.host.fusion_processes() {
+                if p.pid == 0 { continue; }
+                // SAFETY: kill(2) with a pid the host just reported; a dead pid is ESRCH, ignored.
+                if unsafe { libc::kill(p.pid as libc::pid_t, sig) } == 0 { killed += 1; }
+            }
+            let deadline = Instant::now() + Duration::from_secs(8);
+            while Instant::now() < deadline && still_running() {
+                std::thread::sleep(Duration::from_millis(500));
+            }
+        }
+    }
     killed
 }
 

@@ -36,6 +36,7 @@ mod services;
 mod maintenance;
 mod testproject;
 mod boardgen;
+mod libraries;
 mod partimport;
 mod unsupported;
 mod stdshapes;
@@ -1109,15 +1110,63 @@ fn native_lib_authoring(verb: &str, args: &Value) -> Value {
     if verb == "find_symbol" {
         let query = s("query").unwrap_or_default();
         if query.is_empty() { return json!({"success": false, "errorCode": "bad_args", "error": "query is required", "shell": "rust"}); }
+        let footprints = s("kind").as_deref() == Some("footprint");
         let mut paths: Vec<String> = args["libraries"].as_array().map(|l| l.iter().filter_map(|x| x.as_str().map(|p| p.replace('\\', "/"))).collect()).unwrap_or_default();
+        let mut via = "explicit";
+
+        // 1. The CATALOGUE first. Fusion keeps an index of every library it knows (the same
+        // rows Library Manager shows) with an absolute path per row, so a hit needs no
+        // scanning and no Fusion: ~934 libraries, answer in microseconds. This is what makes
+        // the bridge behave like the user browsing their own Library Manager.
+        let mut catalogue_hits = if paths.is_empty() {
+            crate::libraries::search(&query, footprints)
+        } else { Vec::new() };
+        if !catalogue_hits.is_empty() { via = "catalogue"; }
+
+        // 2. An explicit folder, searched RECURSIVELY: the built-in libraries live one level
+        // down in adsk.eagle_library_*/<Name>.lbr, so a top-level scan found nothing and the
+        // caller was told "no such part" while 54 libraries sat right there.
         if let Some(dir) = s("folder").or(s("libraryPath")) {
             let d = dir.replace('\\', "/");
-            if std::path::Path::new(&d).is_dir() { if let Ok(rd) = std::fs::read_dir(&d) { for e in rd.flatten() { let p = e.path(); if p.extension().map(|x| x.eq_ignore_ascii_case("lbr")).unwrap_or(false) { paths.push(p.to_string_lossy().replace('\\', "/")); } } } } else { paths.push(d); }
+            if std::path::Path::new(&d).is_dir() {
+                let mut seen = std::collections::HashSet::new();
+                let mut stack = vec![std::path::PathBuf::from(&d)];
+                while let Some(cur) = stack.pop() {
+                    let Ok(rd) = std::fs::read_dir(&cur) else { continue };
+                    for e in rd.flatten() {
+                        let p = e.path();
+                        if p.is_dir() {
+                            // guard against symlink loops and absurd depth
+                            if stack.len() < 64 { stack.push(p); }
+                        } else if p.extension().map(|x| x.eq_ignore_ascii_case("lbr")).unwrap_or(false) {
+                            let f = p.to_string_lossy().replace('\\', "/");
+                            if seen.insert(f.clone()) { paths.push(f); }
+                        }
+                    }
+                }
+                if via == "explicit" { via = "folder"; }
+            } else { paths.push(d); }
         }
-        if paths.is_empty() { return json!({"success": false, "errorCode": "bad_args", "error": "libraries [paths] or folder is required (Fusion keeps no installed-library list a script can read)", "shell": "rust"}); }
+
+        // 3. Nothing named: fall back to every library the catalogue knows, so a part is
+        // found without the caller having to know where Fusion put it.
+        if paths.is_empty() && catalogue_hits.is_empty() {
+            paths = crate::libraries::all_library_paths();
+            if !paths.is_empty() { via = "catalogue-all"; }
+        }
+        // Catalogue hits already carry their absolute path, so scanning them again is wasted
+        // work: add only the ones the caller named.
+        for h in catalogue_hits.drain(..) {
+            if !paths.iter().any(|p| p == &h.path) { paths.push(h.path); }
+        }
+
+        if paths.is_empty() { return json!({"success": false, "errorCode": "bad_args", "error": "libraries [paths] or folder is required, and Fusion's library catalogue was not found on this machine. Pass `libraries: [\"/path/to/x.lbr\"]`, or `folder` pointing at a folder of .lbr files (searched recursively), or ask the user for the library path.", "shell": "rust"}); }
         let libs: Vec<(String, String)> = paths.iter().filter_map(|p| std::fs::read_to_string(p).ok().map(|t| (p.clone(), t))).collect();
-        let mut r = a::find_symbol(&libs, &query, s("kind").as_deref() == Some("footprint"));
-        r["success"] = json!(true); r["searched"] = json!(libs.len()); r["shell"] = json!("rust");
+        let mut r = a::find_symbol(&libs, &query, footprints);
+        r["success"] = json!(true); r["searched"] = json!(libs.len()); r["via"] = json!(via); r["shell"] = json!("rust");
+        if r["best"].is_null() {
+            r["_hint"] = json!("No match. Do NOT invent a symbol name. Ask the user for a library path, or offer to create the part (fusion_create_footprint + fusion_create_symbol, both offline) - see skill://fusion-part-sourcing. Names are family-based: LED_RADIAL, LEDRD254*, RESAD*, 1X02.");
+        }
         return r;
     }
     // the land pattern is laid out by the standard's engine; this writes it as an EAGLE package

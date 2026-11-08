@@ -344,8 +344,19 @@ fn native_status(h: &dyn HostBoth) -> Value {
     let facts = if running {
         match fusion_core::ab::Loopback::from_env() { Some(ab) => fusion_core::windows_facts::facts_from_ab(&ab, &Caller::default()), None => fusion_core::windows_facts::WindowFacts { degraded: true, error: Some("ADOM_DIRECT_API_URL not set".into()), ..Default::default() } }
     } else { fusion_core::windows_facts::WindowFacts::default() };
-    let (led, summary, tooltip) = if !cfg!(windows) {
-        ("yellow", "Unsupported OS", "Bridge running, but this host is not Windows. Fusion 360 verbs need a Windows host with Fusion 360 installed.")
+    // The host gate: a platform the bridge has NO host implementation for. macOS is a
+    // first-class host now (`os-mac`, `MacHost`), so `!cfg!(windows)` was wrong: it reported
+    // macOS as unsupported even with Fusion installed, running and the add-in answering.
+    // Only Linux and other targets still have no host (main.rs's `NoHost`).
+    #[cfg(any(windows, target_os = "macos"))]
+    const HOST_UNSUPPORTED: Option<(&str, &str)> = None;
+    #[cfg(not(any(windows, target_os = "macos")))]
+    const HOST_UNSUPPORTED: Option<(&str, &str)> = Some((
+        "Unsupported OS",
+        "Bridge running, but this host has no implementation. Fusion 360 verbs need Windows or macOS with Fusion 360 installed.",
+    ));
+    let (led, summary, tooltip) = if let Some((s, t)) = HOST_UNSUPPORTED {
+        ("yellow", s, t)
     } else if !installed {
         ("yellow", "Fusion not installed", "Bridge running, but Fusion 360 is not installed. The AI can install it for the user (fusion-onboarding), then fusion_start.")
     } else if !running {

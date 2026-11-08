@@ -212,7 +212,19 @@ pub fn signin(ctx: &Ctx, args: &Value) -> Value {
         opened_pref = json!({"name": p["name"], "exe": p["exe"], "profileDir": p["profileDir"]});
         save_signin_browser(&store, &p);
     } else if args["allowDefaultBrowser"].as_bool() == Some(true) && load_signin_browser(&store).is_none() {
-        let ok = { #[cfg(windows)] { std::process::Command::new("cmd").args(["/C", "start", "", &auth_url]).spawn().is_ok() } #[cfg(not(windows))] { std::process::Command::new("xdg-open").arg(&auth_url).spawn().is_ok() } };
+        // Three platforms, three launchers. `#[cfg(not(windows))]` used to assume Linux
+        // and called `xdg-open`, which does not exist on macOS: `.spawn()` failed, `.is_ok()`
+        // was false, and the sign-in silently fell through to a fallback built entirely on
+        // `ab` verbs (open_os_window_extension_free) that cannot work without Adom Bridge.
+        // Net effect on a Mac: no browser ever opened and the APS sign-in timed out.
+        let ok = {
+            #[cfg(windows)]
+            { std::process::Command::new("cmd").args(["/C", "start", "", &auth_url]).spawn().is_ok() }
+            #[cfg(target_os = "macos")]
+            { std::process::Command::new("open").arg(&auth_url).spawn().is_ok() }
+            #[cfg(all(not(windows), not(target_os = "macos")))]
+            { std::process::Command::new("xdg-open").arg(&auth_url).spawn().is_ok() }
+        };
         if ok { opened_via = "os_default_browser"; }
     } else {
         ext_free = open_os_window_extension_free(ctx, &auth_url, args["profile"].as_str());

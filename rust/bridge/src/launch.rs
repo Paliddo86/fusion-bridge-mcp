@@ -207,7 +207,18 @@ pub fn start(ctx: &Ctx, _args: &Value) -> Value {
                     }
                 }
             }
-            let complete = { #[cfg(windows)] { fusion_os_win::any_app_complete() } #[cfg(not(windows))] { false } };
+            // Was `{ false }` for every non-Windows host, so a genuine launch failure on a Mac
+            // was always misreported as "the streamed install is INCOMPLETE" and the recovery
+            // path then removed webdeploy dirs that were fine. macOS answers the same question
+            // as Windows: is there a complete install (an app bundle with its real binary)?
+            let complete = {
+                #[cfg(windows)]
+                { fusion_os_win::any_app_complete() }
+                #[cfg(target_os = "macos")]
+                { fusion_os_mac::any_app_complete() }
+                #[cfg(all(not(windows), not(target_os = "macos")))]
+                { false }
+            };
             if complete {
                 return json!({"success": false, "error": format!("Fusion is INSTALLED (Fusion360.exe present) but did not start within 30s{}.", if launch_err.is_some() { " - a launch-error dialog was dismissed" } else { "" }),
                     "errorCode": "fusion_launch_failed", "installed": true, "dialog": launch_err.as_ref().map(|d| d["title"].clone()).unwrap_or(Value::Null),

@@ -249,6 +249,24 @@ impl HostPaths for MacHost {
     }
 }
 
+/// Whether a COMPLETE Fusion install exists — the macOS twin of `os_win::any_app_complete()`.
+///
+/// On Windows the test is "Fusion360.exe present at full size, in a webdeploy production
+/// subdir": FusionLauncher.exe lands early mid-stream, so its presence may not gate
+/// "installed". The macOS equivalent is "an app bundle whose Contents/MacOS/Autodesk Fusion
+/// actually exists": a half-streamed `.app` has the directory but not the binary.
+///
+/// `launch.rs:210` used to hardcode `false` here for every non-Windows host, so a real
+/// launch failure on a Mac was always reported as "the streamed install is INCOMPLETE" and
+/// the recovery path removed webdeploy dirs that were perfectly fine.
+pub fn any_app_complete() -> bool {
+    let suffix = format!("/Contents/MacOS/{FUSION_APP_BINARY}");
+    app_bundle_candidates().iter().any(|b| {
+        let bin = PathBuf::from(format!("{}{}", b.display(), suffix));
+        bin.is_file()
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -320,6 +338,14 @@ mod tests {
         // The suffix test works on the WHOLE string, no splitting.
         let suffix = format!("/Contents/MacOS/{FUSION_APP_BINARY}");
         assert!(cmd.ends_with(&suffix));
+    }
+
+    #[test]
+    fn any_app_complete_agrees_with_fusion_executable() {
+        // launch.rs:210 used to hardcode `false` on non-Windows, so a genuine launch failure
+        // was always reported as "the streamed install is INCOMPLETE" and the recovery path
+        // then deleted webdeploy dirs that were fine. The two answers must agree.
+        assert_eq!(any_app_complete(), MacHost.fusion_executable().is_some());
     }
 
     #[test]
